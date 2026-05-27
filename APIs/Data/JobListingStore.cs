@@ -3,9 +3,9 @@
 
 using APIs.Models;
 
-namespace APIs.Services;
+namespace APIs.Data;
 
-public class JobServices
+public class JobListingStore
 {
     // Static in-memory list acting as temporary dummy database data
     private static readonly List<JobListing> Jobs =
