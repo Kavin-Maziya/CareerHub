@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "w4BNXh7BH0s=",
+  "success": true,
+  "projectFilePath": "C:\\Projects\\CareerHub@Bitcube\\CareerHub\\APIs\\APIs.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Kavin Ozzie Maziya\\.nuget\\packages\\microsoft.aspnetcore.openapi\\10.0.8\\microsoft.aspnetcore.openapi.10.0.8.nupkg.sha512",
+    "C:\\Users\\Kavin Ozzie Maziya\\.nuget\\packages\\microsoft.openapi\\2.0.0\\microsoft.openapi.2.0.0.nupkg.sha512",
+    "C:\\Users\\Kavin Ozzie Maziya\\.nuget\\packages\\scalar.aspnetcore\\2.14.14\\scalar.aspnetcore.2.14.14.nupkg.sha512"
+  ],
+  "logs": []
+}
