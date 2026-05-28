@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using APIs.Models;
 using APIs.Data;
+using System.Runtime.InteropServices;
 
 namespace APIs.Controllers;
 
@@ -22,8 +23,8 @@ public class JobsController(JobListingStore jobService) : ControllerBase
 
 
     // Returns a single job listing by ID
-    [HttpGet("{id}")]
-    public async Task<ActionResult<JobListing>> GetJobByIdAsync(int id)
+    [HttpGet("{id:guid}")]
+    public async Task<ActionResult<JobListing>> GetJobByIdAsync(Guid id)
     {
         // Call the service to Get a job by ID
         var job = await jobService.GetJobByIdAsync(id);

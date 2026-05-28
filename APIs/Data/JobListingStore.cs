@@ -12,32 +12,38 @@ public class JobListingStore
     [
         new JobListing
         {
-            Id = 1,
+            Id = Guid.NewGuid(),
             Title = "Software Developer intern",
             Description = "24 month Software Developer internship that provides candidates with handson experiences",
             Company = "Tech2day Software",
             Location = "CapeTown",
-            Type = "Full-Time/Hybrid"
+            Type = "Full-Time",
+            PostedAt = DateTime.UtcNow,
+            IsActive = true
         },
 
         new JobListing
         {
-            Id = 2,
+            Id = Guid.NewGuid(),
             Title = "Senior Lead Developer",
             Description = "Lead the software development team and assign code tasks as a responsibility",
             Company = "Ali Code",
             Location = "Johannesburg",
-            Type = "Hybrid"
+            Type = "Part-Time",
+            PostedAt = DateTime.UtcNow,
+            IsActive = true
         },
 
         new JobListing
         {
-            Id = 3,
+            Id = Guid.NewGuid(),
             Title = "UI/UX Designer",
             Description = "Design applications",
             Company = "Creative Labs",
             Location = "Cape Town",
-            Type = "Contract"
+            Type = "Contract",
+            PostedAt = DateTime.UtcNow,
+            IsActive = true
         }
     ];
 
@@ -49,7 +55,7 @@ public class JobListingStore
     }
 
     // Returns a single job listing by ID
-    public async Task<JobListing?> GetJobByIdAsync(int id)
+    public async Task<JobListing?> GetJobByIdAsync(Guid id)
     {
         await Task.CompletedTask;
 

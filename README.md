@@ -25,27 +25,37 @@ The purpose of this project is to demonstrate:
 
 I used Controllers because they offer clear and readable project structure,  separation of concerns and it's also ideal for large applications and support advanced feature support.  They are also the more logical choice for large ASP.NET Core projects.
 
+## DTO implementation
+
+### Domain Model: 
+- PostedAt is generated and controlled by the server when a job is created because clients should only see when a job was posted not update or create it.
+### Validation Rules:
+- I used IValidatableObject to validate the relationship between SalaryMin and SalaryMax without using manual validation inside the controller. This approach keeps my JobsController cleaner and keeps validation responsibilities inside the CreateJobsRequest DTO model.
+
 ## Project Structure
 
-
 CareerHub/
-|
-|    ├──APIs/
-|    │
-|    ├── Controllers/
-|    │ └── JobsController.cs
-|    │
-|    ├── Models/
-|    │ ├── JobListing.cs
-|    |
-|    ├── Data/
-|    │ └── JobListingStore.cs
-|    │
-|    ├── Program.cs
-|    │
-| 
-| ├── README.md
-
+│
+├── APIs/
+│ │
+│ ├── Controllers/
+│ │ └── JobsController.cs
+│ │
+│ ├── DTOs/
+│ │ ├── CreateJobRequest.cs
+│ │ ├── UpdateJobRequest.cs
+│ │ └── JobResponse.cs
+│ │
+│ ├── Models/
+│ │ ├── JobListing.cs
+│ │ └── JobType.cs
+│ │
+│ ├── Data/
+│ │ └── JobListingStore.cs
+│ │
+│ └── Program.cs
+│
+└── README.md
 
 ---
 
