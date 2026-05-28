@@ -2,7 +2,7 @@ namespace APIs.Models;
 
 public class JobListing
 {
-    public int Id { get; set; }
+    public Guid Id { get; set; }
 
     public string Title { get; set; } = string.Empty;
 
@@ -13,4 +13,8 @@ public class JobListing
     public string Location { get; set; } = string.Empty;
 
     public string Type { get; set; } = string.Empty;
+
+    public DateTime PostedAt{get; set;}
+    public bool IsActive{get; set;}
+
 }
