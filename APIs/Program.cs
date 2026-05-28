@@ -12,12 +12,16 @@ var builder = WebApplication.CreateBuilder(args);
  builder.Services.AddControllers(); //registering controller support
  builder.Services.AddOpenApi(); // Registering built-in OpenApi document generation
  builder.Services.AddSingleton<JobListingStore>(); // Registers JobServices as a Singleton service that will be used as a single instance the entire project
+builder.Services.AddProblemDetails(); //enables standardised error format
 
 
  var app = builder.Build(); //Nothing can be regsitered after this
 
 //Phase 2: Pipeline - Configure your Middleware chain
 // NB: Order matters!! 
+
+app.UseExceptionHandler(); // catch unhandled exceptions and return ProblemDetails
+app.UseStatusCodePages(); //Catch any empty 4xx/5xx responses, will add Problem Details body to them. 
 
 if (app.Environment.IsDevelopment())
 {

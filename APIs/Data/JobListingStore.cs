@@ -8,7 +8,7 @@ namespace APIs.Data;
 public class JobListingStore
 {
     // Static in-memory list acting as temporary dummy database data
-    private static readonly List<JobListing> Jobs =
+    public static List<JobListing> Jobs =
     [
         new JobListing
         {
@@ -17,7 +17,7 @@ public class JobListingStore
             Description = "24 month Software Developer internship that provides candidates with handson experiences",
             Company = "Tech2day Software",
             Location = "CapeTown",
-            Type = "Full-Time",
+            Type = JobType.FullTime,
             PostedAt = DateTime.UtcNow,
             IsActive = true
         },
@@ -29,7 +29,7 @@ public class JobListingStore
             Description = "Lead the software development team and assign code tasks as a responsibility",
             Company = "Ali Code",
             Location = "Johannesburg",
-            Type = "Part-Time",
+            Type = JobType.PartTime,
             PostedAt = DateTime.UtcNow,
             IsActive = true
         },
@@ -41,7 +41,7 @@ public class JobListingStore
             Description = "Design applications",
             Company = "Creative Labs",
             Location = "Cape Town",
-            Type = "Contract",
+            Type = JobType.Contract,
             PostedAt = DateTime.UtcNow,
             IsActive = true
         }
