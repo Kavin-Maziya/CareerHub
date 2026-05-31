@@ -12,7 +12,10 @@ public class JobListing
 
     public string Location { get; set; } = string.Empty;
 
-    public string Type { get; set; } = string.Empty;
+    public JobType Type { get; set; }
+
+    public decimal? SalaryMin { get; set; }
+    public decimal? SalaryMax { get; set; } 
 
     public DateTime PostedAt{get; set;}
     public bool IsActive{get; set;}
