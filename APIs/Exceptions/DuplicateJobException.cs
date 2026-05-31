@@ -1,8 +1,8 @@
 namespace APIs.Exceptions;
 
-public class DuplicateBookingException : Exception
+public class DuplicateJobException : Exception
 {
-    public DuplicateBookingException(string title, string company): 
+    public DuplicateJobException(string title, string company): 
     base($"A job listing for {title} at {company} already exists")
     {
         
