@@ -1,56 +1,63 @@
-using Microsoft.AspNetCore.Mvc.Diagnostics;
-using Scalar.AspNetCore; 
-using APIs.Data; // Imports JobListingStore class with dummy data
+// 
+//════════════════════════════════════════════════════ 
+// Bootstrap Serilog before the host is built. 
+// This ensures even startup exceptions are logged. 
+// 
+//════════════════════════════════════════════════════ 
+using API.Middleware;
+using Scalar.AspNetCore;
+using Serilog;
 
-//Phase 1 : Builder - Register the services into the app
-/// Dependency injection container
-
-var builder = WebApplication.CreateBuilder(args);
-
- //Register Your services
-
- builder.Services.AddControllers(); //registering controller support
- builder.Services.AddOpenApi(); // Registering built-in OpenApi document generation
- builder.Services.AddSingleton<JobListingStore>(); // Registers JobServices as a Singleton service that will be used as a single instance the entire project
-builder.Services.AddProblemDetails(); //enables standardised error format
-
-
- var app = builder.Build(); //Nothing can be regsitered after this
-
-//Phase 2: Pipeline - Configure your Middleware chain
-// NB: Order matters!! 
-
-app.UseExceptionHandler(); // catch unhandled exceptions and return ProblemDetails
-app.UseStatusCodePages(); //Catch any empty 4xx/5xx responses, will add Problem Details body to them. 
-
-if (app.Environment.IsDevelopment())
+Log.Logger = new LoggerConfiguration()
+.WriteTo.Console()
+.CreateLogger();
+try
 {
+    Log.Information("Starting up CareerHub number 1 Job Listing platform...");
+    var builder = WebApplication.CreateBuilder(args);
+    // Replace the default .NET logger with Serilog 
+    builder.Host.UseSerilog();
+    // 
+    //════════════════════════════════════════════════════ 
+    // BUILDER — Register services 
+    // 
+    //════════════════════════════════════════════════════ 
+    builder.Services.AddControllers();
+    builder.Services.AddOpenApi();
+    builder.Services.AddExceptionHandler<GlobalExceptionHandler>(); // Day 3 — typed handler
+    builder.Services.AddProblemDetails();
+    // 
+    // Day 2 — standardised errors 
+    //════════════════════════════════════════════════════ 
+    // TRANSITION — Build() seals the DI container. 
+    // Nothing can be registered after this line. 
+    // 
+    //════════════════════════════════════════════════════ 
+    var app = builder.Build();
+    // 
+    //════════════════════════════════════════════════════ 
+    // PIPELINE — Configure the middleware chain. 
+    // Order matters. Top to bottom. 
+    // 
+    //════════════════════════════════════════════════════ 
+    app.UseSerilogRequestLogging(); // Logs every HTTP request + final response automatically 
+    app.UseExceptionHandler();  // Activates GlobalExceptionHandler — catches all thrown exceptions 
+    app.UseStatusCodePages();   // Fills empty 4xx/5xx responses with Problem Details body 
+    if (app.Environment.IsDevelopment())
+    {
+    }
     app.MapOpenApi();
-    app.MapScalarApiReference(); 
+    // Serves /openapi/v1.json 
+    app.MapScalarApiReference();  // Serves the Scalar UI at /scalar/v1 
+    app.MapControllers();  // Activates attribute routing for all [ApiController] classes 
+    app.Run();
 }
-app.MapControllers(); 
+catch (Exception ex)
+{
+    Log.Fatal(ex, "Application failed to start correctly.");
+}
 
-// Returns all available jobs
-// app.MapGet("/jobs", async (JobListingStore jobService) =>
-// {
-//     var jobs = await jobService.GetAllJobsAsync();
-
-//     return Results.Ok(jobs);
-// });
-
-//  // Returns a single job listing by ID
-// app.MapGet("/jobs/{id}", async (int id, JobListingStore jobService) =>
-// {
-//     var job = await jobService.GetJobByIdAsync(id);
-
-//     if (job is null)
-//     {
-//         return Results.NotFound(); // Return HTTP 404 status if job does not exist
-//     }
-
-//     return Results.Ok(job); // Return HTTP 200 OK status with the data
-// });
-
-
-
-app.Run(); 
+finally
+{
+    Log.CloseAndFlush(); //Ensure all buffered log entries are flushed before application exit. 
+}
