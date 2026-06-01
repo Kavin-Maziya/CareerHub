@@ -39,7 +39,8 @@ try
         .AllowAnyMethod(); //Allows GET,POST,DELETE etc.. 
      }); 
     }); 
-    var jwtSecretKey = "super-secret-key-that-must-be-very-long-for-hs256-to-work-securely!"; 
+    // var jwtSecretKey = "super-secret-key-that-must-be-very-long-for-hs256-to-work-securely!"; 
+     var jwtSecretKey = builder.Configuration["Jwt:Key"]; //Reads JWT key from appsettings.Development
     builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -54,6 +55,7 @@ try
             )
         };
     });
+    
     builder.Services.AddAuthorization(); //Required for [Authorize(Roles= ...)]
     
 
