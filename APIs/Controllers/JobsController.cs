@@ -4,6 +4,7 @@ using APIs.Data;
 using System.Runtime.InteropServices;
 using APIs.DTOs;
 using APIs.Exceptions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace APIs.Controllers;
 
@@ -14,7 +15,7 @@ public class JobsController(JobListingStore jobService) : ControllerBase
 
     // Returns all available job listings
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<JobListing>>> GetJobsAsync()
+    public async Task<ActionResult<IEnumerable<JobListing>>> GetAllJobsAsync()
     {
         // Calls the service to Get all jobs
         var jobs = await jobService.GetAllJobsAsync();
@@ -41,7 +42,8 @@ public class JobsController(JobListingStore jobService) : ControllerBase
         return Ok(job);
     }
 
-    [HttpPost]
+[Authorize(Roles = "Employer")]
+[HttpPost]
 public async Task<ActionResult<JobResponse>> CreateJobAsync([FromBody] CreateJobRequest request)
 {
     await Task.CompletedTask;
@@ -112,7 +114,8 @@ public async Task<ActionResult<JobResponse>> CreateJobAsync([FromBody] CreateJob
 } 
 
  // Updates existing Job fields
-    [HttpPut("{id:guid}")]
+[Authorize(Roles = "Employer")]
+[HttpPut("{id:guid}")]
     public async Task<ActionResult<JobResponse>> UpdateJobAsync(Guid id, [FromBody] UpdateJobRequest request)
     {
     await Task.CompletedTask;
@@ -142,8 +145,11 @@ public async Task<ActionResult<JobResponse>> CreateJobAsync([FromBody] CreateJob
         return Ok(response);
     }
 
-    // Deletes a job listing by ID
-    [HttpDelete("{id:guid}")]
+
+// Deletes a job listing by ID
+[Authorize(Roles = "Employer")]
+[HttpDelete("{id:guid}")]
+
     public async Task<IActionResult> DeleteJobAsync(Guid id)
     {
     await Task.CompletedTask;
