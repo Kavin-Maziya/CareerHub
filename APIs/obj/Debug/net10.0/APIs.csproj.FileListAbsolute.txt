@@ -43,3 +43,11 @@ C:\Projects\CareerHub@Bitcube\CareerHub\APIs\bin\Debug\net10.0\Serilog.Settings.
 C:\Projects\CareerHub@Bitcube\CareerHub\APIs\bin\Debug\net10.0\Serilog.Sinks.Console.dll
 C:\Projects\CareerHub@Bitcube\CareerHub\APIs\bin\Debug\net10.0\Serilog.Sinks.Debug.dll
 C:\Projects\CareerHub@Bitcube\CareerHub\APIs\bin\Debug\net10.0\Serilog.Sinks.File.dll
+C:\Projects\CareerHub@Bitcube\CareerHub\APIs\bin\Debug\net10.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Projects\CareerHub@Bitcube\CareerHub\APIs\bin\Debug\net10.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Projects\CareerHub@Bitcube\CareerHub\APIs\bin\Debug\net10.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Projects\CareerHub@Bitcube\CareerHub\APIs\bin\Debug\net10.0\Microsoft.IdentityModel.Logging.dll
+C:\Projects\CareerHub@Bitcube\CareerHub\APIs\bin\Debug\net10.0\Microsoft.IdentityModel.Protocols.dll
+C:\Projects\CareerHub@Bitcube\CareerHub\APIs\bin\Debug\net10.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Projects\CareerHub@Bitcube\CareerHub\APIs\bin\Debug\net10.0\Microsoft.IdentityModel.Tokens.dll
+C:\Projects\CareerHub@Bitcube\CareerHub\APIs\bin\Debug\net10.0\System.IdentityModel.Tokens.Jwt.dll
