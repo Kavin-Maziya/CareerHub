@@ -36,6 +36,26 @@ I used Controllers because they offer clear and readable project structure,  sep
 ### Validation Rules:
 - I used IValidatableObject to validate the relationship between SalaryMin and SalaryMax without using manual validation inside the controller. This approach keeps my JobsController cleaner and keeps validation responsibilities inside the CreateJobsRequest DTO model.
 
+# Authentication & Authorization
+## Stateless Authentication
+
+- Session-based authentication stores user information on the server after a successful login. The server creates a session and keeps track of the user's identity between requests using a session ID. 
+- JWT-based authentication is stateless, the server generates a JSON Web Token with user information and sends it to the client after login. The client uses the token for future requests, and the server validates the token without storing any session data.
+
+- Statelessness is important for horizontally scaled APIs because requests can be handled by any server instance. Since user information is contained within the JWT, servers do not need to share session data, making the application easier to maintain.
+
+## 401 Unauthorized vs 403 Forbidden
+
+- 401 Unauthorized response means the user has not provided valid login credentials. The authentication middleware generates the 401 response before the request reaches the controller.
+
+- 403 Forbidden response means the user is authenticated but does not have the permission to perform the requested action. The authorization middleware generates the 403 response after authentication has succeeded.
+
+## Token Storage
+
+- Storing JWTs in localStorage is considered a security risk because JavaScript running in the browser can access localStorage. If an application is vulnerable to a Cross-Site Scripting (XSS) attack, an attacker could steal the token.
+
+- Storing tokens in a secure HttpOnly cookies is a safer alternative. Because HttpOnly cookies cannot be accessed through JavaScript, which protects them from attacks.
+
 
 # Error Handling
 ## Custom Domain Exceptions (advantages)
