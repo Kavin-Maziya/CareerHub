@@ -17,7 +17,11 @@ The purpose of this project is to demonstrate:
 - Asynchronous programming using async/await
 - Proper HTTP status code handling
 - Dependency Injection
-- Separation of concerns between controller and data layer
+- Custom domain exception handling
+- Global exception handling using IExceptionHandler
+- Problem Details responses
+- Structured logging using Serilog
+- Separation of concerns between controllers, domain logic, and error handling
 
 ---
 
@@ -32,7 +36,73 @@ I used Controllers because they offer clear and readable project structure,  sep
 ### Validation Rules:
 - I used IValidatableObject to validate the relationship between SalaryMin and SalaryMax without using manual validation inside the controller. This approach keeps my JobsController cleaner and keeps validation responsibilities inside the CreateJobsRequest DTO model.
 
-## Project Structure
+
+# Error Handling
+## Custom Domain Exceptions (advantages)
+## Controller Thinning: 
+Throwing a new JobNotFoundException instead of returning NotFound() separate business logic from HTTP concerns. Controllers focus on successful request processing while the Global Exception Handler centrally translates exceptions into HTTP responses. 
+
+Advantages of throwing JobNotFoundExceprion instead of returning NotFound:
+- Reduces duplicated code
+- Keeps controllers clean and readable
+- Ensures consistent error responses throughout the API
+- Structured Logging with Serilog
+
+### Structured Logging: 
+
+Serilog stores log information as structured data rather than plain text, Unlike traditional Console.WriteLine() statements.
+
+Advantages of using SeriLog instead of traditional Console.WriteLine():
+- Easier error debugging
+- Better search and filtering capabilities
+- Improved monitoring and diagnostics
+- Consistent log formatting
+
+
+# Project Structure
+CareerHub/
+│
+├── APIs/
+│
+├── Controllers/
+│   └── JobsController.cs
+│
+├── DTOs/
+│   ├── CreateJobRequest.cs
+│   ├── UpdateJobRequest.cs
+│   └── JobResponse.cs
+│
+├── Models/
+│   ├── JobListing.cs
+│   └── JobType.cs
+│
+├── Data/
+│   └── JobListingStore.cs
+│
+├── Exceptions/
+│   ├── JobNotFoundException.cs
+│   └── DuplicateJobListingException.cs
+│
+├── Middleware/
+│   └── GlobalExceptionHandler.cs
+│
+├── Program.cs
+│
+└── README.md
+
+# Key Features
+- RESTful API design
+- Async/await implementation for all endpoints
+- DTO-based request and response models
+- Centralized exception handling
+- Problem Details support
+- Custom domain exceptions
+- Structured logging using Serilog
+- Dependency Injection
+- Controller-based architecture
+- OpenAPI documentation support
+- Scalar UI API testing interface
+<!-- ## Project Structure
 
 CareerHub/
 │
@@ -65,7 +135,7 @@ CareerHub/
 - Proper HTTP status code handling (200, 404)
 - Clean separation of controller and data service
 - Dependency Injection using ASP.NET Core built-in container
-- OpenAPI support for testing via Scalar UI
+- OpenAPI support for testing via Scalar UI -->
 
 ## How to Run the Project
 

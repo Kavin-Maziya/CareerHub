@@ -33,3 +33,13 @@ C:\Projects\CareerHub@Bitcube\CareerHub\APIs\obj\Debug\net10.0\refint\APIs.dll
 C:\Projects\CareerHub@Bitcube\CareerHub\APIs\obj\Debug\net10.0\APIs.pdb
 C:\Projects\CareerHub@Bitcube\CareerHub\APIs\obj\Debug\net10.0\APIs.genruntimeconfig.cache
 C:\Projects\CareerHub@Bitcube\CareerHub\APIs\obj\Debug\net10.0\ref\APIs.dll
+C:\Projects\CareerHub@Bitcube\CareerHub\APIs\bin\Debug\net10.0\Microsoft.Extensions.DependencyModel.dll
+C:\Projects\CareerHub@Bitcube\CareerHub\APIs\bin\Debug\net10.0\Serilog.dll
+C:\Projects\CareerHub@Bitcube\CareerHub\APIs\bin\Debug\net10.0\Serilog.AspNetCore.dll
+C:\Projects\CareerHub@Bitcube\CareerHub\APIs\bin\Debug\net10.0\Serilog.Extensions.Hosting.dll
+C:\Projects\CareerHub@Bitcube\CareerHub\APIs\bin\Debug\net10.0\Serilog.Extensions.Logging.dll
+C:\Projects\CareerHub@Bitcube\CareerHub\APIs\bin\Debug\net10.0\Serilog.Formatting.Compact.dll
+C:\Projects\CareerHub@Bitcube\CareerHub\APIs\bin\Debug\net10.0\Serilog.Settings.Configuration.dll
+C:\Projects\CareerHub@Bitcube\CareerHub\APIs\bin\Debug\net10.0\Serilog.Sinks.Console.dll
+C:\Projects\CareerHub@Bitcube\CareerHub\APIs\bin\Debug\net10.0\Serilog.Sinks.Debug.dll
+C:\Projects\CareerHub@Bitcube\CareerHub\APIs\bin\Debug\net10.0\Serilog.Sinks.File.dll

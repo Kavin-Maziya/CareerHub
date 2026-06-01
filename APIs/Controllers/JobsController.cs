@@ -3,6 +3,7 @@ using APIs.Models;
 using APIs.Data;
 using System.Runtime.InteropServices;
 using APIs.DTOs;
+using APIs.Exceptions;
 
 namespace APIs.Controllers;
 
@@ -33,7 +34,7 @@ public class JobsController(JobListingStore jobService) : ControllerBase
         // Return HTTP 404 status if the job does not exist
         if (job is null)
         {
-            return NotFound();
+              throw new JobNotFoundException(id); //Throws new exception for Jobs Not Found
         }
 
         // Return HTTP 200 OK status with the job data
@@ -54,12 +55,7 @@ public async Task<ActionResult<JobResponse>> CreateJobAsync([FromBody] CreateJob
 
     if (isDuplicate)
     {
-        return Conflict(new ProblemDetails
-        {
-            Title  = "Conflict",
-            Detail = "A job with the same title and company already exists.",
-            Status = 409
-        });
+        throw new DuplicateJobException(request.Title, request.Company);
     }
 
     // 2. Map DTO → Domain Model
@@ -127,12 +123,7 @@ public async Task<ActionResult<JobResponse>> CreateJobAsync([FromBody] CreateJob
         // Return 404 if it doesn't exist
         if (existing is null)
         {
-            return NotFound(new ProblemDetails
-            {
-                Title  = "Not Found",
-                Detail = $"No job with ID {id} exists.",
-                Status = 404
-            });
+            throw new JobNotFoundException(id); //Throws new exception for Jobs Not Found
         }
 
         // Replace editable fields — PostedAt and IsActive are preserved
@@ -163,12 +154,7 @@ public async Task<ActionResult<JobResponse>> CreateJobAsync([FromBody] CreateJob
         // Return 404 if it doesn't exist
         if (existing is null)
         {
-            return NotFound(new ProblemDetails
-            {
-                Title  = "Not Found",
-                Detail = $"No job with ID {id} exists.",
-                Status = 404
-            });
+            throw new JobNotFoundException(id); //Throws new exception for Jobs Not Found
         }
 
         // Remove the job
