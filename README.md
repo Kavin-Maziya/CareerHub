@@ -78,61 +78,44 @@ Advantages of using SeriLog instead of traditional Console.WriteLine():
 - Improved monitoring and diagnostics
 - Consistent log formatting
 
+## Database (EF Core + PostgreSQL)
+
+
+### Change Tracker
+- EF Core changes tracker tracks entity state changes in the project's memory. When SaveChangesAsync() is called, it compares original data to the current data and saves the changes.
+
+---
+
+### Migrations as version Control
+
+- The generated migration file must be committed to source control alongside the code that caused it because they ensure consistent database structure across all environments and allow project contributors to rebuild the database and see Migrations history
+
+- When a teammate pulls code that references a migration they have not applied the application wil fail to run and tables will not exist in the database
+
+---
+
+### Connection String Security
+- Connection strings contain sensitive credentials and should be stored in appsettings.Development.json for local development to exclude it from source control
+
+- Safer production alternatives:
+  - Environment variables
+  - Docker secrets
+  - Azure Key Vault / AWS Secrets Manager
+
+---
 
 # Project Structure
 CareerHub/
 │
 ├── APIs/
-│
-├── Controllers/
-│   └── JobsController.cs
-│
-├── DTOs/
-│   ├── CreateJobRequest.cs
-│   ├── UpdateJobRequest.cs
-│   └── JobResponse.cs
-│
-├── Models/
-│   ├── JobListing.cs
-│   └── JobType.cs
-│
-├── Data/
-│   └── JobListingStore.cs
-│
-├── Exceptions/
-│   ├── JobNotFoundException.cs
-│   └── DuplicateJobListingException.cs
-│
-├── Middleware/
-│   └── GlobalExceptionHandler.cs
-│
-├── Program.cs
-│
-└── README.md
-
-# Key Features
-- RESTful API design
-- Async/await implementation for all endpoints
-- DTO-based request and response models
-- Centralized exception handling
-- Problem Details support
-- Custom domain exceptions
-- Structured logging using Serilog
-- Dependency Injection
-- Controller-based architecture
-- OpenAPI documentation support
-- Scalar UI API testing interface
-<!-- ## Project Structure
-
-CareerHub/
-│
-├── APIs/
-│ │
 │ ├── Controllers/
-│ │ └── JobsController.cs
+| | ├── JobsController.cs
+│ │ └── AuthController.cs
 │ │
 │ ├── DTOs/
 │ │ ├── CreateJobRequest.cs
+| | ├── LoginRequest.cs
+| | ├── LoginResponse.cs
 │ │ ├── UpdateJobRequest.cs
 │ │ └── JobResponse.cs
 │ │
@@ -141,23 +124,35 @@ CareerHub/
 │ │ └── JobType.cs
 │ │
 │ ├── Data/
-│ │ └── JobListingStore.cs
+│ │ └── CareerHubDbContext.cs
+│ │
+│ ├── Exceptions/
+│ │ ├── JobNotFoundException.cs
+│ │ └── DuplicateJobException.cs
+│ │
+│ ├── Middleware/
+│ │ └── GlobalExceptionHandler.cs
 │ │
 │ └── Program.cs
 │
 └── README.md
 
----
+# Key Features
 
-## Key Features
 - RESTful API design
-- Async/await implementation for all endpoints
-- Proper HTTP status code handling (200, 404)
-- Clean separation of controller and data service
-- Dependency Injection using ASP.NET Core built-in container
-- OpenAPI support for testing via Scalar UI -->
+- PostgreSQL persistence with EF Core
+- Async/await for all endpoints
+- DTO-based architecture
+- Centralized exception handling
+- ProblemDetails error responses
+- Custom domain exceptions
+- Structured logging with Serilog
+- Dependency Injection
+- Database migrations
+- Scalar API testing UI support
 
-## How to Run the Project
+
+# How to Run the Project
 
 1. Clone the repository
 git clone https://github.com/Kavin-Maziya/CareerHub.git
@@ -180,6 +175,9 @@ http://localhost:5059/scalar
 ## Technologies Used
 - .NET 10
 - ASP.NET Core Web API
+- Entity Framework Core
+- PostgreSQL
+- Docker
 - C#
+- Serilog
 - OpenAPI (Scalar UI)
-- Testing: All endpoints were tested using Scalar UI:
