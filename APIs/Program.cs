@@ -9,7 +9,10 @@ using Scalar.AspNetCore;
 using Serilog;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using System.Text; 
+using System.Text;
+using APIs.Data;
+using Microsoft.EntityFrameworkCore;
+using APIs.Services;
 
 Log.Logger = new LoggerConfiguration()
 .WriteTo.Console()
@@ -34,12 +37,12 @@ try
     {
      options.AddPolicy("FrontEndPolicy", policy =>
      {
-        policy.WithOrigins("http://localhost:300") // front end dev port
-        .AllowAnyHeader() //Allows authorization, Content-Type, etc
-        .AllowAnyMethod(); //Allows GET,POST,DELETE etc.. 
+        policy.WithOrigins("http://localhost:3000") 
+        .AllowAnyHeader() 
+        .AllowAnyMethod(); 
      }); 
     }); 
-    // var jwtSecretKey = "super-secret-key-that-must-be-very-long-for-hs256-to-work-securely!"; 
+    
      var jwtSecretKey = builder.Configuration["Jwt:Key"]; //Reads JWT key from appsettings.Development
     builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -51,13 +54,19 @@ try
             ValidateLifetime = true, // This ensures you are able to reject expired tokens
             ValidateIssuerSigningKey = true,// verify the signature
             IssuerSigningKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(jwtSecretKey)
+                Encoding.UTF8.GetBytes(jwtSecretKey!)
             )
         };
     });
     
     builder.Services.AddAuthorization(); //Required for [Authorize(Roles= ...)]
+    builder.Services.AddScoped<IAuthService, AuthService>();
     
+    builder.Services.AddDbContext<CareerHubDbContext>(options =>
+{
+    options.UseNpgsql(
+        builder.Configuration.GetConnectionString("DefaultConnection"));
+}); //Registers DB context
 
     //════════════════════════════════════════════════════ 
     // TRANSITION — Build() seals the DI container. 
@@ -72,11 +81,12 @@ try
     // 
     //════════════════════════════════════════════════════ 
     app.UseSerilogRequestLogging(); // Logs every HTTP request + final response automatically 
-app.UseCors("FrontEndPolicy");// Must be early to enable interception of browser preflight options requests
-    app.UseAuthentication();
-    app.UseAuthorization();    
+    app.UseCors("FrontEndPolicy");// Must be early to enable interception of browser preflight options requests
     app.UseExceptionHandler();  // Activates GlobalExceptionHandler — catches all thrown exceptions 
     app.UseStatusCodePages();   // Fills empty 4xx/5xx responses with Problem Details body 
+    
+    app.UseAuthentication();
+    app.UseAuthorization();    
     if (app.Environment.IsDevelopment())
     {
     }
