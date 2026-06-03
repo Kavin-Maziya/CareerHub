@@ -17,7 +17,26 @@ public class JobListing
     public decimal? SalaryMin { get; set; }
     public decimal? SalaryMax { get; set; } 
 
-    public DateTime PostedAt{get; set;}
-    public bool IsActive{get; set;}
+    public DateTime PostedAt{get; set;} = DateTime.UtcNow;
+    public bool IsActive{get; set;} = true;
+
+
+// public JobListing( 
+//     Guid id, string title, string description, 
+//     string company, string location, JobType type, 
+//     decimal salaryMin, decimal salaryMax, DateTime postedAt, bool isActive)
+//     {
+//         Id = id; 
+//         Title = title;
+//         Description = description;
+//         Company = company;
+//         Location = location;
+//         Type = type;
+//         SalaryMin = salaryMin;
+//         SalaryMax = salaryMax;
+//         PostedAt = postedAt;
+//         IsActive = isActive;
+
+//     }
 
 }
