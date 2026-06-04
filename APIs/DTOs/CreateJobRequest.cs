@@ -15,9 +15,8 @@ public record CreateJobRequest
     [StringLength(120, MinimumLength = 5, ErrorMessage ="Job Title should be between 5 and 120 characters")]
     string Title,
 
-    [Required(ErrorMessage="Company name is required when posting a job")]
-    [StringLength(80, MinimumLength = 2, ErrorMessage ="Company name should be between 2 and 80 characters")]
-    string Company,
+    [Required(ErrorMessage = "Company is required")]
+    Guid CompanyId,
 
     [Required(ErrorMessage ="Location is required")]
     string Location,

@@ -14,6 +14,8 @@ public class JobsController(CareerHubDbContext db) : ControllerBase
 {
 
     // Returns all available job listings
+    [AllowAnonymous]
+
     [HttpGet]
     public async Task<ActionResult<IEnumerable<JobListing>>> GetJobsAsync()
     {
@@ -25,6 +27,7 @@ public class JobsController(CareerHubDbContext db) : ControllerBase
 
 
     // Returns a single job listing by ID
+    [AllowAnonymous]
     [HttpGet("{id:guid}")]
     public async Task<ActionResult<JobListing>> GetJobByIdAsync(Guid id)
     {
@@ -41,7 +44,7 @@ public class JobsController(CareerHubDbContext db) : ControllerBase
         return Ok(job);
     }
 
-    
+
     [Authorize(Roles = "Employer")]
     [HttpPost]
     public async Task<ActionResult<JobResponse>> CreateJobAsync([FromBody] CreateJobRequest request)
@@ -51,13 +54,12 @@ public class JobsController(CareerHubDbContext db) : ControllerBase
         // 1. IDEMPOTENCY
         // Prevent a duplicate addition of a Job if the client submits the same form twice.
         bool isDuplicate = await db.JobListings.AnyAsync(j =>
-        j.Title.ToLower() == request.Title.ToLower() &&
-        j.Company.ToLower() == request.Company.ToLower()
-    );
+            j.Title.ToLower() == request.Title.ToLower() &&
+ j.CompanyId == request.CompanyId        );
 
         if (isDuplicate)
         {
-            throw new DuplicateJobException(request.Title, request.Company);
+            throw new DuplicateJobException(request.Title, request.CompanyId.ToString());
         }
 
         // 2. Map DTO → Domain Model
@@ -65,7 +67,7 @@ public class JobsController(CareerHubDbContext db) : ControllerBase
         {
             Id = Guid.NewGuid(),
             Title = request.Title,
-            Company = request.Company,
+            CompanyId = request.CompanyId,
             Location = request.Location,
             Description = request.Description,
             Type = request.Type,
@@ -102,7 +104,7 @@ public class JobsController(CareerHubDbContext db) : ControllerBase
         (
         Id: job.Id,
         Title: job.Title,
-        Company: job.Company,
+        CompanyId: job.CompanyId,
         Location: job.Location,
         Description: job.Description,
         Type: job.Type,
@@ -134,7 +136,7 @@ public class JobsController(CareerHubDbContext db) : ControllerBase
 
         // Replace editable fields — PostedAt and IsActive are preserved
         existing.Title = request.Title;
-        existing.Company = request.Company;
+        existing.CompanyId = request.CompanyId;
         existing.Location = request.Location;
         existing.Description = request.Description;
         existing.Type = request.Type;

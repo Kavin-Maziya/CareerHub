@@ -29,7 +29,7 @@ public class AuthService : IAuthService
         // Find a matching user by username and password.
      
         var user = _users.FirstOrDefault(u =>
-u.Username == request.username && u.Password == request.Password);
+u.Username == request.Username && u.Password == request.Password);
 
         // Return null so the controller decides the HTTP response.
         if (user == default)
@@ -50,7 +50,7 @@ u.Username == request.username && u.Password == request.Password);
         };
 
         var key = new SymmetricSecurityKey(
-            Encoding.UTF8.GetBytes(_config["Jwt:SecretKey"]!));
+            Encoding.UTF8.GetBytes(_config["Jwt:Key"]!));
 
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
