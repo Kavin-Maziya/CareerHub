@@ -6,7 +6,7 @@ public record JobResponse
 (
     Guid Id,
     string Title,
-    string Company,
+    Guid CompanyId,
     string Location,
     string Description,
     JobType Type,
