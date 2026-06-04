@@ -40,7 +40,7 @@ u.Username == request.Username && u.Password == request.Password);
     }
 
     // Constructs and signs the JWT
-    private string BuildToken(string username, string role)
+    private string BuildToken(string username, string role )
     {
         
         var claims = new[]

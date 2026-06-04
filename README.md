@@ -181,3 +181,6 @@ http://localhost:5059/scalar
 - C#
 - Serilog
 - OpenAPI (Scalar UI)
+
+
+//docker run --name careerhub-db -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=password123 -e POSTGRES_DB=CareerHub -p 5432:5432 -d postgres

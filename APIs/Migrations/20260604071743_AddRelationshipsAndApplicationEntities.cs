@@ -11,21 +11,6 @@ namespace APIs.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropIndex(
-                name: "IX_job_listings_Title_Company",
-                table: "job_listings");
-
-            migrationBuilder.DropColumn(
-                name: "Company",
-                table: "job_listings");
-
-            migrationBuilder.AddColumn<Guid>(
-                name: "CompanyId",
-                table: "job_listings",
-                type: "uuid",
-                nullable: false,
-                defaultValue: new Guid("00000000-0000-0000-0000-000000000000"));
-
             migrationBuilder.CreateTable(
                 name: "applicants",
                 columns: table => new
@@ -55,6 +40,32 @@ namespace APIs.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "job_listings",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Title = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
+                    Description = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: false),
+                    CompanyId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Location = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
+                    Type = table.Column<int>(type: "integer", nullable: false),
+                    SalaryMin = table.Column<decimal>(type: "numeric", nullable: true),
+                    SalaryMax = table.Column<decimal>(type: "numeric", nullable: true),
+                    PostedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    IsActive = table.Column<bool>(type: "boolean", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_job_listings", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_job_listings_companies_CompanyId",
+                        column: x => x.CompanyId,
+                        principalTable: "companies",
+                        principalColumn: "CompanyId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "applications",
                 columns: table => new
                 {
@@ -81,17 +92,6 @@ namespace APIs.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_job_listings_CompanyId",
-                table: "job_listings",
-                column: "CompanyId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_job_listings_Title_CompanyId",
-                table: "job_listings",
-                columns: new[] { "Title", "CompanyId" },
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_applicants_Email",
                 table: "applicants",
                 column: "Email",
@@ -108,56 +108,32 @@ namespace APIs.Migrations
                 table: "applications",
                 column: "ApplicantId");
 
-            migrationBuilder.AddForeignKey(
-                name: "FK_job_listings_companies_CompanyId",
+            migrationBuilder.CreateIndex(
+                name: "IX_job_listings_CompanyId",
                 table: "job_listings",
-                column: "CompanyId",
-                principalTable: "companies",
-                principalColumn: "CompanyId",
-                onDelete: ReferentialAction.Restrict);
+                column: "CompanyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_job_listings_Title_CompanyId",
+                table: "job_listings",
+                columns: new[] { "Title", "CompanyId" },
+                unique: true);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_job_listings_companies_CompanyId",
-                table: "job_listings");
-
             migrationBuilder.DropTable(
                 name: "applications");
 
             migrationBuilder.DropTable(
-                name: "companies");
-
-            migrationBuilder.DropTable(
                 name: "applicants");
 
-            migrationBuilder.DropIndex(
-                name: "IX_job_listings_CompanyId",
-                table: "job_listings");
+            migrationBuilder.DropTable(
+                name: "job_listings");
 
-            migrationBuilder.DropIndex(
-                name: "IX_job_listings_Title_CompanyId",
-                table: "job_listings");
-
-            migrationBuilder.DropColumn(
-                name: "CompanyId",
-                table: "job_listings");
-
-            migrationBuilder.AddColumn<string>(
-                name: "Company",
-                table: "job_listings",
-                type: "character varying(200)",
-                maxLength: 200,
-                nullable: false,
-                defaultValue: "");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_job_listings_Title_Company",
-                table: "job_listings",
-                columns: new[] { "Title", "Company" },
-                unique: true);
+            migrationBuilder.DropTable(
+                name: "companies");
         }
     }
 }

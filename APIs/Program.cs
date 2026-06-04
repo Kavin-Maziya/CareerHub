@@ -13,6 +13,7 @@ using System.Text;
 using APIs.Data;
 using Microsoft.EntityFrameworkCore;
 using APIs.Services;
+using System.Security.Claims;
 
 Log.Logger = new LoggerConfiguration()
 .WriteTo.Console()
@@ -47,6 +48,7 @@ try
     builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
+        options.MapInboundClaims = false; //Keep claim types as-is without mapping to Microsoft-specific ones
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = false, // Not validating who issues it bc its our own API
@@ -55,7 +57,10 @@ try
             ValidateIssuerSigningKey = true,// verify the signature
             IssuerSigningKey = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(jwtSecretKey!)
-            )
+            ),
+
+            NameClaimType = ClaimTypes.Name,
+            RoleClaimType = ClaimTypes.Role
         };
     });
     

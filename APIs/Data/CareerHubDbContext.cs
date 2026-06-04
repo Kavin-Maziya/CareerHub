@@ -128,14 +128,16 @@ public class CareerHubDbContext(
                 .IsRequired();
 
             // Application and JobListing relationship (many-to-one)
-            entity.HasOne(a => a.JobListing) // Each application is for one job listing
-                .WithMany(j => j.Applications) // One job listing can have many applications
-                .HasForeignKey(a => a.JobListingId); // Use JobListingId as the foreign key
+            entity.HasOne(a => a.JobListing)
+                .WithMany(j => j.Applications)
+                .HasForeignKey(a => a.JobListingId)
+                .OnDelete(DeleteBehavior.Cascade); // If a job listing is deleted, its applications are deleted too
 
             // Application and Applicant relationship (many-to-one)
-            entity.HasOne(a => a.Applicant) // Each application is submitted by one applicant
-                .WithMany(a => a.Applications) // One applicant can submit many applications
-                .HasForeignKey(a => a.ApplicantId); // Use ApplicantId as the foreign key
+            entity.HasOne(a => a.Applicant)
+                .WithMany(a => a.Applications)
+                .HasForeignKey(a => a.ApplicantId)
+                .OnDelete(DeleteBehavior.Cascade); // If an applicant is deleted, their applications are deleted too
         });
     }
 }
