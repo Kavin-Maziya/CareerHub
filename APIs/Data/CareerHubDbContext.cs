@@ -67,7 +67,7 @@ public class CareerHubDbContext(
             entity.Property(c => c.CompanyId)
                 .ValueGeneratedNever();
 
-            entity.Property(c => c.Name)
+            entity.Property(c => c.CompanyName)
                 .IsRequired()
                 .HasMaxLength(150);
 
