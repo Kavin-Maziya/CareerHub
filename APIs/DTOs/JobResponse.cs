@@ -1,18 +1,29 @@
-using APIs.Models;
+namespace APIs.DTOs;
 
-namespace APIs.DTOs; 
+public record JobListResponse(
+    Guid Id,
+    string Title,
+    string CompanyName,
+    string Location,
+    string SalaryDisplay,
+    int ApplicationCount
+);
 
-public record JobResponse
-(
+public record JobDetailResponse(
     Guid Id,
     string Title,
     Guid CompanyId,
+    string CompanyName,
     string Location,
     string Description,
-    JobType Type,
-    decimal? SalaryMin,
-    decimal? SalaryMax,
+    string SalaryDisplay,
     DateTime PostedAt,
     bool IsActive,
-    string SalaryDisplay
+    List<ApplicationSummary> Applications
+);
+
+public record ApplicationSummary(
+    string ApplicantName,
+    DateTime SubmittedAt,
+    string Status
 );

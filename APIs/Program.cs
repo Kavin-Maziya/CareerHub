@@ -9,6 +9,7 @@ using Scalar.AspNetCore;
 using Serilog;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
 using System.Text;
 using APIs.Data;
 using Microsoft.EntityFrameworkCore;
@@ -47,6 +48,7 @@ try
     builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
+        options.MapInboundClaims = false; // Keep claim types as-is
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = false, // Not validating who issues it bc its our own API
@@ -55,7 +57,9 @@ try
             ValidateIssuerSigningKey = true,// verify the signature
             IssuerSigningKey = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(jwtSecretKey!)
-            )
+            ),
+            NameClaimType = System.Security.Claims.ClaimTypes.Name,
+            RoleClaimType = System.Security.Claims.ClaimTypes.Role
         };
     });
     
