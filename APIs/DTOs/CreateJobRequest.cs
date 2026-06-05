@@ -3,20 +3,20 @@ using APIs.Models;
 using APIs.Controllers;
 using System.Data;
 
-
 namespace APIs.DTOs;
-
-//Request Dto - What the client sends to the backend to create a booking
 
 public record CreateJobRequest 
 (
-
     [Required(ErrorMessage="Job Title is required when posting a job")]
     [StringLength(120, MinimumLength = 5, ErrorMessage ="Job Title should be between 5 and 120 characters")]
     string Title,
 
-    [Required(ErrorMessage = "Company is required")]
-    Guid CompanyId,
+    [Required(ErrorMessage = "Company name is required")]
+    [StringLength(150, MinimumLength = 2, ErrorMessage = "Company name must be between 2 and 150 characters")]
+    string CompanyName,
+
+    [StringLength(100, ErrorMessage = "Industry must be under 100 characters")]
+    string Industry,
 
     [Required(ErrorMessage ="Location is required")]
     string Location,
@@ -47,4 +47,5 @@ public record CreateJobRequest
                 "SalaryMax must be greater than SalaryMin",
                 new[] { nameof(SalaryMax) });
         }
-    } }
+    }
+}
