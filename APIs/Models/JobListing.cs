@@ -17,6 +17,8 @@ public class JobListing
 
     public JobType Type { get; set; }
 
+    public DateTime ClosingDate { get; set; }
+
     public decimal? SalaryMin { get; set; }
     public decimal? SalaryMax { get; set; }
 

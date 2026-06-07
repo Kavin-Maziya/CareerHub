@@ -50,7 +50,7 @@ u.Username == request.Username && u.Password == request.Password);
         };
 
         var key = new SymmetricSecurityKey(
-            Encoding.UTF8.GetBytes(_config["Jwt:Key"]!));
+            Encoding.UTF8.GetBytes(_config["Jwt:SecretKey"]!));
 
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 

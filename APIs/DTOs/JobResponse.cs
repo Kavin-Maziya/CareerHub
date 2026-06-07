@@ -6,8 +6,15 @@ public record JobListResponse(
     string CompanyName,
     string Location,
     string SalaryDisplay,
+    DateTime ClosingDate,
     int ApplicationCount
-);
+)
+{
+    public JobListResponse(Guid Id, string Title, string CompanyName, string Location, string SalaryDisplay, int ApplicationCount, DateTime ClosingDate)
+        : this(Id, Title, CompanyName, Location, SalaryDisplay, ClosingDate, ApplicationCount)
+    {
+    }
+}
 
 public record JobDetailResponse(
     Guid Id,
@@ -18,6 +25,7 @@ public record JobDetailResponse(
     string Description,
     string SalaryDisplay,
     DateTime PostedAt,
+    DateTime ClosingDate,
     bool IsActive,
     List<ApplicationSummary> Applications
 );

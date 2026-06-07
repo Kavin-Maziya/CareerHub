@@ -44,7 +44,7 @@ try
      }); 
     }); 
     
-     var jwtSecretKey = builder.Configuration["Jwt:Key"]; //Reads JWT key from appsettings.Development
+     var jwtSecretKey = builder.Configuration["Jwt:SecretKey"]; //Reads JWT key from appsettings.Development
     builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -58,8 +58,8 @@ try
             IssuerSigningKey = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(jwtSecretKey!)
             ),
-            NameClaimType = System.Security.Claims.ClaimTypes.Name,
-            RoleClaimType = System.Security.Claims.ClaimTypes.Role
+            NameClaimType = ClaimTypes.Name,
+            RoleClaimType = ClaimTypes.Role
         };
     });
     
