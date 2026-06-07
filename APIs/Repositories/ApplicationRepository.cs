@@ -159,4 +159,19 @@ public class ApplicationRepository(CareerHubDbContext db)
 
         await db.SaveChangesAsync();
     }
+
+    public async Task WithdrawApplicationAsync(Guid jobListingId, Guid applicantId)
+{
+    var application = await db.Applications
+        .FirstOrDefaultAsync(a =>
+            a.JobListingId == jobListingId &&
+            a.ApplicantId == applicantId);
+
+    if (application is null)
+        return;
+
+    db.Applications.Remove(application);
+    await db.SaveChangesAsync();
+}
+
 }

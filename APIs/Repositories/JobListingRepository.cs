@@ -1,3 +1,110 @@
+// // using APIs.Data;
+// // using APIs.DTOs;
+// // using APIs.Models;
+// // using Microsoft.EntityFrameworkCore;
+
+// // namespace APIs.Repositories;
+
+// // public class JobListingRepository(CareerHubDbContext db) : IJobListingRepository
+// // {
+// //     public async Task<IEnumerable<JobListResponse>> GetActiveJobListingsAsync()
+// //     {
+// //         var jobs = await db.JobListings
+// //             .AsNoTracking()
+// //             .Where(j => j.IsActive && j.ClosingDate > DateTime.UtcNow)
+// //             .Select(j => new {
+// //                 j.Id,
+// //                 j.Title,
+// //                 CompanyName = j.Company.CompanyName,
+// //                 j.Location,
+// //                 SalaryDisplay = j.SalaryMin.HasValue && j.SalaryMax.HasValue
+// //                     ? $"R{j.SalaryMin:N0} – R{j.SalaryMax:N0}/month"
+// //                     : j.SalaryMin.HasValue
+// //                         ? $"From R{j.SalaryMin:N0}/month"
+// //                         : "Salary not specified",
+// //                 j.ClosingDate,
+// //                 ApplicationCount = j.Applications.Count()
+// //             })
+// //             .ToListAsync();
+
+// //         return jobs.Select(aj => new JobListResponse(
+// //             aj.Id,
+// //             aj.Title,
+// //             aj.CompanyName,
+// //             aj.Location,
+// //             aj.SalaryDisplay,
+// //             aj.ApplicationCount,
+// //             aj.ClosingDate
+// //         ));
+// //     }
+
+// //     public async Task<JobDetailResponse?> GetJobListingDetailAsync(Guid id)
+// //     {
+// //         var job = await db.JobListings
+// //             .AsNoTracking()
+// //             .Include(j => j.Company)
+// //             .Include(j => j.Applications)
+// //                 .ThenInclude(a => a.Applicant)
+// //             .Where(j => j.Id == id)
+// //             .FirstOrDefaultAsync();
+
+// //         if (job is null)
+// //             return null;
+
+// //         return new JobDetailResponse(
+// //             Id: job.Id,
+// //             Title: job.Title,
+// //             CompanyId: job.CompanyId,
+// //             CompanyName: job.Company.CompanyName,
+// //             Location: job.Location,
+// //             Description: job.Description,
+// //             SalaryDisplay: job.SalaryMin.HasValue && job.SalaryMax.HasValue
+// //                 ? $"R{job.SalaryMin:N0} – R{job.SalaryMax:N0}/month"
+// //                 : job.SalaryMin.HasValue
+// //                     ? $"From R{job.SalaryMin:N0}/month"
+// //                     : "Salary not specified",
+// //             PostedAt: job.PostedAt,
+// //             ClosingDate: job.ClosingDate,
+// //             IsActive: job.IsActive,
+// //             Applications: job.Applications
+// //                 .Select(a => new ApplicationSummary(
+// //                     ApplicantName: $"{a.Applicant.FirstName} {a.Applicant.LastName}",
+// //                     SubmittedAt: a.SubmittedAt,
+// //                     Status: a.Status.ToString()
+// //                 )).ToList()
+// //         );
+// //     }
+
+// //     public async Task<bool> IsJobListingOpenAsync(Guid id)
+// //     {
+// //         return await db.JobListings
+// //             .AnyAsync(j => j.Id == id && j.IsActive && j.ClosingDate > DateTime.UtcNow);
+// //     }
+
+// //     public async Task CreateJobListingAsync(JobListing listing)
+// //     {
+// //         db.JobListings.Add(listing);
+// //         await db.SaveChangesAsync();
+// //     }
+
+// //     public async Task UpdateJobListingAsync(JobListing listing)
+// //     {
+// //         db.JobListings.Update(listing);
+// //         await db.SaveChangesAsync();
+// //     }
+
+// //     public async Task CloseJobListingAsync(Guid id)
+// //     {
+// //         var listing = await db.JobListings.FindAsync(id);
+
+// //         if (listing is null)
+// //             return;
+
+// //         listing.IsActive = false;
+// //         await db.SaveChangesAsync();
+// //     }
+// // }
+
 // using APIs.Data;
 // using APIs.DTOs;
 // using APIs.Models;
@@ -5,19 +112,22 @@
 
 // namespace APIs.Repositories;
 
-// public class JobListingRepository(CareerHubDbContext db) : IJobListingRepository
+// public class JobListingRepository(CareerHubDbContext db)
+//     : IJobListingRepository
 // {
 //     public async Task<IEnumerable<JobListResponse>> GetActiveJobListingsAsync()
 //     {
 //         var jobs = await db.JobListings
 //             .AsNoTracking()
 //             .Where(j => j.IsActive && j.ClosingDate > DateTime.UtcNow)
-//             .Select(j => new {
+//             .Select(j => new
+//             {
 //                 j.Id,
 //                 j.Title,
 //                 CompanyName = j.Company.CompanyName,
 //                 j.Location,
-//                 SalaryDisplay = j.SalaryMin.HasValue && j.SalaryMax.HasValue
+//                 SalaryDisplay =
+//                     j.SalaryMin.HasValue && j.SalaryMax.HasValue
 //                     ? $"R{j.SalaryMin:N0} – R{j.SalaryMax:N0}/month"
 //                     : j.SalaryMin.HasValue
 //                         ? $"From R{j.SalaryMin:N0}/month"
@@ -27,14 +137,14 @@
 //             })
 //             .ToListAsync();
 
-//         return jobs.Select(aj => new JobListResponse(
-//             aj.Id,
-//             aj.Title,
-//             aj.CompanyName,
-//             aj.Location,
-//             aj.SalaryDisplay,
-//             aj.ApplicationCount,
-//             aj.ClosingDate
+//         return jobs.Select(j => new JobListResponse(
+//             j.Id,
+//             j.Title,
+//             j.CompanyName,
+//             j.Location,
+//             j.SalaryDisplay,
+//             j.ApplicationCount,
+//             j.ClosingDate
 //         ));
 //     }
 
@@ -45,8 +155,7 @@
 //             .Include(j => j.Company)
 //             .Include(j => j.Applications)
 //                 .ThenInclude(a => a.Applicant)
-//             .Where(j => j.Id == id)
-//             .FirstOrDefaultAsync();
+//             .FirstOrDefaultAsync(j => j.Id == id);
 
 //         if (job is null)
 //             return null;
@@ -58,7 +167,8 @@
 //             CompanyName: job.Company.CompanyName,
 //             Location: job.Location,
 //             Description: job.Description,
-//             SalaryDisplay: job.SalaryMin.HasValue && job.SalaryMax.HasValue
+//             SalaryDisplay:
+//                 job.SalaryMin.HasValue && job.SalaryMax.HasValue
 //                 ? $"R{job.SalaryMin:N0} – R{job.SalaryMax:N0}/month"
 //                 : job.SalaryMin.HasValue
 //                     ? $"From R{job.SalaryMin:N0}/month"
@@ -68,42 +178,106 @@
 //             IsActive: job.IsActive,
 //             Applications: job.Applications
 //                 .Select(a => new ApplicationSummary(
-//                     ApplicantName: $"{a.Applicant.FirstName} {a.Applicant.LastName}",
+//                     ApplicantName:
+//                         $"{a.Applicant.FirstName} {a.Applicant.LastName}",
 //                     SubmittedAt: a.SubmittedAt,
 //                     Status: a.Status.ToString()
-//                 )).ToList()
+//                 ))
+//                 .ToList()
 //         );
+//     }
+
+//     public async Task<JobListing?> GetJobListingByIdAsync(Guid id)
+//     {
+//         return await db.JobListings
+//             .FirstOrDefaultAsync(j => j.Id == id);
+//     }
+
+//     public async Task<bool> JobListingExistsAsync(Guid id)
+//     {
+//         return await db.JobListings
+//             .AnyAsync(j => j.Id == id);
 //     }
 
 //     public async Task<bool> IsJobListingOpenAsync(Guid id)
 //     {
 //         return await db.JobListings
-//             .AnyAsync(j => j.Id == id && j.IsActive && j.ClosingDate > DateTime.UtcNow);
+//             .AnyAsync(j =>
+//                 j.Id == id &&
+//                 j.IsActive &&
+//                 j.ClosingDate > DateTime.UtcNow);
 //     }
 
-//     public async Task CreateJobListingAsync(JobListing listing)
+//     public async Task<bool> DuplicateJobExistsAsync(
+//         string title,
+//         Guid companyId, string companyName)
 //     {
-//         db.JobListings.Add(listing);
+//         return await db.JobListings
+//             .AnyAsync(j =>
+//                 j.Title.ToLower() == title.ToLower() &&
+//                 j.CompanyId == companyId);
+//     }
+
+//     public async Task<Company?> GetCompanyByNameAsync(
+//         string companyName)
+//     {
+//         return await db.Companies
+//             .FirstOrDefaultAsync(c =>
+//                 c.CompanyName.ToLower() ==
+//                 companyName.ToLower());
+//     }
+
+//     public async Task CreateJobListingAsync(
+//         JobListing jobListing,
+//         Company? newCompany = null)
+//     {
+//         if (newCompany is not null)
+//             db.Companies.Add(newCompany);
+
+//         db.JobListings.Add(jobListing);
+
 //         await db.SaveChangesAsync();
 //     }
 
-//     public async Task UpdateJobListingAsync(JobListing listing)
+//     public async Task UpdateJobListingAsync(
+//         JobListing jobListing,
+//         Company? newCompany = null)
 //     {
-//         db.JobListings.Update(listing);
+//         if (newCompany is not null)
+//             db.Companies.Add(newCompany);
+
+//         db.JobListings.Update(jobListing);
+
 //         await db.SaveChangesAsync();
 //     }
 
 //     public async Task CloseJobListingAsync(Guid id)
 //     {
-//         var listing = await db.JobListings.FindAsync(id);
+//         var jobListing = await db.JobListings
+//             .FindAsync(id);
 
-//         if (listing is null)
+//         if (jobListing is null)
 //             return;
 
-//         listing.IsActive = false;
+//         jobListing.IsActive = false;
+
+//         await db.SaveChangesAsync();
+//     }
+
+//     public async Task DeleteJobListingAsync(Guid id)
+//     {
+//         var jobListing = await db.JobListings
+//             .FindAsync(id);
+
+//         if (jobListing is null)
+//             return;
+
+//         db.JobListings.Remove(jobListing);
+
 //         await db.SaveChangesAsync();
 //     }
 // }
+
 
 using APIs.Data;
 using APIs.DTOs;
@@ -112,8 +286,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace APIs.Repositories;
 
-public class JobListingRepository(CareerHubDbContext db)
-    : IJobListingRepository
+public class JobListingRepository(CareerHubDbContext db) : IJobListingRepository
 {
     public async Task<IEnumerable<JobListResponse>> GetActiveJobListingsAsync()
     {
@@ -178,8 +351,7 @@ public class JobListingRepository(CareerHubDbContext db)
             IsActive: job.IsActive,
             Applications: job.Applications
                 .Select(a => new ApplicationSummary(
-                    ApplicantName:
-                        $"{a.Applicant.FirstName} {a.Applicant.LastName}",
+                    ApplicantName: $"{a.Applicant.FirstName} {a.Applicant.LastName}",
                     SubmittedAt: a.SubmittedAt,
                     Status: a.Status.ToString()
                 ))
@@ -190,6 +362,7 @@ public class JobListingRepository(CareerHubDbContext db)
     public async Task<JobListing?> GetJobListingByIdAsync(Guid id)
     {
         return await db.JobListings
+            .Include(j => j.Company)
             .FirstOrDefaultAsync(j => j.Id == id);
     }
 
@@ -208,72 +381,77 @@ public class JobListingRepository(CareerHubDbContext db)
                 j.ClosingDate > DateTime.UtcNow);
     }
 
-    public async Task<bool> DuplicateJobExistsAsync(
-        string title,
-        Guid companyId, string companyName)
+    public async Task<bool> DuplicateJobExistsAsync(string title, string companyName)
     {
         return await db.JobListings
             .AnyAsync(j =>
                 j.Title.ToLower() == title.ToLower() &&
-                j.CompanyId == companyId);
+                j.Company.CompanyName.ToLower() == companyName.ToLower());
     }
 
-    public async Task<Company?> GetCompanyByNameAsync(
-        string companyName)
+    public async Task CreateJobListingAsync(JobListing listing, string companyName, string industry)
     {
-        return await db.Companies
-            .FirstOrDefaultAsync(c =>
-                c.CompanyName.ToLower() ==
-                companyName.ToLower());
-    }
+        var company = await db.Companies
+            .FirstOrDefaultAsync(c => c.CompanyName.ToLower() == companyName.ToLower());
 
-    public async Task CreateJobListingAsync(
-        JobListing jobListing,
-        Company? newCompany = null)
-    {
-        if (newCompany is not null)
-            db.Companies.Add(newCompany);
+        if (company is null)
+        {
+            company = new Company
+            {
+                CompanyId = Guid.NewGuid(),
+                CompanyName = companyName,
+                Industry = industry
+            };
 
-        db.JobListings.Add(jobListing);
+            db.Companies.Add(company);
+        }
 
+        listing.CompanyId = company.CompanyId;
+        db.JobListings.Add(listing);
         await db.SaveChangesAsync();
     }
 
-    public async Task UpdateJobListingAsync(
-        JobListing jobListing,
-        Company? newCompany = null)
+    public async Task UpdateJobListingAsync(JobListing listing, string companyName, string industry)
     {
-        if (newCompany is not null)
-            db.Companies.Add(newCompany);
+        var company = await db.Companies
+            .FirstOrDefaultAsync(c => c.CompanyName.ToLower() == companyName.ToLower());
 
-        db.JobListings.Update(jobListing);
+        if (company is null)
+        {
+            company = new Company
+            {
+                CompanyId = Guid.NewGuid(),
+                CompanyName = companyName,
+                Industry = industry
+            };
 
+            db.Companies.Add(company);
+        }
+
+        listing.CompanyId = company.CompanyId;
+        db.JobListings.Update(listing);
         await db.SaveChangesAsync();
     }
 
     public async Task CloseJobListingAsync(Guid id)
     {
-        var jobListing = await db.JobListings
-            .FindAsync(id);
+        var jobListing = await db.JobListings.FindAsync(id);
 
         if (jobListing is null)
             return;
 
         jobListing.IsActive = false;
-
         await db.SaveChangesAsync();
     }
 
     public async Task DeleteJobListingAsync(Guid id)
     {
-        var jobListing = await db.JobListings
-            .FindAsync(id);
+        var jobListing = await db.JobListings.FindAsync(id);
 
         if (jobListing is null)
             return;
 
         db.JobListings.Remove(jobListing);
-
         await db.SaveChangesAsync();
     }
 }
