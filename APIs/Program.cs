@@ -14,6 +14,7 @@ using System.Text;
 using APIs.Data;
 using Microsoft.EntityFrameworkCore;
 using APIs.Services;
+using APIs.Infrastructure;
 
 Log.Logger = new LoggerConfiguration()
 .WriteTo.Console()
@@ -65,7 +66,11 @@ try
     
     builder.Services.AddAuthorization(); //Required for [Authorize(Roles= ...)]
     builder.Services.AddScoped<IAuthService, AuthService>();
-    
+
+     builder.Services.AddDatabase(builder.Configuration);
+     builder.Services.AddRepositories();
+     builder.Services.AddApplicationServices();
+
     builder.Services.AddDbContext<CareerHubDbContext>(options =>
 {
     options.UseNpgsql(

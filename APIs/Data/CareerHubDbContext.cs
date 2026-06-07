@@ -99,13 +99,6 @@ public class CareerHubDbContext(
         entity.HasIndex(a => a.Email)
             .IsUnique();
 
-        entity.Property(a => a.PhoneNumber)
-        .IsRequired()
-        .HasMaxLength(10);
-
-        entity.HasIndex(a => a.PhoneNumber)
-            .IsUnique();
-
 
     });
 

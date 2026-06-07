@@ -14,6 +14,7 @@ public class AuthService : IAuthService
     private static readonly (string Username, string Password, string Role)[] _users =
     [
         ("Employer",        "password123", "Employer"),
+        ("Applicant", "password123", "Applicant")
 
     ];
 
