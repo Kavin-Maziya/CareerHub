@@ -1,9 +1,9 @@
 namespace APIs.Models;
 public enum ApplicationStatus
 {
-    Pending,
-    Reviewed,
-    InterviewScheduled,
+    Submitted,
+    UnderReview,
+    Shortlisted,
     Offered,
     Rejected
 }
