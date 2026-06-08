@@ -14,6 +14,7 @@ public class AuthService : IAuthService
     private static readonly (string Username, string Password, string Role)[] _users =
     [
         ("Employer",        "password123", "Employer"),
+        ("Applicant", "password123", "Applicant")
 
     ];
 
@@ -50,13 +51,13 @@ u.Username == request.Username && u.Password == request.Password);
         };
 
         var key = new SymmetricSecurityKey(
-            Encoding.UTF8.GetBytes(_config["Jwt:Key"]!));
+            Encoding.UTF8.GetBytes(_config["Jwt:SecretKey"]!));
 
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         var token = new JwtSecurityToken(
             claims: claims,
-            expires: DateTime.UtcNow.AddHours(2), 
+            expires: DateTime.UtcNow.AddHours(10), 
             signingCredentials: creds
         );
 

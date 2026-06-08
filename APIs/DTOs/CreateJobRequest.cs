@@ -28,6 +28,9 @@ public record CreateJobRequest
     [Required(ErrorMessage="Job Type is required, must be one of: FullTime, PartTime, Contract, Internship")]
     JobType Type,
 
+    [Required(ErrorMessage = "Closing date is required")]
+    DateTime ClosingDate,
+
     [Range(0.01, double.MaxValue, ErrorMessage ="Salary must be greater than zero")]
     decimal? SalaryMin,
 
@@ -39,6 +42,14 @@ public record CreateJobRequest
     public IEnumerable<ValidationResult> Validate(
         ValidationContext validationContext)
     {
+
+        if (ClosingDate <= DateTime.UtcNow)
+        {
+            yield return new ValidationResult(
+                "Closing date must be an upcoming date",
+                new[] { nameof(ClosingDate) });
+        }
+
         if (SalaryMin.HasValue &&
             SalaryMax.HasValue &&
             SalaryMax <= SalaryMin)
