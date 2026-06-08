@@ -184,3 +184,6 @@ C:\Projects\CareerHub@Bitcube\Assignment2-1\CareerHub\APIs\obj\Debug\net10.0\swa
 C:\Projects\CareerHub@Bitcube\Assignment2-1\CareerHub\APIs\obj\Debug\net10.0\APIs.csproj.Up2Date
 C:\Projects\CareerHub@Bitcube\Assignment2-1\CareerHub\APIs\obj\Debug\net10.0\APIs.genruntimeconfig.cache
 C:\Projects\CareerHub@Bitcube\Assignment2-1\CareerHub\APIs\obj\Debug\net10.0\ref\APIs.dll
+C:\Projects\CareerHub@Bitcube\Assignment2-1\CareerHub\APIs\bin\Debug\net10.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Projects\CareerHub@Bitcube\Assignment2-1\CareerHub\APIs\bin\Debug\net10.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Projects\CareerHub@Bitcube\Assignment2-1\CareerHub\APIs\bin\Debug\net10.0\Swashbuckle.AspNetCore.SwaggerUI.dll

@@ -104,6 +104,50 @@ Advantages of using SeriLog instead of traditional Console.WriteLine():
 
 ---
 
+# Repository Pattern, DI & Architecture
+
+## Repository Design Decisions
+
+- I created two repositories: IJobListingRepository and IApplicationRepository.
+IJobListingRepository has all job listing queries and also handles company data fetch and creation.
+- Company does not have its own repository because it has no independent use case in the CareerHub system, a company only needs to be searched and created when creating or updating a job listing. Because separating it into its own repository would require me to add individual endpoints for it. But I implemented CreateJobListingAsync and UpdateJobListingAsync methods on the repository to accept a companyName and industry and handle the find/create logic and keep the service logic clean and readable.
+- IApplicationRepository owns all application queries and also handles Applicant find and creation, An applicant is created as part of submitting an application as there is no indvidual Applicant creation endpoint. Keeping this logic in the repository means the service only needs to pass the applicant's details and the repository decides whether to create a new record or reuse an existing one by email.
+
+## What the Controller Lost
+
+- The repository is the only class that talks to EF Core so it is the only location for all database operations because all business rules belongs in the service layer where they can be tested independently.
+- I moved Company find and creation to JobListingRepository.CreateJobListingAsync and UpdateJobListingAsync.
+- Duplicate job listing endpoint check also moved to JobListingService.CreateJobListingAsync.
+- Closed Job listing check endpoint also moved to JobListingService.UpdateJobListingAsync.
+- Company ownership check on update also moved to JobListingService.UpdateJobListingAsync checking that the company name on the request matches the existing listing is a business rule.
+- The controller no longer builds JobListing or Company objects it only passes the request DTO to the service.
+- Salary display formatting also moved to JobListingService.MapSalaryDisplay.
+
+- IsListing open check method moved to ApplicationService.SubmitApplicationAsync. Because whether a listing is available or open is a business rule
+- Applicant find and creation moved to ApplicationRepository.CreateApplicationAsync because database access belongs in the repository the controllers should not expose my database context.
+- Duplicate application check moved to ApplicationService.SubmitApplicationAsync.
+- Status transition validation moved to ApplicationService.UpdateApplicationStatusAsync. The valid transitions are defined once and checks are done in the service without a database query.
+- IsApplicationExist check moved to ApplicationService. The controller no longer checks for null it calls the service and the service throws a typed exception which the GlobalExceptionHandler maps to a 404 status.
+
+
+## Status Transition Design
+- Valid Status transitions are defined using a single HashSet of (From, To) tuples inside ApplicationService
+- The IsValidTransition method checks whether a status transition pair exists. It is a static method that can be called without a database query and tested independently.
+- Adding a new valid transition allow from Offered to Accepted requires adding exactly one line to _validTransitions variable. 
+- No switch statements, no if/else, no other files need to change. This implementation meets the requirement for the rules to be defined in one place and a future change will be localised to a single location.
+
+## Lifetime Misconfiguration
+
+- To test build-time DI validation I temporarily registered JobListingService as Singleton while it depended on IJobListingRepository which is Scoped
+- The application initially failed to start and emitted because some services were not able to be executed.
+- I got Cannot consume scoped service 'APIs.Repositories.IJobListingRepository'
+from singleton 'APIs.Service error message
+- The container did not allow this because a Singleton is created once and lives for the lifetime of the application. A Scoped service is created once per HTTP request and disposed at the end of that request. 
+- If a Singleton holds a reference to a Scoped service, that scoped service is never disposed it will live forever inside the singleton. In my CareerHubDbContext this would mean a single database connection shared across all requests simultaneously, causing data corruption and other corruption errors.
+- To fix it was I changed it back to AddScoped with help from Ai (of course) and my application started correctly after fix.
+
+---
+
 # Project Structure
 CareerHub/
 │
@@ -158,7 +202,9 @@ CareerHub/
 git clone https://github.com/Kavin-Maziya/CareerHub.git
 
 2. Open the Terminal and Navigate into the project
-cd API
+- cd CareerHub
+   then
+- cd APIs
 
 3. Run the application
 dotnet run

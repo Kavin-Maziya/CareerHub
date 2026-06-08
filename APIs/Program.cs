@@ -35,21 +35,22 @@ try
     builder.Services.AddExceptionHandler<GlobalExceptionHandler>(); // Day 3 — typed handler
     builder.Services.AddProblemDetails();
 
-     builder.Services.AddCors(options =>
-    {
-     options.AddPolicy("FrontEndPolicy", policy =>
-     {
-        policy.WithOrigins("http://localhost:3000") 
-        .AllowAnyHeader() 
-        .AllowAnyMethod(); 
-     }); 
-    }); 
-    
-     var jwtSecretKey = builder.Configuration["Jwt:SecretKey"]; //Reads JWT key from appsettings.Development
+    builder.Services.AddCors(options =>
+   {
+       options.AddPolicy("FrontEndPolicy", policy =>
+        {
+            policy.WithOrigins("http://localhost:3000")
+             .AllowAnyHeader()
+             .AllowAnyMethod();
+        });
+   });
+
+    var jwtSecretKey = builder.Configuration["Jwt:Key"]; //Reads JWT key from appsettings.Development
     builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
         options.MapInboundClaims = false; // Keep claim types as-is
+        options.SaveToken = true;
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = false, // Not validating who issues it bc its our own API
@@ -63,19 +64,19 @@ try
             RoleClaimType = ClaimTypes.Role
         };
     });
-    
+
     builder.Services.AddAuthorization(); //Required for [Authorize(Roles= ...)]
-    builder.Services.AddScoped<IAuthService, AuthService>();
+                                         //builder.Services.AddScoped<IAuthService, AuthService>();
 
-     builder.Services.AddDatabase(builder.Configuration);
-     builder.Services.AddRepositories();
-     builder.Services.AddApplicationServices();
+    builder.Services.AddDatabase(builder.Configuration);
+    builder.Services.AddRepositories();
+    builder.Services.AddApplicationServices();
 
-    builder.Services.AddDbContext<CareerHubDbContext>(options =>
-{
-    options.UseNpgsql(
-        builder.Configuration.GetConnectionString("DefaultConnection"));
-}); //Registers DB context
+    //     builder.Services.AddDbContext<CareerHubDbContext>(options =>
+    // {
+    //     options.UseNpgsql(
+    //         builder.Configuration.GetConnectionString("DefaultConnection"));
+    // }); //Registers DB context
 
     //════════════════════════════════════════════════════ 
     // TRANSITION — Build() seals the DI container. 
@@ -93,9 +94,9 @@ try
     app.UseCors("FrontEndPolicy");// Must be early to enable interception of browser preflight options requests
     app.UseExceptionHandler();  // Activates GlobalExceptionHandler — catches all thrown exceptions 
     app.UseStatusCodePages();   // Fills empty 4xx/5xx responses with Problem Details body 
-    
+
     app.UseAuthentication();
-    app.UseAuthorization();    
+    app.UseAuthorization();
     if (app.Environment.IsDevelopment())
     {
     }
@@ -114,3 +115,33 @@ finally
 {
     Log.CloseAndFlush(); //Ensure all buffered log entries are flushed before application exit. 
 }
+
+
+
+
+// builder.Services.AddOpenApi();
+// builder.Services.AddAuthentication().AddBearerToken(IdentityConstants.BearerScheme);
+
+// builder.Services.AddAuthorizationBuilder();
+
+// var app = builder.Build();
+
+// // Configure the HTTP request pipeline.
+// if (app.Environment.IsDevelopment())
+// {
+//     app.MapOpenApi();
+//     app.MapScalarApiReference(option => {
+//         option
+//             .WithTitle("Auth API")
+//             .WithTheme(ScalarTheme.DeepSpace)
+//             .WithDownloadButton(true)
+//             .WithDefaultHttpClient(ScalarTarget.CSharp, ScalarClient.HttpClient);
+//     });
+// }
+
+// app.UseAuthentication();
+// app.UseAuthorization();
+
+// app.MapGet("/test", () => "Hello World!").RequireAuthorization();
+
+// app.Run();

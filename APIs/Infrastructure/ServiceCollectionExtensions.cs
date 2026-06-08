@@ -32,7 +32,7 @@ public static class ServiceCollectionExtensions
     {
         services.AddScoped<IJobListingService, JobListingService>();
         services.AddScoped<IApplicationService, ApplicationService>();
-        services.AddScoped<IAuthService, AuthService>();
+        services.AddSingleton<IAuthService, AuthService>();
 
         return services;
     }

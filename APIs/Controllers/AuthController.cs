@@ -26,8 +26,8 @@ public class AuthController(IAuthService authService) : ControllerBase
     }
 
     // Returns the identity of the currently authenticated caller by reading the claims
+   
     [HttpGet("me")]
-    [Authorize]
     public IActionResult GetCurrentUser()
     {
         var username = User.FindFirstValue(JwtRegisteredClaimNames.Sub);

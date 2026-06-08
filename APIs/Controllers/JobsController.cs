@@ -412,8 +412,7 @@ public class JobsController(IJobListingService jobListingService) : ControllerBa
         var jobs = await jobListingService.GetActiveJobListingsAsync();
         return Ok(jobs);
     }
-
-    [AllowAnonymous]
+[AllowAnonymous]
     [HttpGet("{id:guid}")]
     public async Task<ActionResult<JobDetailResponse>> GetJobByIdAsync(Guid id)
     {

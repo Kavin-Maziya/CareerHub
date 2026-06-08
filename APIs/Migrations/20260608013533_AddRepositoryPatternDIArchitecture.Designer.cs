@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace APIs.Migrations
 {
     [DbContext(typeof(CareerHubDbContext))]
-    [Migration("20260607201209_AddRepositoryPatternDIArchitecture")]
+    [Migration("20260608013533_AddRepositoryPatternDIArchitecture")]
     partial class AddRepositoryPatternDIArchitecture
     {
         /// <inheritdoc />
