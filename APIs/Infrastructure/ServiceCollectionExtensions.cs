@@ -11,9 +11,16 @@ public static class ServiceCollectionExtensions
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        services.AddDbContext<CareerHubDbContext>(options =>
+        services.AddSingleton<SlowQueryInterceptor>();
+
+        services.AddDbContext<CareerHubDbContext>((serviceProvider, options) =>
+        {
             options.UseNpgsql(
-                configuration.GetConnectionString("DefaultConnection")));
+                configuration.GetConnectionString("DefaultConnection"));
+
+            options.AddInterceptors(
+                serviceProvider.GetRequiredService<SlowQueryInterceptor>());
+        });
 
         return services;
     }

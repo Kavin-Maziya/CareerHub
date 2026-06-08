@@ -1,3 +1,5 @@
+using NpgsqlTypes;
+
 namespace APIs.Models;
 
 public class JobListing
@@ -7,11 +9,11 @@ public class JobListing
     public string Title { get; set; } = string.Empty;
 
     public string Description { get; set; } = string.Empty;
+
     // Foreign Key
     public Guid CompanyId { get; set; }
 
     public Company Company { get; set; } = null!;
-
 
     public string Location { get; set; } = string.Empty;
 
@@ -25,27 +27,9 @@ public class JobListing
     public DateTime PostedAt { get; set; } = DateTime.UtcNow;
     public bool IsActive { get; set; } = true;
 
+    // Generated Tsvector column for full-text search.
+    public NpgsqlTsVector? SearchVector { get; set; }
 
-// Navigation property to Applications - one job listing can have many applications
+    // Navigation property to Applications
     public ICollection<Application> Applications { get; set; } = [];
-
-
-    // public JobListing( 
-    //     Guid id, string title, string description, 
-    //     string company, string location, JobType type, 
-    //     decimal salaryMin, decimal salaryMax, DateTime postedAt, bool isActive)
-    //     {
-    //         Id = id; 
-    //         Title = title;
-    //         Description = description;
-    //         Company = company;
-    //         Location = location;
-    //         Type = type;
-    //         SalaryMin = salaryMin;
-    //         SalaryMax = salaryMax;
-    //         PostedAt = postedAt;
-    //         IsActive = isActive;
-
-    //     }
-
 }

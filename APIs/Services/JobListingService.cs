@@ -1,164 +1,3 @@
-// using APIs.DTOs;
-// using APIs.Exceptions;
-// using APIs.Models;
-// using APIs.Repositories;
-
-// namespace APIs.Services;
-
-// public class JobListingService(IJobListingRepository jobListingRepository) : IJobListingService
-// {
-//     public async Task<IEnumerable<JobListResponse>> GetActiveListingsAsync()
-//     {
-//         return await jobListingRepository.GetActiveJobListingsAsync();
-//     }
-
-//     public async Task<JobDetailResponse> GetListingDetailAsync(Guid id)
-//     {
-//         var listing = await jobListingRepository.GetJobListingDetailAsync(id);
-
-//         if (listing is null)
-//             throw new JobNotFoundException(id);
-
-//         return listing;
-//     }
-
-//     public async Task<JobListResponse> CreateListingAsync(CreateJobRequest request)
-//     {
-//         var company = await jobListingRepository.GetCompanyByNameAsync(request.CompanyName);
-
-//         Company? newCompany = null;
-
-//         if (company is null)
-//         {
-//             newCompany = new Company
-//             {
-//                 CompanyId = Guid.NewGuid(),
-//                 CompanyName = request.CompanyName,
-//                 Industry = request.Industry ?? string.Empty
-//             };
-
-//             company = newCompany;
-//         }
-
-//         // Check for duplicate listing
-//         bool isDuplicate = await jobListingRepository.DuplicateJobExistsAsync(request.Title, company.CompanyId);
-
-//         if (isDuplicate)
-//             throw new DuplicateJobException(request.Title, company.CompanyName);
-
-//         var listing = new JobListing
-//         {
-//             Id = Guid.NewGuid(),
-//             Title = request.Title,
-//             CompanyId = company.CompanyId,
-//             Location = request.Location,
-//             Description = request.Description,
-//             Type = request.Type,
-//             ClosingDate = request.ClosingDate,
-//             SalaryMin = request.SalaryMin,
-//             SalaryMax = request.SalaryMax,
-//             PostedAt = DateTime.UtcNow,
-//             IsActive = true
-//         };
-
-//         await jobListingRepository.CreateJobListingAsync(listing, newCompany);
-
-//         return new JobListResponse(
-//             Id: listing.Id,
-//             Title: listing.Title,
-//             CompanyName: company.CompanyName,
-//             Location: listing.Location,
-//             SalaryDisplay: MapSalaryDisplay(listing.SalaryMin, listing.SalaryMax),
-//             ApplicationCount: 0,
-//             ClosingDate: listing.ClosingDate
-//         );
-//     }
-
-//     public async Task<JobListResponse> UpdateListingAsync(Guid id, UpdateJobRequest request)
-//     {
-//         var existing = await jobListingRepository.GetJobListingByIdAsync(id);
-
-//         if (existing is null)
-//             throw new JobNotFoundException(id);
-
-//         if (!existing.IsActive || existing.ClosingDate <= DateTime.UtcNow)
-//             throw new ListingClosedException(id);
-
-//         // Verify the company name matches the existing listing's company
-//         if (!existing.Company.CompanyName.Equals(request.CompanyName, StringComparison.OrdinalIgnoreCase))
-//             throw new UnauthorizedCompanyException(id);
-
-//         // Look up company by name, create if it doesn't exist
-//         var company = await jobListingRepository.GetCompanyByNameAsync(request.CompanyName);
-
-//         Company? newCompany = null;
-
-//         if (company is null)
-//         {
-//             newCompany = new Company
-//             {
-//                 CompanyId = Guid.NewGuid(),
-//                 CompanyName = request.CompanyName,
-//                 Industry = request.Industry ?? string.Empty
-//             };
-
-//             company = newCompany;
-//         }
-
-//         existing.Title = request.Title;
-//         existing.CompanyId = company.CompanyId;
-//         existing.Location = request.Location;
-//         existing.Description = request.Description;
-//         existing.Type = request.Type;
-//         existing.ClosingDate = request.ClosingDate;
-//         existing.SalaryMin = request.SalaryMin;
-//         existing.SalaryMax = request.SalaryMax;
-
-//         await jobListingRepository.UpdateJobListingAsync(existing, newCompany);
-
-//         return new JobListResponse(
-//             Id: existing.Id,
-//             Title: existing.Title,
-//             CompanyName: company.CompanyName,
-//             Location: existing.Location,
-//             SalaryDisplay: MapSalaryDisplay(existing.SalaryMin, existing.SalaryMax),
-//             ApplicationCount: 0,
-//             ClosingDate: existing.ClosingDate
-//         );
-//     }
-
-//     public async Task CloseListingAsync(Guid id)
-//     {
-//         bool exists = await jobListingRepository.JobListingExistsAsync(id);
-
-//         if (!exists)
-//             throw new JobNotFoundException(id);
-
-//         await jobListingRepository.CloseJobListingAsync(id);
-//     }
-
-//     public async Task DeleteListingAsync(Guid id)
-//     {
-//         bool exists = await jobListingRepository.JobListingExistsAsync(id);
-
-//         if (!exists)
-//             throw new JobNotFoundException(id);
-
-//         await jobListingRepository.DeleteJobListingAsync(id);
-//     }
-
-//     private static string MapSalaryDisplay(decimal? salaryMin, decimal? salaryMax)
-//     {
-//         if (salaryMin.HasValue && salaryMax.HasValue)
-//             return $"R{salaryMin:N0} R{salaryMax:N0}/month";
-
-//         if (salaryMin.HasValue)
-//             return $"From R{salaryMin:N0}/month";
-
-//         return "Salary not specified";
-//     }
-// }
-
 using APIs.DTOs;
 using APIs.Exceptions;
 using APIs.Models;
@@ -286,6 +125,18 @@ public class JobListingService(IJobListingRepository jobListingRepository) : IJo
             throw new JobNotFoundException(id);
 
         await jobListingRepository.DeleteJobListingAsync(id);
+    }
+
+    // Text search delegates straight to the repository
+    public async Task<IEnumerable<JobListResponse>> SearchAsync(string searchTerm)
+    {
+        return await jobListingRepository.SearchAsync(searchTerm);
+    }
+
+    // Application stats delegates straight to the repository
+    public async Task<IEnumerable<JobListingStatsResponse>> GetApplicationStatsAsync(Guid companyId)
+    {
+        return await jobListingRepository.GetApplicationStatsAsync(companyId);
     }
 
     private static string MapSalaryDisplay(decimal? salaryMin, decimal? salaryMax)

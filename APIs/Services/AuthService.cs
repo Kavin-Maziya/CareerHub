@@ -57,7 +57,7 @@ u.Username == request.Username && u.Password == request.Password);
 
         var token = new JwtSecurityToken(
             claims: claims,
-            expires: DateTime.UtcNow.AddHours(2), 
+            expires: DateTime.UtcNow.AddHours(10), 
             signingCredentials: creds
         );
 
