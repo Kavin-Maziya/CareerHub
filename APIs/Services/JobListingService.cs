@@ -127,13 +127,13 @@ public class JobListingService(IJobListingRepository jobListingRepository) : IJo
         await jobListingRepository.DeleteJobListingAsync(id);
     }
 
-    // Part 5: Full-text search delegates straight to the repository
+    // Full-text search delegates straight to the repository
     public async Task<IEnumerable<JobListResponse>> SearchAsync(string searchTerm)
     {
         return await jobListingRepository.SearchAsync(searchTerm);
     }
 
-    // Part 8: Application stats delegates straight to the repository
+    // Application stats delegates straight to the repository
     public async Task<IEnumerable<JobListingStatsResponse>> GetApplicationStatsAsync(Guid companyId)
     {
         return await jobListingRepository.GetApplicationStatsAsync(companyId);
@@ -148,5 +148,10 @@ public class JobListingService(IJobListingRepository jobListingRepository) : IJo
             return $"From R{salaryMin:N0}/month";
 
         return "Salary not specified";
+    }
+
+    public async Task<PagedResponse<JobListResponse>> GetActiveListingsPagedAsync(int page, int pageSize, JobListingFilterQuery filter)
+    {
+        return await jobListingRepository.GetActiveListingsPagedAsync(page, pageSize, filter);
     }
 }

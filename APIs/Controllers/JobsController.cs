@@ -29,9 +29,27 @@ public class JobsController(IJobListingService jobListingService) : ControllerBa
 [HttpGet]
 public async Task<ActionResult<PagedResponse<JobListResponse>>> GetJobsAsync(
     [FromQuery] int page = 1,
-    [FromQuery] int pageSize = 20)
+    [FromQuery] int pageSize = 20,
+    [FromQuery] string? location = null,
+    [FromQuery] string? employmentType = null,
+    [FromQuery] decimal? salaryMin = null,
+    [FromQuery] decimal? salaryMax = null,
+    [FromQuery] Guid? companyId = null,
+    [FromQuery] string sort = "postedAt",
+    [FromQuery] string dir = "desc")
 {
-    var result = await jobListingService.GetActiveListingsPagedAsync(page, pageSize);
+    var filter = new JobListingFilterQuery
+    {
+        Location = location,
+        EmploymentType = employmentType,
+        SalaryMin = salaryMin,
+        SalaryMax = salaryMax,
+        CompanyId = companyId,
+        Sort = sort,
+        Dir = dir
+    };
+
+    var result = await jobListingService.GetActiveListingsPagedAsync(page, pageSize, filter);
     Response.Headers["X-Total-Count"] = result.TotalCount.ToString();
     return Ok(result);
 }

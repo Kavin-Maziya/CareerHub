@@ -7,13 +7,7 @@ namespace APIs.Repositories;
 
 public class JobListingRepository(CareerHubDbContext db) : IJobListingRepository
 {
-    // ── Part 6: Compiled Queries ─────────────────────────────────────────────
-    //
-    // GetActiveJobListingsAsync is a hot path: called on every page load of the
-    // public job board. With 1,000 active daily users making ~3 page loads per
-    // session, this method executes ~3,000 times per day (~2–4 times per minute
-    // at peak). EF Core re-parses the LINQ expression tree on every call without
-    // compilation. Compiling it once at startup eliminates that overhead entirely.
+
     private static readonly Func<CareerHubDbContext, IAsyncEnumerable<JobListResponse>>
         _getActiveListingsCompiled = EF.CompileAsyncQuery(
             (CareerHubDbContext ctx) =>
@@ -35,18 +29,13 @@ public class JobListingRepository(CareerHubDbContext db) : IJobListingRepository
                     ))
         );
 
-    // JobListingExistsAsync is a hot path: called on every employer write operation
-    // (update, close, delete) to verify the listing exists before acting. In a
-    // deployment where employers manage listings frequently, this runs on every
-    // mutating request — potentially dozens of times per minute across all employers.
-    // Compiling avoids repeated expression tree compilation for a trivially simple query.
+
     private static readonly Func<CareerHubDbContext, Guid, Task<bool>>
         _jobListingExistsCompiled = EF.CompileAsyncQuery(
             (CareerHubDbContext ctx, Guid id) =>
                 ctx.JobListings.Any(j => j.Id == id)
         );
 
-    // ── Public Methods ───────────────────────────────────────────────────────
 
     public async Task<IEnumerable<JobListResponse>> GetActiveJobListingsAsync()
     {
@@ -190,7 +179,6 @@ public class JobListingRepository(CareerHubDbContext db) : IJobListingRepository
         await db.SaveChangesAsync();
     }
 
-    // ── Part 5: Full-Text Search ─────────────────────────────────────────────
 
     public async Task<IEnumerable<JobListResponse>> SearchAsync(string searchTerm)
     {
@@ -218,25 +206,9 @@ public class JobListingRepository(CareerHubDbContext db) : IJobListingRepository
         return results;
     }
 
-    // ── Part 8: Raw SQL with RANK() window function ───────────────────────────
-    //
-    // EF Core's LINQ translator cannot express RANK() OVER (...) window functions
-    // or COUNT(*) FILTER (WHERE ...) conditional aggregation. Attempting to write
-    // this in LINQ would require loading all application rows into memory and
-    // performing grouping and ranking in C#, which is impractical at scale.
-    // FromSql with a parameterised query is the correct solution here.
     public async Task<IEnumerable<JobListingStatsResponse>> GetApplicationStatsAsync(Guid companyId)
     {
-        // String interpolation inside SqlQuery<T> is safe because EF Core
-        // intercepts the interpolated string and converts each {variable} into
-        // a proper parameterised SQL parameter (@p0, @p1, etc.) — identical to
-        // calling SqlQuery with explicit SqlParameter objects. The value is never
-        // concatenated into the SQL string itself.
-        //
-        // Using string.Format() or + concatenation BEFORE passing to SqlQuery<T>
-        // is unsafe because the interpolation happens in C# first, producing a
-        // plain string with the value baked in — EF Core receives a string with
-        // no parameter markers and cannot protect against SQL injection.
+
         var results = await db.Database
             .SqlQuery<JobListingStatsResponse>($@"
                 SELECT
@@ -260,4 +232,77 @@ public class JobListingRepository(CareerHubDbContext db) : IJobListingRepository
 
         return results;
     }
+
+    public async Task<PagedResponse<JobListResponse>> GetActiveListingsPagedAsync(int page, int pageSize, JobListingFilterQuery filter)
+{
+    var query = db.JobListings
+        .AsNoTracking()
+        .Where(j => j.IsActive && j.ClosingDate > DateTime.UtcNow);
+
+    // ── Filters ──────────────────────────────────────────────────────────────
+    if (!string.IsNullOrWhiteSpace(filter.Location))
+        {query = query.Where(j => j.Location.ToLower().Contains(filter.Location.ToLower()));}
+
+    if (!string.IsNullOrWhiteSpace(filter.EmploymentType))
+       { Enum.TryParse<JobType>(filter.EmploymentType, ignoreCase: true, out var jobType);
+        query = query.Where(j => j.Type == jobType); }
+
+    if (filter.SalaryMin.HasValue)
+       {query = query.Where(j => j.SalaryMin >= filter.SalaryMin.Value);}
+
+    if (filter.SalaryMax.HasValue)
+        {query = query.Where(j => j.SalaryMax <= filter.SalaryMax.Value);}
+
+    if (filter.CompanyId.HasValue)
+        {query = query.Where(j => j.CompanyId == filter.CompanyId.Value);}
+
+    // ── Count (same IQueryable, filters already applied) ─────────────────────
+    var totalCount = await query.CountAsync();
+
+    // ── Sorting ───────────────────────────────────────────────────────────────
+    query = (filter.Sort.ToLower(), filter.Dir.ToLower()) switch
+    {
+        ("salarymin", "asc")  => query.OrderBy(j => j.SalaryMin),
+        ("salarymin", _)      => query.OrderByDescending(j => j.SalaryMin),
+        ("salarymax", "desc") => query.OrderByDescending(j => j.SalaryMax),
+        ("salarymax", _)      => query.OrderBy(j => j.SalaryMax),
+        ("title", "desc")     => query.OrderByDescending(j => j.Title),
+        ("title", _)          => query.OrderBy(j => j.Title),
+        _                     => query.OrderByDescending(j => j.PostedAt)
+    };
+
+    // ── Pagination ────────────────────────────────────────────────────────────
+    var data = await query
+        .Skip((page - 1) * pageSize)
+        .Take(pageSize)
+        .Select(j => new JobListResponse(
+            j.Id,
+            j.Title,
+            j.Company.CompanyName,
+            j.Location,
+            j.SalaryMin.HasValue && j.SalaryMax.HasValue
+                ? $"R{j.SalaryMin:N0} – R{j.SalaryMax:N0}/month"
+                : j.SalaryMin.HasValue
+                    ? $"From R{j.SalaryMin:N0}/month"
+                    : "Salary not specified",
+            j.Applications.Count(),
+            j.ClosingDate
+        ))
+        .ToListAsync();
+
+    var totalPages = (int)Math.Ceiling((double)totalCount / pageSize);
+
+    return new PagedResponse<JobListResponse>
+    {
+        Data = data,
+        Page = page,
+        PageSize = pageSize,
+        TotalCount = totalCount,
+        TotalPages = totalPages,
+        HasNextPage = page < totalPages,
+        HasPreviousPage = page > 1
+    };
+}
+
+
 }

@@ -27,7 +27,7 @@ try
     {
         options.AddPolicy("CareerHubFrontEndPolicy", policy =>
         {
-            policy.WithOrigins("http://localhost:3000")
+            policy.WithOrigins("http://localhost:3000",  "https://careerhub.production.com")
                 .AllowAnyHeader()
                 .AllowAnyMethod()
                 .AllowCredentials()
