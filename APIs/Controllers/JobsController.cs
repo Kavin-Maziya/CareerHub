@@ -3,6 +3,7 @@ using APIs.DTOs;
 using APIs.Services;
 using Microsoft.AspNetCore.Authorization;
 using Asp.Versioning;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace APIs.Controllers;
 
@@ -74,6 +75,7 @@ public class JobsController(IJobListingService jobListingService) : ControllerBa
     // Full-text search endpoint
     [AllowAnonymous]
     [HttpGet("search")]
+    [EnableRateLimiting("search")]
     public async Task<ActionResult<IEnumerable<JobListResponse>>> SearchJobsAsync([FromQuery] string q)
         => Ok(await jobListingService.SearchAsync(q));
 
@@ -84,6 +86,7 @@ public class JobsController(IJobListingService jobListingService) : ControllerBa
         => Ok(await jobListingService.GetApplicationStatsAsync(companyId));
 
     [Authorize(Roles = "Employer")]
+    [EnableRateLimiting("post-listing")]
     [HttpPost]
     public async Task<ActionResult<JobListResponse>> CreateJobAsync([FromBody] CreateJobRequest request)
     {

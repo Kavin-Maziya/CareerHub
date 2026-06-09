@@ -3,6 +3,7 @@ using APIs.DTOs;
 using APIs.Services;
 using Microsoft.AspNetCore.Authorization;
 using Asp.Versioning;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace APIs.Controllers;
 
@@ -58,6 +59,7 @@ public async Task<IActionResult> GetApplicationByIdAsync(string id)
 
     [Authorize(Roles = "Applicant")]
     [HttpPost]
+    [EnableRateLimiting("apply")]
     public async Task<ActionResult<ApplicationResponse>> SubmitApplicationAsync([FromBody] CreateApplicationRequest request)
     {
         var application = await applicationService.SubmitApplicationAsync(request);
