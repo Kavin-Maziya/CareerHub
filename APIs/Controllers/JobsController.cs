@@ -2,10 +2,12 @@ using Microsoft.AspNetCore.Mvc;
 using APIs.DTOs;
 using APIs.Services;
 using Microsoft.AspNetCore.Authorization;
+using Asp.Versioning;
 
 namespace APIs.Controllers;
 
 [ApiController]
+[ApiVersion(1)]
 [Route("api/[controller]")]
 public class JobsController(IJobListingService jobListingService) : ControllerBase
 {

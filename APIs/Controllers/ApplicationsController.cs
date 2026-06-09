@@ -2,10 +2,12 @@ using Microsoft.AspNetCore.Mvc;
 using APIs.DTOs;
 using APIs.Services;
 using Microsoft.AspNetCore.Authorization;
+using Asp.Versioning;
 
 namespace APIs.Controllers;
 
 [ApiController]
+[ApiVersion(1)]
 [Route("api/[controller]")]
 public class ApplicationsController(IApplicationService applicationService) : ControllerBase
 {
@@ -34,9 +36,13 @@ public class ApplicationsController(IApplicationService applicationService) : Co
     }
 
     [Authorize(Roles = "Employer")]
-    [HttpPatch("{id:guid}/status")]
-    public async Task<IActionResult> PatchStatusAsync(Guid id, [FromBody] PatchApplicationStatusRequest request)
-    => Ok(await applicationService.PatchStatusAsync(id, request.Status));
+    [HttpPatch("{jobListingId:guid}/applicant/{applicantId:guid}/status")]
+    public async Task<IActionResult> PatchStatusAsync(
+    Guid jobListingId,
+    Guid applicantId,
+    [FromBody] PatchApplicationStatusRequest request)
+    => Ok(await applicationService.PatchStatusAsync(jobListingId, applicantId, request.Status));
+
 
     [Authorize(Roles = "Employer")]
     [HttpPut("{jobListingId:guid}/{applicantId:guid}")]

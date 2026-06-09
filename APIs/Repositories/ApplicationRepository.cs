@@ -36,8 +36,9 @@ public class ApplicationRepository(CareerHubDbContext db)
     {
         return await db.Applications
             .AsNoTracking()
-            .Where(a => a.JobListingId == jobListingId)
             .Include(a => a.JobListing)
+            .Where(a => a.JobListingId == jobListingId)
+            
             .Select(a => new ApplicationResponse(
                 JobListingId: a.JobListingId,
     ApplicantId: a.ApplicantId,
@@ -54,9 +55,10 @@ public class ApplicationRepository(CareerHubDbContext db)
         GetApplicationsByApplicantIdAsync(Guid applicantId)
     {
         return await db.Applications
-            .AsNoTracking()
-            .Where(a => a.ApplicantId == applicantId)
+            .AsNoTracking() 
             .Include(a => a.JobListing)
+            .Where(a => a.ApplicantId == applicantId)
+           
             .Select(a => new ApplicationResponse(
                 JobListingId: a.JobListingId,
     ApplicantId: a.ApplicantId,
