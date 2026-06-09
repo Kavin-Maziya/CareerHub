@@ -3036,32 +3036,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Kavin Ozzie Maziya\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\LCBitcube\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Kavin Ozzie Maziya\\Downloads\\Assignment2-4\\CareerHub\\APIs\\APIs.csproj",
+      "projectUniqueName": "C:\\Users\\LCBitcube\\Downloads\\Assignment-3-1\\APIs\\APIs.csproj",
       "projectName": "APIs",
-      "projectPath": "C:\\Users\\Kavin Ozzie Maziya\\Downloads\\Assignment2-4\\CareerHub\\APIs\\APIs.csproj",
-      "packagesPath": "C:\\Users\\Kavin Ozzie Maziya\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Kavin Ozzie Maziya\\Downloads\\Assignment2-4\\CareerHub\\APIs\\obj\\",
+      "projectPath": "C:\\Users\\LCBitcube\\Downloads\\Assignment-3-1\\APIs\\APIs.csproj",
+      "packagesPath": "C:\\Users\\LCBitcube\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\LCBitcube\\Downloads\\Assignment-3-1\\APIs\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\Kavin Ozzie Maziya\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\LCBitcube\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net10.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {

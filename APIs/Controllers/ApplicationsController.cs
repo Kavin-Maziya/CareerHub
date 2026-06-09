@@ -8,9 +8,38 @@ namespace APIs.Controllers;
 
 [ApiController]
 [ApiVersion(1)]
-[Route("api/[controller]")]
+[Route("api/v{version:apiVersion}/applications")]
 public class ApplicationsController(IApplicationService applicationService) : ControllerBase
 {
+[Authorize(Roles = "Employer")]
+[HttpGet("{id}")] // GET /api/v1/applications/{id}
+public async Task<IActionResult> GetApplicationByIdAsync(string id)
+{
+    // Split the composite route tracking token: "jobListingId_applicantId"
+    var keys = id.Split('_');
+    if (keys.Length != 2 || !Guid.TryParse(keys[0], out var jobListingId) || !Guid.TryParse(keys[1], out var applicantId))
+    {
+        return BadRequest("Invalid composite tracking ID format. Use: {jobListingId}_{applicantId}");
+    }
+    // Fetch the single application resource using your existing service layer logic
+    var applications = await applicationService.GetApplicationsForListingAsync(jobListingId);
+    var application = applications.FirstOrDefault(a => a.ApplicantId == applicantId);
+    
+    if (application is null) return NotFound("Application not found.");
+    // Compute ETag using the tracking ID string and the string representation of the Status
+    string rawEtag = $"{id}_{application.Status}";
+    string eTag = $"\"{rawEtag}\""; 
+
+    // Check If-None-Match header
+    if (Request.Headers.IfNoneMatch == eTag)
+    {
+        return StatusCode(StatusCodes.Status304NotModified);  
+    }
+    Response.Headers.ETag = eTag;
+    return Ok(application);
+}
+
+
     [Authorize(Roles = "Employer")]
     [HttpGet("listing/{jobListingId:guid}")]
     public async Task<ActionResult<IEnumerable<ApplicationResponse>>> GetApplicationsForListingAsync(Guid jobListingId)
@@ -36,11 +65,11 @@ public class ApplicationsController(IApplicationService applicationService) : Co
     }
 
     [Authorize(Roles = "Employer")]
-    [HttpPatch("{jobListingId:guid}/applicant/{applicantId:guid}/status")]
+    [HttpPatch("{id:guid}/status")]
     public async Task<IActionResult> PatchStatusAsync(
     Guid jobListingId,
     Guid applicantId,
-    [FromBody] PatchApplicationStatusRequest request)
+    [FromBody] UpdateApplicationStatusRequest request)
     => Ok(await applicationService.PatchStatusAsync(jobListingId, applicantId, request.Status));
 
 

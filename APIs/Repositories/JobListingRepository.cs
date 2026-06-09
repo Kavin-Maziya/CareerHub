@@ -305,7 +305,7 @@ public class JobListingRepository(CareerHubDbContext db) : IJobListingRepository
     };
 }
 
-public async Task<JobListResponse> PatchAsync(Guid id, PatchJobListingRequest request)
+public async Task<JobListResponse> PatchAsync(Guid id, UpdateJobListingRequest request)
 {
     var listing = await db.JobListings
         .Include(j => j.Company)
@@ -331,7 +331,7 @@ public async Task<JobListResponse> PatchAsync(Guid id, PatchJobListingRequest re
         var newMax = request.SalaryMax ?? listing.SalaryMax;
 
         if (newMin.HasValue && newMax.HasValue && newMin > newMax)
-            //throw new InvalidSalaryRangeException();
+            throw new InvalidSalaryRangeException();
 
         if (request.SalaryMin is not null)
             listing.SalaryMin = request.SalaryMin;
@@ -360,7 +360,7 @@ public async Task<JobListResponse> PatchAsync(Guid id, PatchJobListingRequest re
             : listing.SalaryMin.HasValue
                 ? $"From R{listing.SalaryMin:N0}/month"
                 : "Salary not specified",
-        ApplicationCount: 0,
+        ApplicationCount: listing.Applications.Count(),
         ClosingDate: listing.ClosingDate
     );
 }

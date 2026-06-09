@@ -3,8 +3,9 @@ using APIs.Models;
 
 namespace APIs.DTOs;
 
-public record PatchApplicationStatusRequest
+public record UpdateApplicationStatusRequest
 {
     [Required]
-    public ApplicationStatus Status { get; init; }
+    public ApplicationStatus Status;
+    
 }

@@ -8,7 +8,7 @@ namespace APIs.Controllers;
 
 [ApiController]
 [ApiVersion(1)]
-[Route("api/[controller]")]
+[Route("api/v{version:apiVersion}/jobs")]
 public class JobsController(IJobListingService jobListingService) : ControllerBase
 {
     [AllowAnonymous]
@@ -21,10 +21,21 @@ public class JobsController(IJobListingService jobListingService) : ControllerBa
 
     [AllowAnonymous]
     [HttpGet("{id:guid}")]
-    public async Task<ActionResult<JobDetailResponse>> GetJobByIdAsync(Guid id)
+    public async Task<IActionResult> GetJobByIdAsync(Guid id)
     {
         var job = await jobListingService.GetJobListingDetailAsync(id);
-        return Ok(job);
+        if (job is null) return NotFound();
+
+        string rawEtag = $"{id}_{job.PostedAt.Ticks}_{job.SalaryDisplay}";
+        string eTag = $"\"{rawEtag}\"";
+
+    if (Request.Headers.IfNoneMatch == eTag)
+    return StatusCode(StatusCodes.Status304NotModified);
+
+    Response.Headers.ETag = eTag;
+    return Ok(job);
+
+    
     }
 
     [AllowAnonymous]
@@ -57,8 +68,8 @@ public class JobsController(IJobListingService jobListingService) : ControllerBa
     }
     [Authorize(Roles = "Employer")]
     [HttpPatch("{id:guid}")]
-    public async Task<ActionResult<JobListResponse>> PatchJobAsync(Guid id, [FromBody] PatchJobListingRequest request)
-        => Ok(await jobListingService.PatchAsync(id, request));
+     public async Task<ActionResult<JobListResponse>> PatchJobAsync(Guid id, [FromBody] UpdateJobListingRequest request)
+         => Ok(await jobListingService.PatchAsync(id, request));
 
     // Full-text search endpoint
     [AllowAnonymous]
