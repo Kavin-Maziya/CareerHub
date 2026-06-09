@@ -25,9 +25,10 @@ public interface IJobListingRepository
 
     Task DeleteJobListingAsync(Guid id);
 
-    // Part 5: Full-text search
+Task<PagedResponse<JobListResponse>> GetActiveListingsPagedAsync(int page, int pageSize);
+    // Full-text search
     Task<IEnumerable<JobListResponse>> SearchAsync(string searchTerm);
 
-    // Part 8: Application statistics with RANK() window function
+    // Application statistics with RANK() window function
     Task<IEnumerable<JobListingStatsResponse>> GetApplicationStatsAsync(Guid companyId);
 }

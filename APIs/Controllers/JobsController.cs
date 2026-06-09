@@ -25,13 +25,24 @@ public class JobsController(IJobListingService jobListingService) : ControllerBa
         return Ok(job);
     }
 
-    // Part 5: Full-text search endpoint — controller is one line as required
+    [AllowAnonymous]
+[HttpGet]
+public async Task<ActionResult<PagedResponse<JobListResponse>>> GetJobsAsync(
+    [FromQuery] int page = 1,
+    [FromQuery] int pageSize = 20)
+{
+    var result = await jobListingService.GetActiveListingsPagedAsync(page, pageSize);
+    Response.Headers["X-Total-Count"] = result.TotalCount.ToString();
+    return Ok(result);
+}
+
+    // Full-text search endpoint
     [AllowAnonymous]
     [HttpGet("search")]
     public async Task<ActionResult<IEnumerable<JobListResponse>>> SearchJobsAsync([FromQuery] string q)
         => Ok(await jobListingService.SearchAsync(q));
 
-    // Part 8: Application statistics endpoint — controller is one line as required
+    // Application statistics endpoint — controller is one line as required
     [Authorize(Roles = "Employer")]
     [HttpGet("stats")]
     public async Task<ActionResult<IEnumerable<JobListingStatsResponse>>> GetStatsAsync([FromQuery] Guid companyId)

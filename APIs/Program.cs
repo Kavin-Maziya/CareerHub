@@ -25,11 +25,13 @@ try
 
     builder.Services.AddCors(options =>
     {
-        options.AddPolicy("FrontEndPolicy", policy =>
+        options.AddPolicy("CareerHubFrontEndPolicy", policy =>
         {
             policy.WithOrigins("http://localhost:3000")
                 .AllowAnyHeader()
-                .AllowAnyMethod();
+                .AllowAnyMethod()
+                .AllowCredentials()
+                .WithExposedHeaders("X-Total-Count");
         });
     });
 
@@ -61,7 +63,7 @@ try
     var app = builder.Build();
 
     app.UseSerilogRequestLogging();
-    app.UseCors("FrontEndPolicy");
+    app.UseCors("CareerHubFrontEndPolicy");
     app.UseExceptionHandler();
     app.UseStatusCodePages();
 
