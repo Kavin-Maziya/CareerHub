@@ -16,4 +16,6 @@ public interface IApplicationRepository
     Task UpdateApplicationStatusAsync(Guid jobListingId, Guid applicantId, ApplicationStatus newStatus);
     
     Task WithdrawApplicationAsync(Guid jobListingId, Guid applicantId);
+
+    Task<ApplicationResponse> PatchStatusAsync(Guid jobListingId, Guid applicantId, ApplicationStatus status);
 }

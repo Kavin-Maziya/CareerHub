@@ -1,5 +1,6 @@
 using APIs.Data;
 using APIs.DTOs;
+using APIs.Exceptions;
 using APIs.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -302,6 +303,66 @@ public class JobListingRepository(CareerHubDbContext db) : IJobListingRepository
         HasNextPage = page < totalPages,
         HasPreviousPage = page > 1
     };
+}
+
+public async Task<JobListResponse> PatchAsync(Guid id, PatchJobListingRequest request)
+{
+    var listing = await db.JobListings
+        .Include(j => j.Company)
+        .FirstOrDefaultAsync(j => j.Id == id)
+        ?? throw new JobNotFoundException(id);
+
+    if (request.Title is not null)
+        listing.Title = request.Title;
+
+    if (request.Description is not null)
+        listing.Description = request.Description;
+
+    if (request.Location is not null)
+        listing.Location = request.Location;
+
+    if (request.EmploymentType is not null &&
+        Enum.TryParse<JobType>(request.EmploymentType, ignoreCase: true, out var jobType))
+        listing.Type = jobType;
+
+    if (request.SalaryMin is not null || request.SalaryMax is not null)
+    {
+        var newMin = request.SalaryMin ?? listing.SalaryMin;
+        var newMax = request.SalaryMax ?? listing.SalaryMax;
+
+        if (newMin.HasValue && newMax.HasValue && newMin > newMax)
+            //throw new InvalidSalaryRangeException();
+
+        if (request.SalaryMin is not null)
+            listing.SalaryMin = request.SalaryMin;
+
+        if (request.SalaryMax is not null)
+            listing.SalaryMax = request.SalaryMax;
+    }
+
+    if (request.ExpiresAt is not null)
+    {
+        if (request.ExpiresAt <= DateTime.UtcNow)
+            //throw new InvalidExpiryDateException();
+
+        listing.ClosingDate = request.ExpiresAt.Value;
+    }
+
+    await db.SaveChangesAsync();
+
+    return new JobListResponse(
+        Id: listing.Id,
+        Title: listing.Title,
+        CompanyName: listing.Company.CompanyName,
+        Location: listing.Location,
+        SalaryDisplay: listing.SalaryMin.HasValue && listing.SalaryMax.HasValue
+            ? $"R{listing.SalaryMin:N0} – R{listing.SalaryMax:N0}/month"
+            : listing.SalaryMin.HasValue
+                ? $"From R{listing.SalaryMin:N0}/month"
+                : "Salary not specified",
+        ApplicationCount: 0,
+        ClosingDate: listing.ClosingDate
+    );
 }
 
 

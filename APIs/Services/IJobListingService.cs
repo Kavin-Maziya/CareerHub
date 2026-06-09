@@ -21,4 +21,5 @@ public interface IJobListingService
     Task<IEnumerable<JobListingStatsResponse>> GetApplicationStatsAsync(Guid companyId);
 
     Task<PagedResponse<JobListResponse>> GetActiveListingsPagedAsync(int page, int pageSize, JobListingFilterQuery filter);
+    Task<JobListResponse> PatchAsync(Guid id, PatchJobListingRequest request);
 }

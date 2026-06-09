@@ -154,4 +154,8 @@ public class JobListingService(IJobListingRepository jobListingRepository) : IJo
     {
         return await jobListingRepository.GetActiveListingsPagedAsync(page, pageSize, filter);
     }
+    public async Task<JobListResponse> PatchAsync(Guid id, PatchJobListingRequest request)
+{
+    return await jobListingRepository.PatchAsync(id, request);
+}
 }

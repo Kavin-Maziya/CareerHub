@@ -34,6 +34,11 @@ public class ApplicationsController(IApplicationService applicationService) : Co
     }
 
     [Authorize(Roles = "Employer")]
+    [HttpPatch("{id:guid}/status")]
+    public async Task<IActionResult> PatchStatusAsync(Guid id, [FromBody] PatchApplicationStatusRequest request)
+    => Ok(await applicationService.PatchStatusAsync(id, request.Status));
+
+    [Authorize(Roles = "Employer")]
     [HttpPut("{jobListingId:guid}/{applicantId:guid}")]
     public async Task<ActionResult<ApplicationResponse>> UpdateApplicationStatusAsync(
         Guid jobListingId,
