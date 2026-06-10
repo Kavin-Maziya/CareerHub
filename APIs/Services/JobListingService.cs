@@ -39,6 +39,12 @@ public class JobListingService(IJobListingRepository jobListingRepository) : IJo
 
     public async Task<JobListResponse> CreateJobListingAsync(CreateJobRequest request)
     {
+        if (request.SalaryMax < request.SalaryMin)
+            throw new InvalidSalaryRangeException();
+
+        if (request.ClosingDate <= DateTime.UtcNow)
+            throw new InvalidExpiryDateException();
+
         bool isDuplicate = await jobListingRepository.DuplicateJobExistsAsync(
             request.Title,
             request.CompanyName);
@@ -76,6 +82,12 @@ public class JobListingService(IJobListingRepository jobListingRepository) : IJo
     public async Task<JobListResponse> UpdateJobListingAsync(Guid id, UpdateJobRequest request)
     {
         var existing = await jobListingRepository.GetJobListingByIdAsync(id);
+
+        if (request.SalaryMax < request.SalaryMin)
+            throw new InvalidSalaryRangeException();
+
+        if (request.ClosingDate <= DateTime.UtcNow)
+            throw new InvalidExpiryDateException();
 
         if (existing is null)
             throw new JobNotFoundException(id);
@@ -156,6 +168,18 @@ public class JobListingService(IJobListingRepository jobListingRepository) : IJo
     }
     public async Task<JobListResponse> PatchAsync(Guid id, UpdateJobListingRequest request)
 {
-    return await jobListingRepository.PatchAsync(id, request);
-}
+var existing = await jobListingRepository.GetJobListingByIdAsync(id);
+        if (existing is null)
+            throw new JobNotFoundException(id);
+
+        // Compute evaluated state to validate constraints during a partial patch
+        if (request.SalaryMin.HasValue || request.SalaryMax.HasValue)
+        {
+            var testMin = request.SalaryMin ?? existing.SalaryMin;
+            var testMax = request.SalaryMax ?? existing.SalaryMax;
+            if (testMax < testMin)
+                throw new InvalidSalaryRangeException();
+        }
+
+        return await jobListingRepository.PatchAsync(id, request);}
 }
