@@ -52,7 +52,7 @@ public class ApplicationService(
                 Id = Guid.NewGuid(),
                 FirstName = request.FirstName,
                 LastName = request.LastName,
-                Email = request.Email            
+                Email = request.Email
             };
 
             applicant = newApplicant;
@@ -76,12 +76,14 @@ public class ApplicationService(
         await applicationRepository.CreateApplicationAsync(application, newApplicant);
 
         return new ApplicationResponse(
-            JobListingId: application.JobListingId,
-            ApplicantId: applicant.Id,
-            ApplicantName: $"{applicant.FirstName} {applicant.LastName}",
-            SubmittedAt: application.SubmittedAt,
-            Status: application.Status.ToString()
-        );
+    JobListingId: application.JobListingId,
+    ApplicantId: applicant.Id,
+    JobTitle: string.Empty,
+    ApplicantName: $"{applicant.FirstName} {applicant.LastName}",
+    SubmittedAt: application.SubmittedAt,
+    Status: application.Status.ToString(),
+    Id: application.JobListingId
+);
     }
 
     public async Task<ApplicationResponse> UpdateApplicationStatusAsync(
@@ -117,12 +119,14 @@ public class ApplicationService(
         await applicationRepository.UpdateApplicationStatusAsync(jobListingId, applicantId, newStatus);
 
         return new ApplicationResponse(
-            JobListingId: jobListingId,
-            ApplicantId: applicantId,
-            ApplicantName: application.ApplicantName,
-            SubmittedAt: application.SubmittedAt,
-            Status: newStatus.ToString()
-        );
+    JobListingId: jobListingId,
+    ApplicantId: applicantId,
+    JobTitle: string.Empty,
+    ApplicantName: application.ApplicantName,
+    SubmittedAt: application.SubmittedAt,
+    Status: newStatus.ToString(),
+    Id: Guid.Empty
+);
     }
     public async Task WithdrawApplicationAsync(Guid jobListingId, Guid applicantId)
     {
@@ -139,13 +143,20 @@ public class ApplicationService(
             }
         }
 
-    if (application is null)
-        throw new ApplicationNotFoundException(jobListingId, applicantId);
+        if (application is null)
+            throw new ApplicationNotFoundException(jobListingId, applicantId);
 
-    // Only the applicant who submitted can withdraw
-    if (application.ApplicantId != applicantId)
-        throw new UnauthorizedWithdrawalException(applicantId);
+        // Only the applicant who submitted can withdraw
+        if (application.ApplicantId != applicantId)
+            throw new UnauthorizedWithdrawalException(applicantId);
 
-    await applicationRepository.WithdrawApplicationAsync(jobListingId, applicantId);
+        await applicationRepository.WithdrawApplicationAsync(jobListingId, applicantId);
+    }
+    public async Task<ApplicationResponse> PatchStatusAsync(
+    Guid jobListingId,
+    Guid applicantId,
+    ApplicationStatus status)
+{
+    return await applicationRepository.PatchStatusAsync(jobListingId, applicantId, status);
 }
 }

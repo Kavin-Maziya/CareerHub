@@ -1,5 +1,6 @@
 using NpgsqlTypes;
 
+
 namespace APIs.Models;
 
 public class JobListing
@@ -9,6 +10,7 @@ public class JobListing
     public string Title { get; set; } = string.Empty;
 
     public string Description { get; set; } = string.Empty;
+
 
     // Foreign Key
     public Guid CompanyId { get; set; }
@@ -27,9 +29,15 @@ public class JobListing
     public DateTime PostedAt { get; set; } = DateTime.UtcNow;
     public bool IsActive { get; set; } = true;
 
-    // Generated Tsvector column for full-text search.
+    // Part 5: Generated, stored tsvector column for full-text search.
+    // Computed by PostgreSQL from Title + Description using the english config.
+    // EF Core treats this as a regular property; the migration will add the
+    // GENERATED ALWAYS AS expression via raw SQL in the migration file.
     public NpgsqlTsVector? SearchVector { get; set; }
 
     // Navigation property to Applications
+    // Navigation property to Applications
     public ICollection<Application> Applications { get; set; } = [];
 }
+
+

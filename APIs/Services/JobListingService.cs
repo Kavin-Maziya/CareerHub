@@ -127,7 +127,7 @@ public class JobListingService(IJobListingRepository jobListingRepository) : IJo
         await jobListingRepository.DeleteJobListingAsync(id);
     }
 
-    // Text search delegates straight to the repository
+    // Full-text search delegates straight to the repository
     public async Task<IEnumerable<JobListResponse>> SearchAsync(string searchTerm)
     {
         return await jobListingRepository.SearchAsync(searchTerm);
@@ -149,4 +149,13 @@ public class JobListingService(IJobListingRepository jobListingRepository) : IJo
 
         return "Salary not specified";
     }
+
+    public async Task<PagedResponse<JobListResponse>> GetActiveListingsPagedAsync(int page, int pageSize, JobListingFilterQuery filter)
+    {
+        return await jobListingRepository.GetActiveListingsPagedAsync(page, pageSize, filter);
+    }
+    public async Task<JobListResponse> PatchAsync(Guid id, UpdateJobListingRequest request)
+{
+    return await jobListingRepository.PatchAsync(id, request);
+}
 }

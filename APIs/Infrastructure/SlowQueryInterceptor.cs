@@ -5,12 +5,14 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 namespace APIs.Infrastructure;
 
 // Registered as Singleton because it holds no request state
+
 public class SlowQueryInterceptor(IConfiguration configuration, ILogger<SlowQueryInterceptor> logger)
     : DbCommandInterceptor
 {
     private int ThresholdMs =>
         configuration.GetValue<int?>("SlowQueryThresholdMs") ?? 100;
 
+    // Async hook — covers the vast majority of EF Core queries in this project
     public override DbDataReader ReaderExecuted(
         DbCommand command,
         CommandExecutedEventData eventData,
