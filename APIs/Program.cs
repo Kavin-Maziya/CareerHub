@@ -84,7 +84,6 @@ try
     });
     builder.Services.AddOpenApi();
     builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
-    builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
     builder.Services.AddProblemDetails();
 
     builder.Services.AddCors(options =>
@@ -136,8 +135,6 @@ try
     app.UseAuthentication();
     app.UseAuthorization();
 
-    app.UseAuthorization();
-
     app.MapOpenApi();
     app.MapScalarApiReference();
     app.MapControllers().RequireRateLimiting("global");
@@ -150,6 +147,10 @@ catch (Exception ex)
 finally
 {
     Log.CloseAndFlush();
-    Log.CloseAndFlush();
 }
 
+public partial class Program
+{
+    
+
+}
