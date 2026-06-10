@@ -5,7 +5,6 @@ namespace API.Tests.Helpers;
 
 public static class TestDataGenerator
 {
-    private static readonly Random _random = new Random();
     private static readonly string[] _titles = { "Software Engineer", "DevOps Specialist", "Product Manager", "Data Scientist", "Frontend Developer", "Architect" };
     private static readonly string[] _locations = { "Johannesburg", "Cape Town", "Durban", "Pretoria", "Stellenbosch" };
     private static readonly string[] _companies = { "Acme Corp", "Globex", "Soylent Corp", "Initech", "Umbrella Corp", "Cyberdyne" };
@@ -16,8 +15,8 @@ public static class TestDataGenerator
         return new Company
         {
             CompanyId = Guid.NewGuid(),
-            CompanyName = $"{_companies[_random.Next(_companies.Length)]} {Guid.NewGuid().ToString()[..4]}",
-            Industry = _industries[_random.Next(_industries.Length)]
+            CompanyName = $"{_companies[Random.Shared.Next(_companies.Length)]} {Guid.NewGuid().ToString()[..4]}",
+            Industry = _industries[Random.Shared.Next(_industries.Length)]
         };
     }
 
@@ -27,12 +26,12 @@ public static class TestDataGenerator
         return new JobListing
         {
             Id = Guid.NewGuid(),
-            Title = title ?? _titles[_random.Next(_titles.Length)],
+            Title = title ?? _titles[Random.Shared.Next(_titles.Length)],
             CompanyId = companyId,
             IsActive = isActive,
-            PostedAt = postedAt ?? now.AddDays(-_random.Next(0, 10)),
-            ClosingDate = closingDate ?? now.AddDays(_random.Next(5, 30)),
-            Location = _locations[_random.Next(_locations.Length)],
+            PostedAt = postedAt ?? now.AddDays(-Random.Shared.Next(0, 10)),
+            ClosingDate = closingDate ?? now.AddDays(Random.Shared.Next(5, 30)),
+            Location = _locations[Random.Shared.Next(_locations.Length)],
             Description = "This is a randomized job description for a highly sought-after position in our growing team."
         };
     }

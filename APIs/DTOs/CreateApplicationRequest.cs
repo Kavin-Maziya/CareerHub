@@ -29,15 +29,15 @@ public record CreateApplicationRequest
 {
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
-        // basic defensive validation for names
-        if (FirstName.Trim().Length == 0)
+        // basic defensive validation for names (ensures they aren't just whitespace)
+        if (string.IsNullOrWhiteSpace(FirstName))
         {
             yield return new ValidationResult(
                 "First name cannot be empty or whitespace",
                 new[] { nameof(FirstName) });
         }
 
-        if (LastName.Trim().Length == 0)
+        if (string.IsNullOrWhiteSpace(LastName))
         {
             yield return new ValidationResult(
                 "Last name cannot be empty or whitespace",

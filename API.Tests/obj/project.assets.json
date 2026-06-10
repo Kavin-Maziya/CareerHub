@@ -53,6 +53,19 @@
           }
         }
       },
+      "BouncyCastle.Cryptography/2.6.2": {
+        "type": "package",
+        "compile": {
+          "lib/net6.0/BouncyCastle.Cryptography.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/BouncyCastle.Cryptography.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "Castle.Core/5.1.1": {
         "type": "package",
         "dependencies": {
@@ -73,6 +86,131 @@
         "type": "package",
         "build": {
           "build/netstandard2.0/coverlet.collector.targets": {}
+        }
+      },
+      "Docker.DotNet.Enhanced/4.2.0": {
+        "type": "package",
+        "dependencies": {
+          "Docker.DotNet.Enhanced.Handler.Abstractions": "4.2.0",
+          "Docker.DotNet.Enhanced.LegacyHttp": "4.2.0",
+          "Docker.DotNet.Enhanced.NPipe": "4.2.0",
+          "Docker.DotNet.Enhanced.NativeHttp": "4.2.0",
+          "Docker.DotNet.Enhanced.Unix": "4.2.0",
+          "Microsoft.Extensions.Logging.Abstractions": "8.0.3"
+        },
+        "compile": {
+          "lib/net10.0/Docker.DotNet.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net10.0/Docker.DotNet.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "Docker.DotNet.Enhanced.Handler.Abstractions/4.2.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Extensions.Logging.Abstractions": "8.0.3"
+        },
+        "compile": {
+          "lib/net10.0/Docker.DotNet.Handler.Abstractions.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net10.0/Docker.DotNet.Handler.Abstractions.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "Docker.DotNet.Enhanced.LegacyHttp/4.2.0": {
+        "type": "package",
+        "dependencies": {
+          "Docker.DotNet.Enhanced.Handler.Abstractions": "4.2.0"
+        },
+        "compile": {
+          "lib/net10.0/Docker.DotNet.LegacyHttp.dll": {
+            "related": ".xml"
+          },
+          "lib/net10.0/Microsoft.Net.Http.Client.dll": {}
+        },
+        "runtime": {
+          "lib/net10.0/Docker.DotNet.LegacyHttp.dll": {
+            "related": ".xml"
+          },
+          "lib/net10.0/Microsoft.Net.Http.Client.dll": {}
+        }
+      },
+      "Docker.DotNet.Enhanced.NativeHttp/4.2.0": {
+        "type": "package",
+        "dependencies": {
+          "Docker.DotNet.Enhanced.Handler.Abstractions": "4.2.0"
+        },
+        "compile": {
+          "lib/net10.0/Docker.DotNet.NativeHttp.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net10.0/Docker.DotNet.NativeHttp.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "Docker.DotNet.Enhanced.NPipe/4.2.0": {
+        "type": "package",
+        "dependencies": {
+          "Docker.DotNet.Enhanced.Handler.Abstractions": "4.2.0"
+        },
+        "compile": {
+          "lib/net10.0/Docker.DotNet.NPipe.dll": {
+            "related": ".xml"
+          },
+          "lib/net10.0/Microsoft.Net.Http.Client.dll": {}
+        },
+        "runtime": {
+          "lib/net10.0/Docker.DotNet.NPipe.dll": {
+            "related": ".xml"
+          },
+          "lib/net10.0/Microsoft.Net.Http.Client.dll": {}
+        }
+      },
+      "Docker.DotNet.Enhanced.Unix/4.2.0": {
+        "type": "package",
+        "dependencies": {
+          "Docker.DotNet.Enhanced.Handler.Abstractions": "4.2.0"
+        },
+        "compile": {
+          "lib/net10.0/Docker.DotNet.Unix.dll": {
+            "related": ".xml"
+          },
+          "lib/net10.0/Microsoft.Net.Http.Client.dll": {}
+        },
+        "runtime": {
+          "lib/net10.0/Docker.DotNet.Unix.dll": {
+            "related": ".xml"
+          },
+          "lib/net10.0/Microsoft.Net.Http.Client.dll": {}
+        }
+      },
+      "Docker.DotNet.Enhanced.X509/4.2.0": {
+        "type": "package",
+        "dependencies": {
+          "Docker.DotNet.Enhanced.Handler.Abstractions": "4.2.0"
+        },
+        "compile": {
+          "lib/net10.0/Docker.DotNet.X509.dll": {
+            "related": ".xml"
+          },
+          "lib/net10.0/Microsoft.Net.Http.Client.dll": {}
+        },
+        "runtime": {
+          "lib/net10.0/Docker.DotNet.X509.dll": {
+            "related": ".xml"
+          },
+          "lib/net10.0/Microsoft.Net.Http.Client.dll": {}
         }
       },
       "Microsoft.AspNetCore.Authentication.JwtBearer/10.0.8": {
@@ -169,13 +307,13 @@
           "build/netstandard2.0/Microsoft.CodeCoverage.targets": {}
         }
       },
-      "Microsoft.EntityFrameworkCore/10.0.4": {
+      "Microsoft.EntityFrameworkCore/10.0.8": {
         "type": "package",
         "dependencies": {
-          "Microsoft.EntityFrameworkCore.Abstractions": "10.0.4",
-          "Microsoft.EntityFrameworkCore.Analyzers": "10.0.4",
-          "Microsoft.Extensions.Caching.Memory": "10.0.4",
-          "Microsoft.Extensions.Logging": "10.0.4"
+          "Microsoft.EntityFrameworkCore.Abstractions": "10.0.8",
+          "Microsoft.EntityFrameworkCore.Analyzers": "10.0.8",
+          "Microsoft.Extensions.Caching.Memory": "10.0.8",
+          "Microsoft.Extensions.Logging": "10.0.8"
         },
         "compile": {
           "lib/net10.0/Microsoft.EntityFrameworkCore.dll": {
@@ -191,7 +329,7 @@
           "buildTransitive/net10.0/Microsoft.EntityFrameworkCore.props": {}
         }
       },
-      "Microsoft.EntityFrameworkCore.Abstractions/10.0.4": {
+      "Microsoft.EntityFrameworkCore.Abstractions/10.0.8": {
         "type": "package",
         "compile": {
           "lib/net10.0/Microsoft.EntityFrameworkCore.Abstractions.dll": {
@@ -204,16 +342,16 @@
           }
         }
       },
-      "Microsoft.EntityFrameworkCore.Analyzers/10.0.4": {
+      "Microsoft.EntityFrameworkCore.Analyzers/10.0.8": {
         "type": "package"
       },
-      "Microsoft.EntityFrameworkCore.Relational/10.0.4": {
+      "Microsoft.EntityFrameworkCore.Relational/10.0.8": {
         "type": "package",
         "dependencies": {
-          "Microsoft.EntityFrameworkCore": "10.0.4",
-          "Microsoft.Extensions.Caching.Memory": "10.0.4",
-          "Microsoft.Extensions.Configuration.Abstractions": "10.0.4",
-          "Microsoft.Extensions.Logging": "10.0.4"
+          "Microsoft.EntityFrameworkCore": "10.0.8",
+          "Microsoft.Extensions.Caching.Memory": "10.0.8",
+          "Microsoft.Extensions.Configuration.Abstractions": "10.0.8",
+          "Microsoft.Extensions.Logging": "10.0.8"
         },
         "compile": {
           "lib/net10.0/Microsoft.EntityFrameworkCore.Relational.dll": {
@@ -226,10 +364,10 @@
           }
         }
       },
-      "Microsoft.Extensions.Caching.Abstractions/10.0.4": {
+      "Microsoft.Extensions.Caching.Abstractions/10.0.8": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Extensions.Primitives": "10.0.4"
+          "Microsoft.Extensions.Primitives": "10.0.8"
         },
         "compile": {
           "lib/net10.0/Microsoft.Extensions.Caching.Abstractions.dll": {
@@ -245,14 +383,14 @@
           "buildTransitive/net8.0/_._": {}
         }
       },
-      "Microsoft.Extensions.Caching.Memory/10.0.4": {
+      "Microsoft.Extensions.Caching.Memory/10.0.8": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Extensions.Caching.Abstractions": "10.0.4",
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "10.0.4",
-          "Microsoft.Extensions.Logging.Abstractions": "10.0.4",
-          "Microsoft.Extensions.Options": "10.0.4",
-          "Microsoft.Extensions.Primitives": "10.0.4"
+          "Microsoft.Extensions.Caching.Abstractions": "10.0.8",
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "10.0.8",
+          "Microsoft.Extensions.Logging.Abstractions": "10.0.8",
+          "Microsoft.Extensions.Options": "10.0.8",
+          "Microsoft.Extensions.Primitives": "10.0.8"
         },
         "compile": {
           "lib/net10.0/Microsoft.Extensions.Caching.Memory.dll": {
@@ -1472,6 +1610,36 @@
           }
         }
       },
+      "SharpZipLib/1.4.2": {
+        "type": "package",
+        "compile": {
+          "lib/net6.0/ICSharpCode.SharpZipLib.dll": {
+            "related": ".pdb;.xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/ICSharpCode.SharpZipLib.dll": {
+            "related": ".pdb;.xml"
+          }
+        }
+      },
+      "SSH.NET/2025.1.0": {
+        "type": "package",
+        "dependencies": {
+          "BouncyCastle.Cryptography": "2.6.2",
+          "Microsoft.Extensions.Logging.Abstractions": "8.0.3"
+        },
+        "compile": {
+          "lib/net9.0/Renci.SshNet.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net9.0/Renci.SshNet.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "System.Diagnostics.EventLog/10.0.9": {
         "type": "package",
         "compile": {
@@ -1511,6 +1679,42 @@
         },
         "runtime": {
           "lib/net9.0/System.IdentityModel.Tokens.Jwt.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "Testcontainers/4.12.0": {
+        "type": "package",
+        "dependencies": {
+          "Docker.DotNet.Enhanced": "4.2.0",
+          "Docker.DotNet.Enhanced.X509": "4.2.0",
+          "Microsoft.Extensions.Logging.Abstractions": "8.0.3",
+          "SSH.NET": "2025.1.0",
+          "SharpZipLib": "1.4.2"
+        },
+        "compile": {
+          "lib/net10.0/Testcontainers.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net10.0/Testcontainers.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "Testcontainers.PostgreSql/4.12.0": {
+        "type": "package",
+        "dependencies": {
+          "Testcontainers": "4.12.0"
+        },
+        "compile": {
+          "lib/net10.0/Testcontainers.PostgreSql.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net10.0/Testcontainers.PostgreSql.dll": {
             "related": ".xml"
           }
         }
@@ -1689,6 +1893,26 @@
         "lib/net10.0/Asp.Versioning.Mvc.xml"
       ]
     },
+    "BouncyCastle.Cryptography/2.6.2": {
+      "sha512": "7oWOcvnntmMKNzDLsdxAYqApt+AjpRpP2CShjMfIa3umZ42UQMvH0tl1qAliYPNYO6vTdcGMqnRrCPmsfzTI1w==",
+      "type": "package",
+      "path": "bouncycastle.cryptography/2.6.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.md",
+        "README.md",
+        "bouncycastle.cryptography.2.6.2.nupkg.sha512",
+        "bouncycastle.cryptography.nuspec",
+        "lib/net461/BouncyCastle.Cryptography.dll",
+        "lib/net461/BouncyCastle.Cryptography.xml",
+        "lib/net6.0/BouncyCastle.Cryptography.dll",
+        "lib/net6.0/BouncyCastle.Cryptography.xml",
+        "lib/netstandard2.0/BouncyCastle.Cryptography.dll",
+        "lib/netstandard2.0/BouncyCastle.Cryptography.xml",
+        "packageIcon.png"
+      ]
+    },
     "Castle.Core/5.1.1": {
       "sha512": "rpYtIczkzGpf+EkZgDr9CClTdemhsrwA/W5hMoPjLkRFnXzH44zDLoovXeKtmxb1ykXK9aJVODSpiJml8CTw2g==",
       "type": "package",
@@ -1781,6 +2005,187 @@
         "coverlet-icon.png",
         "coverlet.collector.6.0.4.nupkg.sha512",
         "coverlet.collector.nuspec"
+      ]
+    },
+    "Docker.DotNet.Enhanced/4.2.0": {
+      "sha512": "tm2V/DpnaURbBhMQ7Z3orNR3u+H863KQuYfA/sgGjI5py07dEeV0I02f6pGrx2869KG9uNM/E96puf9i0gId2w==",
+      "type": "package",
+      "path": "docker.dotnet.enhanced/4.2.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE",
+        "docker.dotnet.enhanced.4.2.0.nupkg.sha512",
+        "docker.dotnet.enhanced.nuspec",
+        "icon.png",
+        "lib/net10.0/Docker.DotNet.dll",
+        "lib/net10.0/Docker.DotNet.xml",
+        "lib/net8.0/Docker.DotNet.dll",
+        "lib/net8.0/Docker.DotNet.xml",
+        "lib/net9.0/Docker.DotNet.dll",
+        "lib/net9.0/Docker.DotNet.xml",
+        "lib/netstandard2.0/Docker.DotNet.dll",
+        "lib/netstandard2.0/Docker.DotNet.xml",
+        "lib/netstandard2.1/Docker.DotNet.dll",
+        "lib/netstandard2.1/Docker.DotNet.xml"
+      ]
+    },
+    "Docker.DotNet.Enhanced.Handler.Abstractions/4.2.0": {
+      "sha512": "cQNxpdadEPdNdfjFCl9vgoCQIK3aVHRn1Qlu36aZUFpp4xHfPrk4hRPNVLR/CpobIFJ+dAt8AceTKMlCfPSccw==",
+      "type": "package",
+      "path": "docker.dotnet.enhanced.handler.abstractions/4.2.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE",
+        "docker.dotnet.enhanced.handler.abstractions.4.2.0.nupkg.sha512",
+        "docker.dotnet.enhanced.handler.abstractions.nuspec",
+        "icon.png",
+        "lib/net10.0/Docker.DotNet.Handler.Abstractions.dll",
+        "lib/net10.0/Docker.DotNet.Handler.Abstractions.xml",
+        "lib/net8.0/Docker.DotNet.Handler.Abstractions.dll",
+        "lib/net8.0/Docker.DotNet.Handler.Abstractions.xml",
+        "lib/net9.0/Docker.DotNet.Handler.Abstractions.dll",
+        "lib/net9.0/Docker.DotNet.Handler.Abstractions.xml",
+        "lib/netstandard2.0/Docker.DotNet.Handler.Abstractions.dll",
+        "lib/netstandard2.0/Docker.DotNet.Handler.Abstractions.xml",
+        "lib/netstandard2.1/Docker.DotNet.Handler.Abstractions.dll",
+        "lib/netstandard2.1/Docker.DotNet.Handler.Abstractions.xml"
+      ]
+    },
+    "Docker.DotNet.Enhanced.LegacyHttp/4.2.0": {
+      "sha512": "sfbMX1HBPUec3PEMoqlP5ak6skXclcTBmu4gG3aUJatP34J2DgvYMP13bvz/rfrjVkAhPqnIiDKiHAkBCokajg==",
+      "type": "package",
+      "path": "docker.dotnet.enhanced.legacyhttp/4.2.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE",
+        "docker.dotnet.enhanced.legacyhttp.4.2.0.nupkg.sha512",
+        "docker.dotnet.enhanced.legacyhttp.nuspec",
+        "icon.png",
+        "lib/net10.0/Docker.DotNet.LegacyHttp.dll",
+        "lib/net10.0/Docker.DotNet.LegacyHttp.xml",
+        "lib/net10.0/Microsoft.Net.Http.Client.dll",
+        "lib/net8.0/Docker.DotNet.LegacyHttp.dll",
+        "lib/net8.0/Docker.DotNet.LegacyHttp.xml",
+        "lib/net8.0/Microsoft.Net.Http.Client.dll",
+        "lib/net9.0/Docker.DotNet.LegacyHttp.dll",
+        "lib/net9.0/Docker.DotNet.LegacyHttp.xml",
+        "lib/net9.0/Microsoft.Net.Http.Client.dll",
+        "lib/netstandard2.0/Docker.DotNet.LegacyHttp.dll",
+        "lib/netstandard2.0/Docker.DotNet.LegacyHttp.xml",
+        "lib/netstandard2.0/Microsoft.Net.Http.Client.dll",
+        "lib/netstandard2.1/Docker.DotNet.LegacyHttp.dll",
+        "lib/netstandard2.1/Docker.DotNet.LegacyHttp.xml",
+        "lib/netstandard2.1/Microsoft.Net.Http.Client.dll"
+      ]
+    },
+    "Docker.DotNet.Enhanced.NativeHttp/4.2.0": {
+      "sha512": "/ll+2ePYm1qrsMdgMO5BzCQnbfTGmPJAc9SqXEManbliVBZvEpBKHXLugx/OeEca2oC/b4RV+UNPtue5u4jAuA==",
+      "type": "package",
+      "path": "docker.dotnet.enhanced.nativehttp/4.2.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE",
+        "docker.dotnet.enhanced.nativehttp.4.2.0.nupkg.sha512",
+        "docker.dotnet.enhanced.nativehttp.nuspec",
+        "icon.png",
+        "lib/net10.0/Docker.DotNet.NativeHttp.dll",
+        "lib/net10.0/Docker.DotNet.NativeHttp.xml",
+        "lib/net8.0/Docker.DotNet.NativeHttp.dll",
+        "lib/net8.0/Docker.DotNet.NativeHttp.xml",
+        "lib/net9.0/Docker.DotNet.NativeHttp.dll",
+        "lib/net9.0/Docker.DotNet.NativeHttp.xml",
+        "lib/netstandard2.0/Docker.DotNet.NativeHttp.dll",
+        "lib/netstandard2.0/Docker.DotNet.NativeHttp.xml",
+        "lib/netstandard2.1/Docker.DotNet.NativeHttp.dll",
+        "lib/netstandard2.1/Docker.DotNet.NativeHttp.xml"
+      ]
+    },
+    "Docker.DotNet.Enhanced.NPipe/4.2.0": {
+      "sha512": "8wyYOD6VkvqRkITwsvkt3UbW/1WDl6NFypNAsIIDaMiglNRzFrQcK0nK9VUEZa6Oja8Bso3UYySDoL8qatatAA==",
+      "type": "package",
+      "path": "docker.dotnet.enhanced.npipe/4.2.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE",
+        "docker.dotnet.enhanced.npipe.4.2.0.nupkg.sha512",
+        "docker.dotnet.enhanced.npipe.nuspec",
+        "icon.png",
+        "lib/net10.0/Docker.DotNet.NPipe.dll",
+        "lib/net10.0/Docker.DotNet.NPipe.xml",
+        "lib/net10.0/Microsoft.Net.Http.Client.dll",
+        "lib/net8.0/Docker.DotNet.NPipe.dll",
+        "lib/net8.0/Docker.DotNet.NPipe.xml",
+        "lib/net8.0/Microsoft.Net.Http.Client.dll",
+        "lib/net9.0/Docker.DotNet.NPipe.dll",
+        "lib/net9.0/Docker.DotNet.NPipe.xml",
+        "lib/net9.0/Microsoft.Net.Http.Client.dll",
+        "lib/netstandard2.0/Docker.DotNet.NPipe.dll",
+        "lib/netstandard2.0/Docker.DotNet.NPipe.xml",
+        "lib/netstandard2.0/Microsoft.Net.Http.Client.dll",
+        "lib/netstandard2.1/Docker.DotNet.NPipe.dll",
+        "lib/netstandard2.1/Docker.DotNet.NPipe.xml",
+        "lib/netstandard2.1/Microsoft.Net.Http.Client.dll"
+      ]
+    },
+    "Docker.DotNet.Enhanced.Unix/4.2.0": {
+      "sha512": "x0wNcbww1+p9nUfw8i+JvsSArBDGkoZ9GI2PZ1wPo85B2OiFrdzp89omounNhO2GKyaIRWAqAm5jYZyNg9EnxA==",
+      "type": "package",
+      "path": "docker.dotnet.enhanced.unix/4.2.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE",
+        "docker.dotnet.enhanced.unix.4.2.0.nupkg.sha512",
+        "docker.dotnet.enhanced.unix.nuspec",
+        "icon.png",
+        "lib/net10.0/Docker.DotNet.Unix.dll",
+        "lib/net10.0/Docker.DotNet.Unix.xml",
+        "lib/net10.0/Microsoft.Net.Http.Client.dll",
+        "lib/net8.0/Docker.DotNet.Unix.dll",
+        "lib/net8.0/Docker.DotNet.Unix.xml",
+        "lib/net8.0/Microsoft.Net.Http.Client.dll",
+        "lib/net9.0/Docker.DotNet.Unix.dll",
+        "lib/net9.0/Docker.DotNet.Unix.xml",
+        "lib/net9.0/Microsoft.Net.Http.Client.dll",
+        "lib/netstandard2.0/Docker.DotNet.Unix.dll",
+        "lib/netstandard2.0/Docker.DotNet.Unix.xml",
+        "lib/netstandard2.0/Microsoft.Net.Http.Client.dll",
+        "lib/netstandard2.1/Docker.DotNet.Unix.dll",
+        "lib/netstandard2.1/Docker.DotNet.Unix.xml",
+        "lib/netstandard2.1/Microsoft.Net.Http.Client.dll"
+      ]
+    },
+    "Docker.DotNet.Enhanced.X509/4.2.0": {
+      "sha512": "nMw+FHGwGZieDi7kBgpIVl+E8MzjzXeXHvMQpidLADT06fts2Gw6G+K+p0hMGv7liZULxyYiZnQ1UbE2B9NNQg==",
+      "type": "package",
+      "path": "docker.dotnet.enhanced.x509/4.2.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE",
+        "docker.dotnet.enhanced.x509.4.2.0.nupkg.sha512",
+        "docker.dotnet.enhanced.x509.nuspec",
+        "icon.png",
+        "lib/net10.0/Docker.DotNet.X509.dll",
+        "lib/net10.0/Docker.DotNet.X509.xml",
+        "lib/net10.0/Microsoft.Net.Http.Client.dll",
+        "lib/net8.0/Docker.DotNet.X509.dll",
+        "lib/net8.0/Docker.DotNet.X509.xml",
+        "lib/net8.0/Microsoft.Net.Http.Client.dll",
+        "lib/net9.0/Docker.DotNet.X509.dll",
+        "lib/net9.0/Docker.DotNet.X509.xml",
+        "lib/net9.0/Microsoft.Net.Http.Client.dll",
+        "lib/netstandard2.0/Docker.DotNet.X509.dll",
+        "lib/netstandard2.0/Docker.DotNet.X509.xml",
+        "lib/netstandard2.0/Microsoft.Net.Http.Client.dll",
+        "lib/netstandard2.1/Docker.DotNet.X509.dll",
+        "lib/netstandard2.1/Docker.DotNet.X509.xml",
+        "lib/netstandard2.1/Microsoft.Net.Http.Client.dll"
       ]
     },
     "Microsoft.AspNetCore.Authentication.JwtBearer/10.0.8": {
@@ -1918,10 +2323,10 @@
         "microsoft.codecoverage.nuspec"
       ]
     },
-    "Microsoft.EntityFrameworkCore/10.0.4": {
-      "sha512": "kzTsfFK2GCytp6DDTfQOmxPU4gbGdrIlP7PxrxF3ESNLtfXrC8BoUVZENBN2WORlZPAD7CVX6AYIglgkpXQooA==",
+    "Microsoft.EntityFrameworkCore/10.0.8": {
+      "sha512": "EJx+fIBMgBlgD+ublKCn+GTOJkw3UqV7xOjYWBRVdUYyIm8UfvAsmSOPFiIInsWTHyMEYUJ9gCJY1jwX+6UB7w==",
       "type": "package",
-      "path": "microsoft.entityframeworkcore/10.0.4",
+      "path": "microsoft.entityframeworkcore/10.0.8",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -1930,14 +2335,14 @@
         "buildTransitive/net10.0/Microsoft.EntityFrameworkCore.props",
         "lib/net10.0/Microsoft.EntityFrameworkCore.dll",
         "lib/net10.0/Microsoft.EntityFrameworkCore.xml",
-        "microsoft.entityframeworkcore.10.0.4.nupkg.sha512",
+        "microsoft.entityframeworkcore.10.0.8.nupkg.sha512",
         "microsoft.entityframeworkcore.nuspec"
       ]
     },
-    "Microsoft.EntityFrameworkCore.Abstractions/10.0.4": {
-      "sha512": "qDcJqCfN1XYyX0ID/Hd9/kQTRvlia8S+Yuwyl9uFhBIKnOCbl9WMdGQCzbZUKbkpkfvf3P9CDdXsnxHyE3O0Aw==",
+    "Microsoft.EntityFrameworkCore.Abstractions/10.0.8": {
+      "sha512": "jbKDXWPZQhuPHygMnwzNOqxBADVcpRVytcKYZsA++QqhPkpF93Ta8o5mbJQGrARSjlkr9WtOaADV97EDMOZ7DA==",
       "type": "package",
-      "path": "microsoft.entityframeworkcore.abstractions/10.0.4",
+      "path": "microsoft.entityframeworkcore.abstractions/10.0.8",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -1945,28 +2350,28 @@
         "PACKAGE.md",
         "lib/net10.0/Microsoft.EntityFrameworkCore.Abstractions.dll",
         "lib/net10.0/Microsoft.EntityFrameworkCore.Abstractions.xml",
-        "microsoft.entityframeworkcore.abstractions.10.0.4.nupkg.sha512",
+        "microsoft.entityframeworkcore.abstractions.10.0.8.nupkg.sha512",
         "microsoft.entityframeworkcore.abstractions.nuspec"
       ]
     },
-    "Microsoft.EntityFrameworkCore.Analyzers/10.0.4": {
-      "sha512": "pQeMHCyD3yTtCEGnHV4VsgKUvrESo3MR5mnh8sgQ1hWYmI1YFsUutDowBIxkobeWRtaRmBqQAtF7XQFW6FWuNA==",
+    "Microsoft.EntityFrameworkCore.Analyzers/10.0.8": {
+      "sha512": "M3BZ8JH8rB6BE7dO2g9iVbrHLnEz9wMXT6q+tDR6Nq3gyP3KmBj5OTiZGxyF3vesjOQNKanYoPGSNBR4kR2llg==",
       "type": "package",
-      "path": "microsoft.entityframeworkcore.analyzers/10.0.4",
+      "path": "microsoft.entityframeworkcore.analyzers/10.0.8",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "Icon.png",
         "analyzers/dotnet/cs/Microsoft.EntityFrameworkCore.Analyzers.dll",
         "docs/PACKAGE.md",
-        "microsoft.entityframeworkcore.analyzers.10.0.4.nupkg.sha512",
+        "microsoft.entityframeworkcore.analyzers.10.0.8.nupkg.sha512",
         "microsoft.entityframeworkcore.analyzers.nuspec"
       ]
     },
-    "Microsoft.EntityFrameworkCore.Relational/10.0.4": {
-      "sha512": "DOTjTHy93W3TwpMLM4SCm0n57Sc0Jj3+m2S6LSTstKyBB34eT1UouaMS19mpWwvtj42+sRiEjA3+rOTNoNzXFQ==",
+    "Microsoft.EntityFrameworkCore.Relational/10.0.8": {
+      "sha512": "UU3diAD2wwZveye2rnrwaF/wvJ9tm5iL2fuY9TTap6/iGQK1OO29M1BzXZRlRPVH/dByt5w/pISBSFtyR7hTqw==",
       "type": "package",
-      "path": "microsoft.entityframeworkcore.relational/10.0.4",
+      "path": "microsoft.entityframeworkcore.relational/10.0.8",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -1974,14 +2379,14 @@
         "PACKAGE.md",
         "lib/net10.0/Microsoft.EntityFrameworkCore.Relational.dll",
         "lib/net10.0/Microsoft.EntityFrameworkCore.Relational.xml",
-        "microsoft.entityframeworkcore.relational.10.0.4.nupkg.sha512",
+        "microsoft.entityframeworkcore.relational.10.0.8.nupkg.sha512",
         "microsoft.entityframeworkcore.relational.nuspec"
       ]
     },
-    "Microsoft.Extensions.Caching.Abstractions/10.0.4": {
-      "sha512": "uDRooaV6N3WZ0kdlNPMB68/MdGn/in1Fs7Db7DnIm85RBTPy4P321WO+daAImiYpH5dekjNggDqy1N44WaIlMA==",
+    "Microsoft.Extensions.Caching.Abstractions/10.0.8": {
+      "sha512": "EoK2TwVR1daxmfXUPnvIYZSk5XQjHe45sGekox4kvMt88KQZQhDVzYW5Na5+oNwTuRpE48hipyGJg12F1Tm70w==",
       "type": "package",
-      "path": "microsoft.extensions.caching.abstractions/10.0.4",
+      "path": "microsoft.extensions.caching.abstractions/10.0.8",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2002,15 +2407,15 @@
         "lib/net9.0/Microsoft.Extensions.Caching.Abstractions.xml",
         "lib/netstandard2.0/Microsoft.Extensions.Caching.Abstractions.dll",
         "lib/netstandard2.0/Microsoft.Extensions.Caching.Abstractions.xml",
-        "microsoft.extensions.caching.abstractions.10.0.4.nupkg.sha512",
+        "microsoft.extensions.caching.abstractions.10.0.8.nupkg.sha512",
         "microsoft.extensions.caching.abstractions.nuspec",
         "useSharedDesignerContext.txt"
       ]
     },
-    "Microsoft.Extensions.Caching.Memory/10.0.4": {
-      "sha512": "CLLussNUMdSbyJOu4VBF7sqskHGB/5N1EcFzrqG/HsPATN8fCRUcfp0qns1VwkxKHwxrtYCh5FKe+kM81Q1PHA==",
+    "Microsoft.Extensions.Caching.Memory/10.0.8": {
+      "sha512": "sYMYQjNprfqPTryuLNnr0/AOtnhlfuZ0ZxyOV0d3AXOEL8j9KV0EbelpZYyIatT2hJiaSGO9XGr5YDRsh22OfQ==",
       "type": "package",
-      "path": "microsoft.extensions.caching.memory/10.0.4",
+      "path": "microsoft.extensions.caching.memory/10.0.8",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2031,7 +2436,7 @@
         "lib/net9.0/Microsoft.Extensions.Caching.Memory.xml",
         "lib/netstandard2.0/Microsoft.Extensions.Caching.Memory.dll",
         "lib/netstandard2.0/Microsoft.Extensions.Caching.Memory.xml",
-        "microsoft.extensions.caching.memory.10.0.4.nupkg.sha512",
+        "microsoft.extensions.caching.memory.10.0.8.nupkg.sha512",
         "microsoft.extensions.caching.memory.nuspec",
         "useSharedDesignerContext.txt"
       ]
@@ -3615,6 +4020,48 @@
         "serilog.sinks.file.nuspec"
       ]
     },
+    "SharpZipLib/1.4.2": {
+      "sha512": "yjj+3zgz8zgXpiiC3ZdF/iyTBbz2fFvMxZFEBPUcwZjIvXOf37Ylm+K58hqMfIBt5JgU/Z2uoUS67JmTLe973A==",
+      "type": "package",
+      "path": "sharpziplib/1.4.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "images/sharpziplib-nuget-256x256.png",
+        "lib/net6.0/ICSharpCode.SharpZipLib.dll",
+        "lib/net6.0/ICSharpCode.SharpZipLib.pdb",
+        "lib/net6.0/ICSharpCode.SharpZipLib.xml",
+        "lib/netstandard2.0/ICSharpCode.SharpZipLib.dll",
+        "lib/netstandard2.0/ICSharpCode.SharpZipLib.pdb",
+        "lib/netstandard2.0/ICSharpCode.SharpZipLib.xml",
+        "lib/netstandard2.1/ICSharpCode.SharpZipLib.dll",
+        "lib/netstandard2.1/ICSharpCode.SharpZipLib.pdb",
+        "lib/netstandard2.1/ICSharpCode.SharpZipLib.xml",
+        "sharpziplib.1.4.2.nupkg.sha512",
+        "sharpziplib.nuspec"
+      ]
+    },
+    "SSH.NET/2025.1.0": {
+      "sha512": "jrnbtf0ItVaXAe6jE8X/kSLa6uC+0C+7W1vepcnRQB/rD88qy4IxG7Lf1FIbWmkoc4iVXv0pKrz+Wc6J4ngmHw==",
+      "type": "package",
+      "path": "ssh.net/2025.1.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "SS-NET-icon-h500.png",
+        "lib/net462/Renci.SshNet.dll",
+        "lib/net462/Renci.SshNet.xml",
+        "lib/net8.0/Renci.SshNet.dll",
+        "lib/net8.0/Renci.SshNet.xml",
+        "lib/net9.0/Renci.SshNet.dll",
+        "lib/net9.0/Renci.SshNet.xml",
+        "lib/netstandard2.0/Renci.SshNet.dll",
+        "lib/netstandard2.0/Renci.SshNet.xml",
+        "ssh.net.2025.1.0.nupkg.sha512",
+        "ssh.net.nuspec"
+      ]
+    },
     "System.Diagnostics.EventLog/10.0.9": {
       "sha512": "s2PcxHK4IYQ6gmD3VSBkym9tWGkFisKjcjWBdl7a+n4Yy66ae4beJ1ZdjDp060SSll4W3Rt4H2LW87dWckv+QQ==",
       "type": "package",
@@ -3674,6 +4121,56 @@
         "lib/netstandard2.0/System.IdentityModel.Tokens.Jwt.xml",
         "system.identitymodel.tokens.jwt.8.0.1.nupkg.sha512",
         "system.identitymodel.tokens.jwt.nuspec"
+      ]
+    },
+    "Testcontainers/4.12.0": {
+      "sha512": "PTZRdG1ZVkFMsFbc3cK/VUaOB5L3l4wYL+OkWAK33/cvgd/5FcmZlQ6NhMAl3PWBqYkpdWmeYmQW9U2OIXqtFA==",
+      "type": "package",
+      "path": "testcontainers/4.12.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE",
+        "README.md",
+        "docs/banner.png",
+        "docs/logo.png",
+        "lib/net10.0/Testcontainers.dll",
+        "lib/net10.0/Testcontainers.xml",
+        "lib/net8.0/Testcontainers.dll",
+        "lib/net8.0/Testcontainers.xml",
+        "lib/net9.0/Testcontainers.dll",
+        "lib/net9.0/Testcontainers.xml",
+        "lib/netstandard2.0/Testcontainers.dll",
+        "lib/netstandard2.0/Testcontainers.xml",
+        "lib/netstandard2.1/Testcontainers.dll",
+        "lib/netstandard2.1/Testcontainers.xml",
+        "testcontainers.4.12.0.nupkg.sha512",
+        "testcontainers.nuspec"
+      ]
+    },
+    "Testcontainers.PostgreSql/4.12.0": {
+      "sha512": "LZcQu4vfcYuzzy2ENOb7giFb6WNztEEJbufsm7kGiQxjallVuzkWxrBL8LwnjlXGW939pgEZFstL5cO0R2XrBQ==",
+      "type": "package",
+      "path": "testcontainers.postgresql/4.12.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE",
+        "README.md",
+        "docs/banner.png",
+        "docs/logo.png",
+        "lib/net10.0/Testcontainers.PostgreSql.dll",
+        "lib/net10.0/Testcontainers.PostgreSql.xml",
+        "lib/net8.0/Testcontainers.PostgreSql.dll",
+        "lib/net8.0/Testcontainers.PostgreSql.xml",
+        "lib/net9.0/Testcontainers.PostgreSql.dll",
+        "lib/net9.0/Testcontainers.PostgreSql.xml",
+        "lib/netstandard2.0/Testcontainers.PostgreSql.dll",
+        "lib/netstandard2.0/Testcontainers.PostgreSql.xml",
+        "lib/netstandard2.1/Testcontainers.PostgreSql.dll",
+        "lib/netstandard2.1/Testcontainers.PostgreSql.xml",
+        "testcontainers.postgresql.4.12.0.nupkg.sha512",
+        "testcontainers.postgresql.nuspec"
       ]
     },
     "xunit/2.9.3": {
@@ -3826,8 +4323,12 @@
     "net10.0": [
       "APIs >= 1.0.0",
       "Microsoft.AspNetCore.Mvc.Testing >= 10.0.9",
+      "Microsoft.EntityFrameworkCore >= 10.0.8",
+      "Microsoft.EntityFrameworkCore.Abstractions >= 10.0.8",
+      "Microsoft.EntityFrameworkCore.Relational >= 10.0.8",
       "Microsoft.NET.Test.Sdk >= 17.14.1",
       "NSubstitute >= 5.3.0",
+      "Testcontainers.PostgreSql >= 4.12.0",
       "coverlet.collector >= 6.0.4",
       "xunit >= 2.9.3",
       "xunit.runner.visualstudio >= 3.1.4"
@@ -3840,11 +4341,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "c:\\Users\\Kavin Ozzie Maziya\\Desktop\\Assignment_3_2\\CareerHub\\API.Tests\\API.Tests.csproj",
+      "projectUniqueName": "C:\\Users\\Kavin Ozzie Maziya\\Desktop\\Assignment_3_2\\CareerHub\\API.Tests\\API.Tests.csproj",
       "projectName": "API.Tests",
-      "projectPath": "c:\\Users\\Kavin Ozzie Maziya\\Desktop\\Assignment_3_2\\CareerHub\\API.Tests\\API.Tests.csproj",
+      "projectPath": "C:\\Users\\Kavin Ozzie Maziya\\Desktop\\Assignment_3_2\\CareerHub\\API.Tests\\API.Tests.csproj",
       "packagesPath": "C:\\Users\\Kavin Ozzie Maziya\\.nuget\\packages\\",
-      "outputPath": "c:\\Users\\Kavin Ozzie Maziya\\Desktop\\Assignment_3_2\\CareerHub\\API.Tests\\obj\\",
+      "outputPath": "C:\\Users\\Kavin Ozzie Maziya\\Desktop\\Assignment_3_2\\CareerHub\\API.Tests\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -3894,6 +4395,18 @@
             "target": "Package",
             "version": "[10.0.9, )"
           },
+          "Microsoft.EntityFrameworkCore": {
+            "target": "Package",
+            "version": "[10.0.8, )"
+          },
+          "Microsoft.EntityFrameworkCore.Abstractions": {
+            "target": "Package",
+            "version": "[10.0.8, )"
+          },
+          "Microsoft.EntityFrameworkCore.Relational": {
+            "target": "Package",
+            "version": "[10.0.8, )"
+          },
           "Microsoft.NET.Test.Sdk": {
             "target": "Package",
             "version": "[17.14.1, )"
@@ -3901,6 +4414,10 @@
           "NSubstitute": {
             "target": "Package",
             "version": "[5.3.0, )"
+          },
+          "Testcontainers.PostgreSql": {
+            "target": "Package",
+            "version": "[4.12.0, )"
           },
           "coverlet.collector": {
             "target": "Package",

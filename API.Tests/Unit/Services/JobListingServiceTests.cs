@@ -132,7 +132,7 @@ public class JobListingServiceTests
         _repository.GetJobListingByIdAsync(id).Returns(existing);
 
         var request = new UpdateJobListingRequest { Title = "Lead Architect" };
-        _repository.PatchAsync(id, request).Returns(new JobListResponse(id, "Lead Architect", "Acme Corp", "JHB", "R40k-R60k", 0, DateTime.UtcNow.AddDays(5)));
+        _repository.PatchAsync(id, request).Returns(new JobListResponse(id, "Lead Architect", "Acme Corp", "JHB", DateTime.UtcNow, "R40k-R60k", DateTime.UtcNow.AddDays(5), 0));
 
         // Act
         var result = await _sut.PatchAsync(id, request);

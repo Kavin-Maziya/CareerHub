@@ -32,7 +32,7 @@ public class ApplicationServiceTests
         // Arrange
         var jobListingId = Guid.NewGuid();
         var applicantId = Guid.NewGuid();
-        var existingApplication = new ApplicationResponse(jobListingId, applicantId, "Title", "Name", DateTime.UtcNow, from, jobListingId);
+        var existingApplication = new ApplicationResponse(jobListingId, jobListingId, applicantId, "Title", "Name", DateTime.UtcNow, from);
 
         _appRepo.GetApplicationsListAsync(jobListingId).Returns(new List<ApplicationResponse> { existingApplication });
         var request = new UpdateApplicationRequest(to);
@@ -55,7 +55,7 @@ public class ApplicationServiceTests
         // Arrange
         var jobListingId = Guid.NewGuid();
         var applicantId = Guid.NewGuid();
-        var existingApplication = new ApplicationResponse(jobListingId, applicantId, "Title", "Name", DateTime.UtcNow, from, jobListingId);
+        var existingApplication = new ApplicationResponse(jobListingId, jobListingId, applicantId, "Title", "Name", DateTime.UtcNow, from);
 
         _appRepo.GetApplicationsListAsync(jobListingId).Returns(new List<ApplicationResponse> { existingApplication });
         var request = new UpdateApplicationRequest(to);
