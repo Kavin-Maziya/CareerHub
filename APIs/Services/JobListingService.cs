@@ -172,7 +172,10 @@ var existing = await jobListingRepository.GetJobListingByIdAsync(id);
         if (existing is null)
             throw new JobNotFoundException(id);
 
-        // Compute evaluated state to validate constraints during a partial patch
+        // Ensure ownership consistency if company details are provided or required
+        if (request.Title != null && !existing.IsActive)
+            throw new ListingClosedException(id);
+
         if (request.SalaryMin.HasValue || request.SalaryMax.HasValue)
         {
             var testMin = request.SalaryMin ?? existing.SalaryMin;
