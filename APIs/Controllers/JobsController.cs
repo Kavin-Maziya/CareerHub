@@ -118,3 +118,4 @@ public class JobsController(IJobListingService jobListingService) : ControllerBa
         return NoContent();
     }
 }
+

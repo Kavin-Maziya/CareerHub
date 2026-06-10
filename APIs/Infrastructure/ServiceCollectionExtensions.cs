@@ -11,16 +11,13 @@ public static class ServiceCollectionExtensions
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        // Part 7: Register interceptor as Singleton before DbContext so it can
-        // be resolved and passed into AddInterceptors below.
+
         services.AddSingleton<SlowQueryInterceptor>();
 
         services.AddDbContext<CareerHubDbContext>((serviceProvider, options) =>
         {
             options.UseNpgsql(
                 configuration.GetConnectionString("DefaultConnection"));
-
-            // Part 7: Wire the interceptor into EF Core's command pipeline.
             options.AddInterceptors(
                 serviceProvider.GetRequiredService<SlowQueryInterceptor>());
         });

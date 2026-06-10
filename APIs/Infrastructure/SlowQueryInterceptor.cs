@@ -4,9 +4,8 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace APIs.Infrastructure;
 
-// Part 7: Logs any database command that exceeds SlowQueryThresholdMs.
-// Registered as Singleton because it holds no request state — only reads
-// from configuration which is also a singleton.
+// Registered as Singleton because it holds no request state
+
 public class SlowQueryInterceptor(IConfiguration configuration, ILogger<SlowQueryInterceptor> logger)
     : DbCommandInterceptor
 {

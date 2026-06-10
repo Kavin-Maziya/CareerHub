@@ -14,12 +14,17 @@ Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
     .CreateLogger();
 
+    .WriteTo.Console()
+    .CreateLogger();
+
 try
 {
     Log.Information("Starting up CareerHub number 1 Job Listing platform...");
     var builder = WebApplication.CreateBuilder(args);
 
+
     builder.Host.UseSerilog();
+
 
     builder.Services.AddControllers();
     builder.Services.AddApiVersioning(options =>
@@ -82,8 +87,10 @@ try
     });
     builder.Services.AddOpenApi();
     builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+    builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
     builder.Services.AddProblemDetails();
 
+    builder.Services.AddCors(options =>
     builder.Services.AddCors(options =>
     {
         options.AddPolicy("CareerHubFrontEndPolicy", policy =>
@@ -98,6 +105,23 @@ try
 
     var jwtSecretKey = builder.Configuration["Jwt:SecretKey"];
     builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        .AddJwtBearer(options =>
+        {
+            options.MapInboundClaims = false;
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(
+                    Encoding.UTF8.GetBytes(jwtSecretKey!)),
+                NameClaimType = ClaimTypes.Name,
+                RoleClaimType = ClaimTypes.Role
+            };
+        });
+
+    builder.Services.AddAuthorization();
         .AddJwtBearer(options =>
         {
             options.MapInboundClaims = false;
@@ -133,6 +157,8 @@ try
     app.UseAuthentication();
     app.UseAuthorization();
 
+    app.UseAuthorization();
+
     app.MapOpenApi();
     app.MapScalarApiReference();
     app.MapControllers().RequireRateLimiting("global");
@@ -145,4 +171,6 @@ catch (Exception ex)
 finally
 {
     Log.CloseAndFlush();
+    Log.CloseAndFlush();
 }
+
