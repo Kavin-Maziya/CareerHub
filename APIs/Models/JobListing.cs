@@ -1,6 +1,5 @@
 using NpgsqlTypes;
 
-using NpgsqlTypes;
 
 namespace APIs.Models;
 
@@ -41,4 +40,4 @@ public class JobListing
     public ICollection<Application> Applications { get; set; } = [];
 }
 
-}
+
