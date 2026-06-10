@@ -5,38 +5,42 @@ using System.Data;
 
 namespace APIs.DTOs;
 
-public record CreateJobRequest 
-(
-    [Required(ErrorMessage="Job Title is required when posting a job")]
-    [StringLength(120, MinimumLength = 5, ErrorMessage ="Job Title should be between 5 and 120 characters")]
+public record CreateJobRequest(
+    string Title, string CompanyName, string Industry, string Location, 
+    string Description, JobType Type, DateTime ClosingDate, 
+    decimal? SalaryMin, decimal? SalaryMax
+) : JobRequestBase(Title, CompanyName, Industry, Location, Description, Type, ClosingDate, SalaryMin, SalaryMax);
+
+public abstract record JobRequestBase(
+    [Required(ErrorMessage = "Job Title is required")]
+    [StringLength(120, MinimumLength = 5)]
     string Title,
 
     [Required(ErrorMessage = "Company name is required")]
-    [StringLength(150, MinimumLength = 2, ErrorMessage = "Company name must be between 2 and 150 characters")]
+    [StringLength(150, MinimumLength = 2)]
     string CompanyName,
 
-    [StringLength(100, ErrorMessage = "Industry must be under 100 characters")]
+    [StringLength(100)]
     string Industry,
 
-    [Required(ErrorMessage ="Location is required")]
+    [Required]
     string Location,
 
-    [Required(ErrorMessage = "Job description is required")]
-    [MinLength(20, ErrorMessage ="Job description should be a minimum 20 characters")]
+    [Required]
+    [MinLength(20)]
     string Description,
 
-    [Required(ErrorMessage="Job Type is required, must be one of: FullTime, PartTime, Contract, Internship")]
+    [Required]
     JobType Type,
 
-    [Required(ErrorMessage = "Closing date is required")]
+    [Required]
     DateTime ClosingDate,
 
-    [Range(0.01, double.MaxValue, ErrorMessage ="Salary must be greater than zero")]
+    [Range(0.01, double.MaxValue)]
     decimal? SalaryMin,
 
-    [Range(0.01, double.MaxValue, ErrorMessage ="Salary must be greater than zero")]
+    [Range(0.01, double.MaxValue)]
     decimal? SalaryMax
-    
 ) : IValidatableObject
 {
     public IEnumerable<ValidationResult> Validate(

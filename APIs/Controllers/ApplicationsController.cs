@@ -67,12 +67,12 @@ public async Task<IActionResult> GetApplicationByIdAsync(string id)
     }
 
     [Authorize(Roles = "Employer")]
-    [HttpPatch("{id:guid}/status")]
+    [HttpPatch("{jobListingId:guid}/{applicantId:guid}/status")]
     public async Task<IActionResult> PatchStatusAsync(
-    Guid jobListingId,
-    Guid applicantId,
-    [FromBody] UpdateApplicationStatusRequest request)
-    => Ok(await applicationService.PatchStatusAsync(jobListingId, applicantId, request.Status));
+        [FromRoute] Guid jobListingId,
+        [FromRoute] Guid applicantId,
+        [FromBody] UpdateApplicationStatusRequest request)
+        => Ok(await applicationService.PatchStatusAsync(jobListingId, applicantId, request.Status));
 
 
     [Authorize(Roles = "Employer")]

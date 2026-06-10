@@ -3,9 +3,4 @@ using APIs.Models;
 
 namespace APIs.DTOs;
 
-public record UpdateApplicationStatusRequest
-{
-    [Required]
-    public ApplicationStatus Status;
-    
-}
+public record UpdateApplicationStatusRequest([Required] ApplicationStatus Status);

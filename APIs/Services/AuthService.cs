@@ -47,6 +47,7 @@ u.Username == request.Username && u.Password == request.Password);
         var claims = new[]
         {
             new Claim(JwtRegisteredClaimNames.Sub, username), // Who the token belongs to
+            new Claim(ClaimTypes.Name, username),             // Matches NameClaimType in Program.cs
             new Claim(ClaimTypes.Role, role)                  // Which role gates they can pass
         };
 

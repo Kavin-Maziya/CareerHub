@@ -20,13 +20,14 @@ public class JobListingRepository(CareerHubDbContext db) : IJobListingRepository
                         j.Title,
                         j.Company.CompanyName,
                         j.Location,
+                        j.PostedAt,
                         j.SalaryMin.HasValue && j.SalaryMax.HasValue
                             ? $"R{j.SalaryMin:N0} – R{j.SalaryMax:N0}/month"
                             : j.SalaryMin.HasValue
                                 ? $"From R{j.SalaryMin:N0}/month"
                                 : "Salary not specified",
-                        j.Applications.Count(),
-                        j.ClosingDate
+                        j.ClosingDate,
+                        j.Applications.Count()
                     ))
         );
 
@@ -194,13 +195,14 @@ public class JobListingRepository(CareerHubDbContext db) : IJobListingRepository
                 j.Title,
                 j.Company.CompanyName,
                 j.Location,
+                j.PostedAt,
                 j.SalaryMin.HasValue && j.SalaryMax.HasValue
                     ? $"R{j.SalaryMin:N0} – R{j.SalaryMax:N0}/month"
                     : j.SalaryMin.HasValue
                         ? $"From R{j.SalaryMin:N0}/month"
                         : "Salary not specified",
-                j.Applications.Count(),
-                j.ClosingDate
+                j.ClosingDate,
+                j.Applications.Count()
             ))
             .ToListAsync();
 
@@ -281,13 +283,14 @@ public class JobListingRepository(CareerHubDbContext db) : IJobListingRepository
             j.Title,
             j.Company.CompanyName,
             j.Location,
+            j.PostedAt,
             j.SalaryMin.HasValue && j.SalaryMax.HasValue
                 ? $"R{j.SalaryMin:N0} – R{j.SalaryMax:N0}/month"
                 : j.SalaryMin.HasValue
                     ? $"From R{j.SalaryMin:N0}/month"
                     : "Salary not specified",
-            j.Applications.Count(),
-            j.ClosingDate
+            j.ClosingDate,
+            j.Applications.Count()
         ))
         .ToListAsync();
 
@@ -309,6 +312,7 @@ public async Task<JobListResponse> PatchAsync(Guid id, UpdateJobListingRequest r
 {
     var listing = await db.JobListings
         .Include(j => j.Company)
+        .Include(j => j.Applications)
         .FirstOrDefaultAsync(j => j.Id == id)
         ?? throw new JobNotFoundException(id);
 
@@ -344,6 +348,7 @@ public async Task<JobListResponse> PatchAsync(Guid id, UpdateJobListingRequest r
     {
         if (request.ExpiresAt <= DateTime.UtcNow)
             //throw new InvalidExpiryDateException();
+            throw new InvalidExpiryDateException();
 
         listing.ClosingDate = request.ExpiresAt.Value;
     }
@@ -355,13 +360,14 @@ public async Task<JobListResponse> PatchAsync(Guid id, UpdateJobListingRequest r
         Title: listing.Title,
         CompanyName: listing.Company.CompanyName,
         Location: listing.Location,
+        PostedAt: listing.PostedAt,
         SalaryDisplay: listing.SalaryMin.HasValue && listing.SalaryMax.HasValue
             ? $"R{listing.SalaryMin:N0} – R{listing.SalaryMax:N0}/month"
             : listing.SalaryMin.HasValue
                 ? $"From R{listing.SalaryMin:N0}/month"
                 : "Salary not specified",
-        ApplicationCount: listing.Applications.Count(),
-        ClosingDate: listing.ClosingDate
+        ClosingDate: listing.ClosingDate,
+        ApplicationCount: listing.Applications.Count()
     );
 }
 

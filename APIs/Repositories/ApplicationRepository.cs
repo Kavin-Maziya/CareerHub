@@ -37,16 +37,17 @@ public class ApplicationRepository(CareerHubDbContext db)
         return await db.Applications
             .AsNoTracking()
             .Include(a => a.JobListing)
+            .Include(a => a.Applicant)
             .Where(a => a.JobListingId == jobListingId)
             
             .Select(a => new ApplicationResponse(
-                JobListingId: a.JobListingId,
-    ApplicantId: a.ApplicantId,
-    JobTitle: a.JobListing.Title,
-    ApplicantName: $"{a.Applicant.FirstName} {a.Applicant.LastName}",
-    SubmittedAt: a.SubmittedAt,
-    Status: a.Status.ToString(),
-    Id: a.JobListingId
+                a.JobListingId, // Mapping JobListingId as the DTO Id for now
+                a.JobListingId,
+                a.ApplicantId,
+                a.JobListing.Title,
+                $"{a.Applicant.FirstName} {a.Applicant.LastName}",
+                a.SubmittedAt,
+                a.Status.ToString()
             ))
             .ToListAsync();
     }
@@ -57,16 +58,17 @@ public class ApplicationRepository(CareerHubDbContext db)
         return await db.Applications
             .AsNoTracking() 
             .Include(a => a.JobListing)
+            .Include(a => a.Applicant)
             .Where(a => a.ApplicantId == applicantId)
            
             .Select(a => new ApplicationResponse(
-                JobListingId: a.JobListingId,
-    ApplicantId: a.ApplicantId,
-    JobTitle: a.JobListing.Title,
-    ApplicantName: $"{a.Applicant.FirstName} {a.Applicant.LastName}",
-    SubmittedAt: a.SubmittedAt,
-    Status: a.Status.ToString(),
-    Id: a.JobListingId
+                a.JobListingId,
+                a.JobListingId,
+                a.ApplicantId,
+                a.JobListing.Title,
+                $"{a.Applicant.FirstName} {a.Applicant.LastName}",
+                a.SubmittedAt,
+                a.Status.ToString()
             ))
             .ToListAsync();
     }
@@ -135,13 +137,13 @@ public async Task<ApplicationResponse> PatchStatusAsync(
     await db.SaveChangesAsync();
 
     return new ApplicationResponse(
+        Id: application.JobListingId,
         JobListingId: application.JobListingId,
         ApplicantId: application.ApplicantId,
         JobTitle: application.JobListing.Title,
         ApplicantName: $"{application.Applicant.FirstName} {application.Applicant.LastName}",
         SubmittedAt: application.SubmittedAt,
-        Status: application.Status.ToString(),
-        Id: application.JobListingId
+        Status: application.Status.ToString()
     );
 }
 }
