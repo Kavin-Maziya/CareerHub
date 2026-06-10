@@ -1,9 +1,10 @@
-bin/
-obj/
-*.exe
-*.dll
-*.pdb
-*.suo
-*.user
+# Build output
+**/bin/
+**/obj/
+
+# VS files
 .vs/
-.idea/
+*.user
+
+# Environment
+.env
