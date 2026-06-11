@@ -8,23 +8,24 @@ on:
 
 jobs:
   build-and-test:
-    name: Execute Complete Verification Suite
+    name: Build and testing environment
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Code Repository
+    - name: Checkout Code Repository Actions
       uses: actions/checkout@v4
 
-    - name: Setup .NET SDK Run Environment
+    - name: Set up .NET SDK
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: '10.0.0'
+        dotnet-version: '10.0.x'
+        cache: true
 
-    - name: Restore Application Dependencies
+    - name: Restore App Dependencies
       run: dotnet restore
 
-    - name: Build Solution Binaries
+    - name: Build Solution without Restore
       run: dotnet build --no-restore --configuration Release
 
-    - name: Run Verification Suite (Unit, Integration & Repository)
+    - name: Run Testing (Unit, Integration & Repository)
       run: dotnet test --no-build --configuration Release --verbosity normal
