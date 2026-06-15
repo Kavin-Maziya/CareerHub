@@ -10,6 +10,7 @@ public class CareerHubDocumentTransformer : IOpenApiDocumentTransformer
         OpenApiDocumentTransformerContext context,
         CancellationToken cancellationToken)
     {
+        document.Info ??= new OpenApiInfo();
         document.Info.Title = "CareerHub API";
         document.Info.Version = "v1";
         document.Info.Description =
@@ -20,7 +21,8 @@ public class CareerHubDocumentTransformer : IOpenApiDocumentTransformer
         document.Info.Contact = new OpenApiContact
         {
             Name = "Kavin Maziya",
-            Email = "kavinmaziya256@gmail.com"
+            Email = "kavinmaziya256@gmail.com",
+            Url = new Uri("https://careerhubapi.production.com")
         };
 
         return Task.CompletedTask;

@@ -6,7 +6,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using APIs.Data;
 using Microsoft.Extensions.Configuration;
-using System.Collections.Generic;
 
 namespace API.Tests.Integration;
 
@@ -20,12 +19,22 @@ public class WebApplicationFactoryFixture : WebApplicationFactory<Program>
         {
             config.AddInMemoryCollection(new Dictionary<string, string?>
             {
-                ["Jwt:SecretKey"] = "a_very_long_and_secure_test_secret_key_at_least_32_chars"
+                ["Jwt:SecretKey"] = "a_very_long_and_secure_test_secret_key_at_least_32_chars",
+                ["ConnectionStrings:DefaultConnection"] = "Host=localhost;Database=CareerHub_Test;Username=postgres;Password=password123"
             });
         });
 
         builder.ConfigureTestServices(services =>
         {
+            var descriptor = services.SingleOrDefault(
+                d => d.ServiceType == typeof(DbContextOptions<CareerHubDbContext>));
+
+            if (descriptor is not null)
+                services.Remove(descriptor);
+
+            services.AddDbContext<CareerHubDbContext>(options =>
+                options.UseNpgsql(
+                    "Host=localhost;Database=CareerHub_Test;Username=postgres;Password=password123"));
         });
     }
 
@@ -33,11 +42,9 @@ public class WebApplicationFactoryFixture : WebApplicationFactory<Program>
     {
         var host = base.CreateHost(builder);
 
-        using (var scope = host.Services.CreateScope())
-        {
-            var db = scope.ServiceProvider.GetRequiredService<CareerHubDbContext>();
-            db.Database.Migrate();
-        }
+        using var scope = host.Services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<CareerHubDbContext>();
+        db.Database.Migrate();
 
         return host;
     }
