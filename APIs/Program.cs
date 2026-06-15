@@ -1,3 +1,5 @@
+using APIs.Data;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using API.Middleware;
 using Scalar.AspNetCore;
 using Serilog;
@@ -6,9 +8,13 @@ using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.Text;
 using APIs.Infrastructure;
+using APIs.Infrastructure.OpenApi;
 using Asp.Versioning;
 using Microsoft.AspNetCore.RateLimiting;
 using System.Threading.RateLimiting;
+using Microsoft.AspNetCore.OpenApi;
+using Microsoft.AspNetCore.ResponseCompression;
+using APIs.Services;
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
@@ -82,8 +88,23 @@ try
 
         });
     });
+    builder.Services.AddScoped<IOpenApiDocumentTransformer, CareerHubDocumentTransformer>();
     builder.Services.AddOpenApi();
     builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+    
+    builder.Services.AddHealthChecks()
+        .AddDbContextCheck<CareerHubDbContext>(
+            name: "database",
+            tags: ["ready"]);
+
+    builder.Services.AddResponseCompression(options =>
+    {
+        options.EnableForHttps = true;
+        options.Providers.Add<BrotliCompressionProvider>();
+        options.Providers.Add<GzipCompressionProvider>();
+        
+    });
+
     builder.Services.AddProblemDetails();
 
     builder.Services.AddCors(options =>
@@ -122,10 +143,12 @@ try
     builder.Services.AddDatabase(builder.Configuration);
     builder.Services.AddRepositories();
     builder.Services.AddApplicationServices();
+    builder.Services.AddHostedService<JobListingExpiryService>();
 
     var app = builder.Build();
 
     app.UseSerilogRequestLogging();
+    app.UseResponseCompression();
     app.UseCors("CareerHubFrontEndPolicy");
     app.UseExceptionHandler();
     app.UseStatusCodePages();
@@ -134,6 +157,17 @@ try
 
     app.UseAuthentication();
     app.UseAuthorization();
+
+// /health/live — answers "is the process running?"
+    app.MapHealthChecks("/health/live", new HealthCheckOptions
+    {
+        Predicate = _ => false
+    });
+// /health/ready — answers "can the process serve traffic?" (include a database check)
+    app.MapHealthChecks("/health/ready", new HealthCheckOptions
+    {
+        Predicate = check => check.Tags.Contains("ready")
+    });
 
     app.MapOpenApi();
     app.MapScalarApiReference();

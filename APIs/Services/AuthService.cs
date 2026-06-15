@@ -51,9 +51,11 @@ u.Username == request.Username && u.Password == request.Password);
             new Claim(ClaimTypes.Role, role)                  // Which role gates they can pass
         };
 
-        var key = new SymmetricSecurityKey(
-            Encoding.UTF8.GetBytes(_config["Jwt:SecretKey"]!));
+        var secretKey = _config["Jwt:SecretKey"];
+        if (string.IsNullOrEmpty(secretKey))
+            throw new InvalidOperationException("JWT Secret Key is not configured.");
 
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         var token = new JwtSecurityToken(

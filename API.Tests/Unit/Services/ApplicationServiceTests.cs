@@ -58,14 +58,14 @@ public class ApplicationServiceTests
         var existingApplication = new ApplicationResponse(jobListingId, jobListingId, applicantId, "Title", "Name", DateTime.UtcNow, from);
 
         _appRepo.GetApplicationsListAsync(jobListingId).Returns(new List<ApplicationResponse> { existingApplication });
-        var request = new UpdateApplicationRequest(to);
+        var request = new UpdateApplicationRequest(to); 
 
         // Act
         var act = () => _sut.UpdateApplicationStatusAsync(jobListingId, applicantId, request);
 
         // Assert
         await Assert.ThrowsAsync<InvalidStatusTransitionException>(act);
-        var parsedStatus = Enum.Parse<ApplicationStatus>(to);
+        var parsedStatus = Enum.Parse<ApplicationStatus>(to); 
         await _appRepo.DidNotReceive().UpdateApplicationStatusAsync(jobListingId, applicantId, parsedStatus);
     }
 

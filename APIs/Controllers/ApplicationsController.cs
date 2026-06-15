@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using APIs.DTOs;
 using APIs.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -67,6 +68,10 @@ public async Task<IActionResult> GetApplicationByIdAsync(string id)
     }
 
     [Authorize(Roles = "Employer")]
+    [EndpointSummary("Update application status")]
+    [EndpointDescription("Updates the current status of a job application. " +
+                         "Legal transitions: Submitted -> UnderReview, UnderReview -> Shortlisted, Shortlisted -> Offered or Rejected. " +
+                         "Illegal status transitions (Rejected -> Offered, Offered -> Shortlisted, Rejected -> Submitted) returns a 400 Bad Request.")]
     [HttpPatch("{jobListingId:guid}/{applicantId:guid}/status")]
     public async Task<IActionResult> PatchStatusAsync(
         [FromRoute] Guid jobListingId,

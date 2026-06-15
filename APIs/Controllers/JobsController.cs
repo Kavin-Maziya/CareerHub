@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using APIs.DTOs;
 using APIs.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -13,15 +14,11 @@ namespace APIs.Controllers;
 public class JobsController(IJobListingService jobListingService) : ControllerBase
 {
     [AllowAnonymous]
-    [HttpGet]
-    public async Task<ActionResult<IEnumerable<JobListResponse>>> GetJobsAsync()
-    {
-        var jobs = await jobListingService.GetActiveJobListingsAsync();
-        return Ok(jobs);
-    }
-
-    [AllowAnonymous]
     [HttpGet("{id:guid}")]
+    [EndpointSummary("Get job listing by ID")]
+    [EndpointDescription("Returns detailed information for a specific job listing. " +
+                         "This endpoint supports conditional GET requests using ETags. " +
+                         "If there's no matches a 304 status is returned.")]
     public async Task<IActionResult> GetJobByIdAsync(Guid id)
     {
         var job = await jobListingService.GetJobListingDetailAsync(id);
@@ -41,6 +38,11 @@ public class JobsController(IJobListingService jobListingService) : ControllerBa
 
     [AllowAnonymous]
     [HttpGet]
+    [EndpointSummary("List active job listings")]
+    [EndpointDescription("Returns a paginated list of active job listings. " +
+                         "The response includes the 'X-Total-Count' header for total result count. " +
+                         "The default page size is 20. " +
+                         "Available sort options: salarymin, salarymax, title, and postedAt.")]
     public async Task<ActionResult<PagedResponse<JobListResponse>>> GetJobsAsync(
     [FromQuery] int page = 1,
     [FromQuery] int pageSize = 20,
@@ -76,6 +78,10 @@ public class JobsController(IJobListingService jobListingService) : ControllerBa
     [AllowAnonymous]
     [HttpGet("search")]
     [EnableRateLimiting("search")]
+    [EndpointSummary("Search job listings")]
+    [EndpointDescription("Searches active job listings using a full-text search vector. " +
+                         "This endpoint is subject to a sliding window rate limit of 30 requests per 60-second duration. " +
+                         "Exceeding this limit returns a 429 Too Many Requests response.")]
     public async Task<ActionResult<IEnumerable<JobListResponse>>> SearchJobsAsync([FromQuery] string q)
         => Ok(await jobListingService.SearchAsync(q));
 
@@ -118,4 +124,3 @@ public class JobsController(IJobListingService jobListingService) : ControllerBa
         return NoContent();
     }
 }
-
