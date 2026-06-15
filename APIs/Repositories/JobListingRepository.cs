@@ -22,10 +22,7 @@ public class JobListingRepository(CareerHubDbContext db) : IJobListingRepository
                         j.Location,
                         j.PostedAt,
                         j.SalaryMin.HasValue && j.SalaryMax.HasValue
-                            ? $"R{j.SalaryMin:N0} – R{j.SalaryMax:N0}/month"
-                            : j.SalaryMin.HasValue
-                                ? $"From R{j.SalaryMin:N0}/month"
-                                : "Salary not specified",
+                            ? $"R{j.SalaryMin:N0} – R{j.SalaryMax:N0}/month" : j.SalaryMin.HasValue ? $"From R{j.SalaryMin:N0}/month" : "Salary not specified",
                         j.ClosingDate,
                         j.Applications.Count()
                     ))
@@ -347,8 +344,7 @@ public async Task<JobListResponse> PatchAsync(Guid id, UpdateJobListingRequest r
     if (request.ExpiresAt is not null)
     {
         if (request.ExpiresAt <= DateTime.UtcNow)
-            //throw new InvalidExpiryDateException();
-            throw new InvalidExpiryDateException();
+             throw new InvalidExpiryDateException();
 
         listing.ClosingDate = request.ExpiresAt.Value;
     }

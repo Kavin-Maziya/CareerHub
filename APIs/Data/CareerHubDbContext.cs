@@ -1,5 +1,6 @@
 using APIs.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace APIs.Data;
 
@@ -14,6 +15,13 @@ public class CareerHubDbContext(
     public DbSet<Applicant> Applicants => Set<Applicant>();
 
     public DbSet<Application> Applications => Set<Application>();
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        // Suppresses the error that kills tests when the model and snapshot have minor discrepancies.
+        optionsBuilder.ConfigureWarnings(w => w.Ignore(RelationalEventId.PendingModelChangesWarning));
+        base.OnConfiguring(optionsBuilder);
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

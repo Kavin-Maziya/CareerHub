@@ -154,7 +154,7 @@ public class JobListingService(IJobListingRepository jobListingRepository) : IJo
     private static string MapSalaryDisplay(decimal? salaryMin, decimal? salaryMax)
     {
         if (salaryMin.HasValue && salaryMax.HasValue)
-            return $"R{salaryMin:N0} R{salaryMax:N0}/month";
+            return $"R{salaryMin:N0} – R{salaryMax:N0}/month";
 
         if (salaryMin.HasValue)
             return $"From R{salaryMin:N0}/month";

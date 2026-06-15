@@ -1,0 +1,28 @@
+## Build output
+**/bin/
+**/obj/
+
+## VS files
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.doccache
+
+## Environment and Secrets
+.env
+appsettings.Development.json
+
+## User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.doccache
+
+## OS generated files
+.DS_Store
+.DS_Store?
+ehthumbs.db
+Icon?
+Thumbs.db
