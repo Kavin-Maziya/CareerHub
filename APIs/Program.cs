@@ -88,8 +88,10 @@ try
 
         });
     });
-    builder.Services.AddScoped<IOpenApiDocumentTransformer, CareerHubDocumentTransformer>();
-    builder.Services.AddOpenApi();
+    builder.Services.AddOpenApi(options =>
+{
+    options.AddDocumentTransformer<CareerHubDocumentTransformer>();
+});
     builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
     
     builder.Services.AddHealthChecks()
