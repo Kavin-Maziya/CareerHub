@@ -36,8 +36,42 @@ public class JobsController(IJobListingService jobListingService) : ControllerBa
     
     }
 
+[AllowAnonymous]
+    [HttpGet("all")] // This places the endpoint at /api/v1/jobs/all
+    [EndpointSummary("List all job listings including closed ones")]
+    [EndpointDescription("Returns a paginated list of all job listings (active and inactive). " +
+                         "The response includes the 'X-Total-Count' header for total result count.")]
+    public async Task<ActionResult<PagedResponse<JobListResponse>>> GetAllJobsAsync(
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 20,
+        [FromQuery] string? location = null,
+        [FromQuery] string? employmentType = null,
+        [FromQuery] decimal? salaryMin = null,
+        [FromQuery] decimal? salaryMax = null,
+        [FromQuery] Guid? companyId = null,
+        [FromQuery] string sort = "postedAt",
+        [FromQuery] string dir = "desc")
+    {
+        var filter = new JobListingFilterQuery
+        {
+            Location = location,
+            EmploymentType = employmentType,
+            SalaryMin = salaryMin,
+            SalaryMax = salaryMax,
+            CompanyId = companyId,
+            Sort = sort,
+            Dir = dir
+        };
+
+        // Executes our new database repository method bypass logic paths
+        var result = await jobListingService.GetAllListingsPagedAsync(page, pageSize, filter);
+        
+        Response.Headers["X-Total-Count"] = result.TotalCount.ToString();
+        return Ok(result);
+    }
+
     [AllowAnonymous]
-    [HttpGet]
+    [HttpGet("active")]
     [EndpointSummary("List active job listings")]
     [EndpointDescription("Returns a paginated list of active job listings. " +
                          "The response includes the 'X-Total-Count' header for total result count. " +

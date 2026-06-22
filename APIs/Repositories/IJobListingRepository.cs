@@ -5,6 +5,7 @@ namespace APIs.Repositories;
 
 public interface IJobListingRepository
 {
+    Task<PagedResponse<JobListResponse>> GetAllListingsPagedAsync(int page, int pageSize, JobListingFilterQuery filter);
     Task<IEnumerable<JobListResponse>> GetActiveJobListingsAsync();
 
     Task<JobDetailResponse?> GetJobListingDetailAsync(Guid id);

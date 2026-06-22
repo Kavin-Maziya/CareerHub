@@ -45,6 +45,10 @@ public class CareerHubDbContext(
             entity.Property(j => j.Location)
                 .IsRequired()
                 .HasMaxLength(200);
+                
+            entity.Property(j => j.EmploymentType)
+    .HasColumnName("Type")
+    .HasConversion<string>();
 
             entity.HasIndex(j => new
             {

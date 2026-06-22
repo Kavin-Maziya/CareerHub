@@ -19,8 +19,7 @@ public class JobListing
 
     public string Location { get; set; } = string.Empty;
 
-    public JobType Type { get; set; }
-
+public EmploymentType EmploymentType { get; set; }
     public DateTime ClosingDate { get; set; }
 
     public decimal? SalaryMin { get; set; }

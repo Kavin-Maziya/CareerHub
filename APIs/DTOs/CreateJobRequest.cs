@@ -7,9 +7,9 @@ namespace APIs.DTOs;
 
 public record CreateJobRequest(
     string Title, string CompanyName, string Industry, string Location, 
-    string Description, JobType Type, DateTime ClosingDate, 
+    string Description, EmploymentType EmploymentType, DateTime ClosingDate, 
     decimal? SalaryMin, decimal? SalaryMax
-) : JobRequestBase(Title, CompanyName, Industry, Location, Description, Type, ClosingDate, SalaryMin, SalaryMax);
+) : JobRequestBase(Title, CompanyName, Industry, Location, Description, EmploymentType, ClosingDate, SalaryMin, SalaryMax);
 
 public abstract record JobRequestBase(
     [Required(ErrorMessage = "Job Title is required")]
@@ -31,7 +31,7 @@ public abstract record JobRequestBase(
     string Description,
 
     [Required]
-    JobType Type,
+    EmploymentType EmploymentType,
 
     [Required]
     DateTime ClosingDate,

@@ -7,6 +7,11 @@ namespace APIs.Services;
 
 public class JobListingService(IJobListingRepository jobListingRepository) : IJobListingService
 {
+    public async Task<PagedResponse<JobListResponse>> GetAllListingsPagedAsync(int page, int pageSize, JobListingFilterQuery filter)
+    {
+        return await jobListingRepository.GetAllListingsPagedAsync(page, pageSize, filter);
+    }
+
     public async Task<IEnumerable<JobListResponse>> GetActiveJobListingsAsync()
     {
         return await jobListingRepository.GetActiveJobListingsAsync();
@@ -58,7 +63,7 @@ public class JobListingService(IJobListingRepository jobListingRepository) : IJo
             Title = request.Title,
             Location = request.Location,
             Description = request.Description,
-            Type = request.Type,
+            EmploymentType = request.EmploymentType,
             ClosingDate = request.ClosingDate,
             SalaryMin = request.SalaryMin,
             SalaryMax = request.SalaryMax,
@@ -74,8 +79,11 @@ public class JobListingService(IJobListingRepository jobListingRepository) : IJo
             CompanyName: request.CompanyName,
             Location: listing.Location,
             SalaryDisplay: MapSalaryDisplay(listing.SalaryMin, listing.SalaryMax),
+            PostedAt: listing.PostedAt,
             ApplicationCount: 0,
-            ClosingDate: listing.ClosingDate
+            ClosingDate: listing.ClosingDate,
+            IsActive: listing.IsActive,
+            EmploymentType: listing.EmploymentType  
         );
     }
 
@@ -101,7 +109,7 @@ public class JobListingService(IJobListingRepository jobListingRepository) : IJo
         existing.Title = request.Title;
         existing.Location = request.Location;
         existing.Description = request.Description;
-        existing.Type = request.Type;
+        existing.EmploymentType = request.EmploymentType;
         existing.ClosingDate = request.ClosingDate;
         existing.SalaryMin = request.SalaryMin;
         existing.SalaryMax = request.SalaryMax;
@@ -113,9 +121,12 @@ public class JobListingService(IJobListingRepository jobListingRepository) : IJo
             Title: existing.Title,
             CompanyName: request.CompanyName,
             Location: existing.Location,
+            PostedAt: existing.PostedAt,
             SalaryDisplay: MapSalaryDisplay(existing.SalaryMin, existing.SalaryMax),
             ApplicationCount: 0,
-            ClosingDate: existing.ClosingDate
+            ClosingDate: existing.ClosingDate,
+            IsActive: existing.IsActive,
+            EmploymentType: existing.EmploymentType  
         );
     }
 
@@ -139,13 +150,11 @@ public class JobListingService(IJobListingRepository jobListingRepository) : IJo
         await jobListingRepository.DeleteJobListingAsync(id);
     }
 
-    // Full-text search delegates straight to the repository
     public async Task<IEnumerable<JobListResponse>> SearchAsync(string searchTerm)
     {
         return await jobListingRepository.SearchAsync(searchTerm);
     }
 
-    // Application stats delegates straight to the repository
     public async Task<IEnumerable<JobListingStatsResponse>> GetApplicationStatsAsync(Guid companyId)
     {
         return await jobListingRepository.GetApplicationStatsAsync(companyId);
@@ -166,13 +175,14 @@ public class JobListingService(IJobListingRepository jobListingRepository) : IJo
     {
         return await jobListingRepository.GetActiveListingsPagedAsync(page, pageSize, filter);
     }
+
     public async Task<JobListResponse> PatchAsync(Guid id, UpdateJobListingRequest request)
-{
-var existing = await jobListingRepository.GetJobListingByIdAsync(id);
+    {
+        var existing = await jobListingRepository.GetJobListingByIdAsync(id);
+
         if (existing is null)
             throw new JobNotFoundException(id);
 
-        // Ensure ownership consistency if company details are provided or required
         if (request.Title != null && !existing.IsActive)
             throw new ListingClosedException(id);
 
@@ -184,5 +194,6 @@ var existing = await jobListingRepository.GetJobListingByIdAsync(id);
                 throw new InvalidSalaryRangeException();
         }
 
-        return await jobListingRepository.PatchAsync(id, request);}
+        return await jobListingRepository.PatchAsync(id, request);
+    }
 }
