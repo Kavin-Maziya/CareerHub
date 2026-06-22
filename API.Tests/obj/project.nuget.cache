@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "3bbJtAlocFU=",
+  "dgSpecHash": "rOKL6HbltI4=",
   "success": true,
-  "projectFilePath": "C:\\Users\\LCBitcube\\Desktop\\Career-Hub\\assignment-3-2\\CareerHub\\API.Tests\\API.Tests.csproj",
+  "projectFilePath": "C:\\Users\\LCBitcube\\Downloads\\Backend\\CareerHub\\API.Tests\\API.Tests.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\LCBitcube\\.nuget\\packages\\asp.versioning.abstractions\\10.0.0\\asp.versioning.abstractions.10.0.0.nupkg.sha512",
     "C:\\Users\\LCBitcube\\.nuget\\packages\\asp.versioning.http\\10.0.0\\asp.versioning.http.10.0.0.nupkg.sha512",
