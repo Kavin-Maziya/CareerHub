@@ -58,8 +58,8 @@ public async Task<IActionResult> GetApplicationByIdAsync(string id)
         return Ok(applications);
     }
 
-    [Authorize(Roles = "Applicant")]
-    [HttpPost]
+    //[Authorize(Roles = "Applicant")]
+    [HttpPost("apply")]
     [EnableRateLimiting("apply")]
     public async Task<ActionResult<ApplicationResponse>> SubmitApplicationAsync([FromBody] CreateApplicationRequest request)
     {

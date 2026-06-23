@@ -47,8 +47,8 @@ public class CareerHubDbContext(
                 .HasMaxLength(200);
                 
             entity.Property(j => j.EmploymentType)
-    .HasColumnName("Type")
-    .HasConversion<string>();
+                .HasColumnName("Type")
+                .HasConversion<string>();
 
             entity.HasIndex(j => new
             {
@@ -63,8 +63,6 @@ public class CareerHubDbContext(
                 .HasForeignKey(j => j.CompanyId) // Use CompanyId as the foreign key
                 .OnDelete(DeleteBehavior.Restrict); // Prevent cascade delete to preserve job listings if a company is deleted
         });
-
-
 
         modelBuilder.Entity<Company>(entity =>
         {
@@ -123,6 +121,36 @@ public class CareerHubDbContext(
                 .IsRequired();
 
             entity.Property(a => a.Status)
+                .IsRequired();
+
+            // --- Extended Application Submission Metadata ---
+            entity.Property(a => a.FullName)
+                .IsRequired()
+                .HasMaxLength(100);
+
+            entity.Property(a => a.Email)
+                .IsRequired()
+                .HasMaxLength(150);
+
+            entity.Property(a => a.Phone)
+                .IsRequired(false)
+                .HasMaxLength(20);
+
+            entity.Property(a => a.YearsOfExperience)
+                .IsRequired();
+
+            entity.Property(a => a.CoverLetter)
+                .IsRequired()
+                .HasMaxLength(2000);
+
+            entity.Property(a => a.LinkedInUrl)
+                .IsRequired(false)
+                .HasMaxLength(200);
+
+            entity.Property(a => a.AvailableImmediately)
+                .IsRequired();
+
+            entity.Property(a => a.NoticePeriodWeeks)
                 .IsRequired();
 
             // Application and JobListing relationship (many-to-one)

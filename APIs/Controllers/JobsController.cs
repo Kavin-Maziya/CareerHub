@@ -125,9 +125,9 @@ public class JobsController(IJobListingService jobListingService) : ControllerBa
     public async Task<ActionResult<IEnumerable<JobListingStatsResponse>>> GetStatsAsync([FromQuery] Guid companyId)
         => Ok(await jobListingService.GetApplicationStatsAsync(companyId));
 
-    [Authorize(Roles = "Employer")]
+    //[Authorize(Roles = "Employer")]
     [EnableRateLimiting("post-listing")]
-    [HttpPost]
+    [HttpPost("create")]
     public async Task<ActionResult<JobListResponse>> CreateJobAsync([FromBody] CreateJobRequest request)
     {
         var job = await jobListingService.CreateJobListingAsync(request);
