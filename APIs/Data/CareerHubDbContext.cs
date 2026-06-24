@@ -163,5 +163,142 @@ public class CareerHubDbContext(
                 .WithMany(a => a.Applications) // One applicant can submit many applications
                 .HasForeignKey(a => a.ApplicantId); // Use ApplicantId as the foreign key
         });
+
+        SeedCompanies(modelBuilder);
+        SeedJobListings(modelBuilder);
     }
+
+    private void SeedCompanies(ModelBuilder modelBuilder)
+{
+    modelBuilder.Entity<Company>().HasData(
+        new Company
+        {
+            CompanyId = Guid.Parse("aaaaaaaa-0000-0000-0000-000000000001"),
+            CompanyName = "Takealot",
+            Industry = "Technology"
+        },
+        new Company
+        {
+            CompanyId = Guid.Parse("aaaaaaaa-0000-0000-0000-000000000002"),
+            CompanyName = "Vodacom",
+            Industry = "Telecommunications"
+        },
+        new Company
+        {
+            CompanyId = Guid.Parse("aaaaaaaa-0000-0000-0000-000000000003"),
+            CompanyName = "Discovery",
+            Industry = "Insurance"
+        },
+        new Company
+        {
+            CompanyId = Guid.Parse("aaaaaaaa-0000-0000-0000-000000000004"),
+            CompanyName = "Standard Bank",
+            Industry = "Finance"
+        },
+        new Company
+        {
+            CompanyId = Guid.Parse("aaaaaaaa-0000-0000-0000-000000000005"),
+            CompanyName = "FNB FirstRand",
+            Industry = "Finance"
+        },
+        new Company
+        {
+            CompanyId = Guid.Parse("aaaaaaaa-0000-0000-0000-000000000006"),
+            CompanyName = "Media24",
+            Industry = "Media"
+        }
+    );
+}
+private void SeedJobListings(ModelBuilder modelBuilder)
+{
+    var now = new DateTime(2026, 06, 24, 0, 0, 0, DateTimeKind.Utc);
+
+    modelBuilder.Entity<JobListing>().HasData(
+        new JobListing
+        {
+            Id = Guid.Parse("a1b2c3d4-e5f6-7890-abcd-ef1234567890"),
+            Title = "Senior Frontend Software Engineer",
+            Description = "We are looking for a talented Senior Frontend Engineer...",
+            CompanyId = Guid.Parse("aaaaaaaa-0000-0000-0000-000000000001"),
+            Location = "Cape Town",
+            EmploymentType = EmploymentType.FullTime,
+            SalaryMin = 30000,
+            SalaryMax = 45000,
+            PostedAt = now,
+            IsActive = true,
+            ClosingDate = now.AddDays(30)
+        },
+        new JobListing
+        {
+            Id = Guid.Parse("b2c3d4e5-f6a7-8901-bcde-f12345678901"),
+            Title = "Junior Systems Developer",
+            Description = "We are looking for a Junior Systems Developer...",
+            CompanyId = Guid.Parse("aaaaaaaa-0000-0000-0000-000000000002"),
+            Location = "Johannesburg, Sandton",
+            EmploymentType = EmploymentType.FullTime,
+            SalaryMin = 15000,
+            SalaryMax = 30000,
+            PostedAt = now.AddDays(-3),
+            IsActive = true,
+            ClosingDate = now.AddDays(30)
+        },
+        new JobListing
+        {
+            Id = Guid.Parse("c3d4e5f6-a7b8-9012-cdef-123456789012"),
+            Title = "UX/Web Designer",
+            Description = "We are looking for a creative UX/Web Designer...",
+            CompanyId = Guid.Parse("aaaaaaaa-0000-0000-0000-000000000003"),
+            Location = "Sandton",
+            EmploymentType = EmploymentType.Contract,
+            SalaryMin = 10000,
+            SalaryMax = 18000,
+            PostedAt = now.AddDays(-10),
+            IsActive = true,
+            ClosingDate = now.AddDays(30)
+        },
+        new JobListing
+        {
+            Id = Guid.Parse("d4e5f6a7-b8c9-0123-defa-234567890123"),
+            Title = "Data Analyst Intern",
+            Description = "We are looking for a Data Analyst Intern...",
+            CompanyId = Guid.Parse("aaaaaaaa-0000-0000-0000-000000000004"),
+            Location = "Pretoria/Hybrid",
+            EmploymentType = EmploymentType.Internship,
+            SalaryMin = 15000,
+            SalaryMax = 22000,
+            PostedAt = now.AddDays(-45),
+            IsActive = false,
+            ClosingDate = now.AddDays(-5)
+        },
+        new JobListing
+        {
+            Id = Guid.Parse("e5f6a7b8-c9d0-1234-efab-345678901234"),
+            Title = "Senior DevOps Engineer",
+            Description = "We are looking for a Senior DevOps Engineer...",
+            CompanyId = Guid.Parse("aaaaaaaa-0000-0000-0000-000000000005"),
+            Location = "Bloemfontein",
+            EmploymentType = EmploymentType.FullTime,
+            SalaryMin = 70000,
+            SalaryMax = 110000,
+            PostedAt = now.AddDays(-2),
+            IsActive = true,
+            ClosingDate = now.AddDays(30)
+        },
+        new JobListing
+        {
+            Id = Guid.Parse("f6a7b8c9-d0e1-2345-fabc-456789012345"),
+            Title = "Part-Time Content Writer/Promoter",
+            Description = "We are looking for a Content Writer...",
+            CompanyId = Guid.Parse("aaaaaaaa-0000-0000-0000-000000000006"),
+            Location = "Remote",
+            EmploymentType = EmploymentType.PartTime,
+            SalaryMin = 12000,
+            SalaryMax = 18000,
+            PostedAt = now.AddDays(-60),
+            IsActive = true,
+            ClosingDate = now.AddDays(30)
+        }
+    );
+}
+
 }

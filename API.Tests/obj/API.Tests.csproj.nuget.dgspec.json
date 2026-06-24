@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\LCBitcube\\Desktop\\FrontEnd_Assignments\\assignment_1_4\\CareerHub\\API.Tests\\API.Tests.csproj": {}
+    "C:\\Users\\LCBitcube\\Desktop\\FrontEnd_Assignments\\assignment-2-1\\CareerHub\\API.Tests\\API.Tests.csproj": {}
   },
   "projects": {
-    "C:\\Users\\LCBitcube\\Desktop\\FrontEnd_Assignments\\assignment_1_4\\CareerHub\\API.Tests\\API.Tests.csproj": {
+    "C:\\Users\\LCBitcube\\Desktop\\FrontEnd_Assignments\\assignment-2-1\\CareerHub\\API.Tests\\API.Tests.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\LCBitcube\\Desktop\\FrontEnd_Assignments\\assignment_1_4\\CareerHub\\API.Tests\\API.Tests.csproj",
+        "projectUniqueName": "C:\\Users\\LCBitcube\\Desktop\\FrontEnd_Assignments\\assignment-2-1\\CareerHub\\API.Tests\\API.Tests.csproj",
         "projectName": "API.Tests",
-        "projectPath": "C:\\Users\\LCBitcube\\Desktop\\FrontEnd_Assignments\\assignment_1_4\\CareerHub\\API.Tests\\API.Tests.csproj",
+        "projectPath": "C:\\Users\\LCBitcube\\Desktop\\FrontEnd_Assignments\\assignment-2-1\\CareerHub\\API.Tests\\API.Tests.csproj",
         "packagesPath": "C:\\Users\\LCBitcube\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\LCBitcube\\Desktop\\FrontEnd_Assignments\\assignment_1_4\\CareerHub\\API.Tests\\obj\\",
+        "outputPath": "C:\\Users\\LCBitcube\\Desktop\\FrontEnd_Assignments\\assignment-2-1\\CareerHub\\API.Tests\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\LCBitcube\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -27,8 +27,8 @@
             "framework": "net10.0",
             "targetAlias": "net10.0",
             "projectReferences": {
-              "C:\\Users\\LCBitcube\\Desktop\\FrontEnd_Assignments\\assignment_1_4\\CareerHub\\APIs\\APIs.csproj": {
-                "projectPath": "C:\\Users\\LCBitcube\\Desktop\\FrontEnd_Assignments\\assignment_1_4\\CareerHub\\APIs\\APIs.csproj"
+              "C:\\Users\\LCBitcube\\Desktop\\FrontEnd_Assignments\\assignment-2-1\\CareerHub\\APIs\\APIs.csproj": {
+                "projectPath": "C:\\Users\\LCBitcube\\Desktop\\FrontEnd_Assignments\\assignment-2-1\\CareerHub\\APIs\\APIs.csproj"
               }
             }
           }
@@ -385,14 +385,14 @@
         }
       }
     },
-    "C:\\Users\\LCBitcube\\Desktop\\FrontEnd_Assignments\\assignment_1_4\\CareerHub\\APIs\\APIs.csproj": {
+    "C:\\Users\\LCBitcube\\Desktop\\FrontEnd_Assignments\\assignment-2-1\\CareerHub\\APIs\\APIs.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\LCBitcube\\Desktop\\FrontEnd_Assignments\\assignment_1_4\\CareerHub\\APIs\\APIs.csproj",
+        "projectUniqueName": "C:\\Users\\LCBitcube\\Desktop\\FrontEnd_Assignments\\assignment-2-1\\CareerHub\\APIs\\APIs.csproj",
         "projectName": "APIs",
-        "projectPath": "C:\\Users\\LCBitcube\\Desktop\\FrontEnd_Assignments\\assignment_1_4\\CareerHub\\APIs\\APIs.csproj",
+        "projectPath": "C:\\Users\\LCBitcube\\Desktop\\FrontEnd_Assignments\\assignment-2-1\\CareerHub\\APIs\\APIs.csproj",
         "packagesPath": "C:\\Users\\LCBitcube\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\LCBitcube\\Desktop\\FrontEnd_Assignments\\assignment_1_4\\CareerHub\\APIs\\obj\\",
+        "outputPath": "C:\\Users\\LCBitcube\\Desktop\\FrontEnd_Assignments\\assignment-2-1\\CareerHub\\APIs\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\LCBitcube\\AppData\\Roaming\\NuGet\\NuGet.Config"

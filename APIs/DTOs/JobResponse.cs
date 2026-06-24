@@ -8,6 +8,7 @@ public record JobListResponse(
     string Title,
     string CompanyName,
     string Location,
+    string Description,
     DateTime PostedAt,
     string SalaryDisplay,
     DateTime ClosingDate,

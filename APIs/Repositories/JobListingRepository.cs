@@ -20,6 +20,7 @@ public class JobListingRepository(CareerHubDbContext db) : IJobListingRepository
                         j.Title,
                         j.Company.CompanyName,
                         j.Location,
+                        j.Description,
                         j.PostedAt,
                         j.SalaryMin.HasValue && j.SalaryMax.HasValue
                             ? $"R{j.SalaryMin:N0} – R{j.SalaryMax:N0}/month"
@@ -83,6 +84,7 @@ public class JobListingRepository(CareerHubDbContext db) : IJobListingRepository
                 j.Title,
                 j.Company.CompanyName,
                 j.Location,
+                j.Description,
                 j.PostedAt,
                 j.SalaryMin.HasValue && j.SalaryMax.HasValue
                     ? $"R{j.SalaryMin:N0} – R{j.SalaryMax:N0}/month"
@@ -119,42 +121,43 @@ public class JobListingRepository(CareerHubDbContext db) : IJobListingRepository
     }
 
     public async Task<JobDetailResponse?> GetJobListingDetailAsync(Guid id)
-    {
-        var job = await db.JobListings
-            .AsNoTracking()
-            .Include(j => j.Company)
-            .Include(j => j.Applications)
-                .ThenInclude(a => a.Applicant)
-            .FirstOrDefaultAsync(j => j.Id == id);
+{
+    var job = await db.JobListings
+        .AsNoTracking()
+        .Include(j => j.Company)
+        .Include(j => j.Applications)
+            .ThenInclude(a => a.Applicant)
+        .FirstOrDefaultAsync(j => j.Id == id);
 
-        if (job is null)
-            return null;
+    if (job is null || job.Company is null)
+        return null;
 
-        return new JobDetailResponse(
-            Id: job.Id,
-            Title: job.Title,
-            CompanyId: job.CompanyId,
-            CompanyName: job.Company.CompanyName,
-            Location: job.Location,
-            Description: job.Description,
-            SalaryDisplay:
-                job.SalaryMin.HasValue && job.SalaryMax.HasValue
+    return new JobDetailResponse(
+        Id: job.Id,
+        Title: job.Title,
+        CompanyId: job.CompanyId,
+        CompanyName: job.Company?.CompanyName ?? "Unknown Company",
+        Location: job.Location,
+        Description: job.Description,
+        SalaryDisplay:
+            job.SalaryMin.HasValue && job.SalaryMax.HasValue
                 ? $"R{job.SalaryMin:N0} – R{job.SalaryMax:N0}/month"
                 : job.SalaryMin.HasValue
                     ? $"From R{job.SalaryMin:N0}/month"
                     : "Salary not specified",
-            PostedAt: job.PostedAt,
-            ClosingDate: job.ClosingDate,
-            IsActive: job.IsActive,
-            Applications: job.Applications
-                .Select(a => new ApplicationSummary(
-                    ApplicantName: $"{a.Applicant.FirstName} {a.Applicant.LastName}",
-                    SubmittedAt: a.SubmittedAt,
-                    Status: a.Status.ToString()
-                ))
-                .ToList()
-        );
-    }
+        PostedAt: job.PostedAt,
+        ClosingDate: job.ClosingDate,
+        IsActive: job.IsActive,
+        Applications: job.Applications?
+            .Where(a => a.Applicant != null) // 🔥 CRITICAL FIX
+            .Select(a => new ApplicationSummary(
+                ApplicantName: $"{a.Applicant!.FirstName} {a.Applicant!.LastName}",
+                SubmittedAt: a.SubmittedAt,
+                Status: a.Status.ToString()
+            ))
+            .ToList() ?? new()
+    );
+}
 
     public async Task<JobListing?> GetJobListingByIdAsync(Guid id)
     {
@@ -264,6 +267,7 @@ public class JobListingRepository(CareerHubDbContext db) : IJobListingRepository
                 j.Title,
                 j.Company.CompanyName,
                 j.Location,
+                j.Description,
                 j.PostedAt,
                 j.SalaryMin.HasValue && j.SalaryMax.HasValue
                     ? $"R{j.SalaryMin:N0} – R{j.SalaryMax:N0}/month"
@@ -351,6 +355,7 @@ public class JobListingRepository(CareerHubDbContext db) : IJobListingRepository
                 j.Title,
                 j.Company.CompanyName,
                 j.Location,
+                j.Description,
                 j.PostedAt,
                 j.SalaryMin.HasValue && j.SalaryMax.HasValue
                     ? $"R{j.SalaryMin:N0} – R{j.SalaryMax:N0}/month"
@@ -429,6 +434,7 @@ public class JobListingRepository(CareerHubDbContext db) : IJobListingRepository
             Title: listing.Title,
             CompanyName: listing.Company.CompanyName,
             Location: listing.Location,
+            Description: listing.Description,
             PostedAt: listing.PostedAt,
             SalaryDisplay: listing.SalaryMin.HasValue && listing.SalaryMax.HasValue
                 ? $"R{listing.SalaryMin:N0} – R{listing.SalaryMax:N0}/month"

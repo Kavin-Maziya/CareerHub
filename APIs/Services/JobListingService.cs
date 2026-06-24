@@ -17,16 +17,10 @@ public class JobListingService(IJobListingRepository jobListingRepository) : IJo
         return await jobListingRepository.GetActiveJobListingsAsync();
     }
 
-    public async Task<JobDetailResponse> GetJobListingDetailAsync(Guid id)
-    {
-        var listing = await jobListingRepository.GetJobListingDetailAsync(id);
-
-        if (listing is null)
-            throw new JobNotFoundException(id);
-
-        return listing;
-    }
-
+   public async Task<JobDetailResponse?> GetJobListingDetailAsync(Guid id)
+{
+    return await jobListingRepository.GetJobListingDetailAsync(id);
+}
     public async Task<bool> JobListingExistsAsync(Guid id)
     {
         return await jobListingRepository.JobListingExistsAsync(id);
@@ -78,6 +72,7 @@ public class JobListingService(IJobListingRepository jobListingRepository) : IJo
             Title: listing.Title,
             CompanyName: request.CompanyName,
             Location: listing.Location,
+            Description: listing.Description,
             SalaryDisplay: MapSalaryDisplay(listing.SalaryMin, listing.SalaryMax),
             PostedAt: listing.PostedAt,
             ApplicationCount: 0,
@@ -121,6 +116,7 @@ public class JobListingService(IJobListingRepository jobListingRepository) : IJo
             Title: existing.Title,
             CompanyName: request.CompanyName,
             Location: existing.Location,
+            Description: existing.Description,
             PostedAt: existing.PostedAt,
             SalaryDisplay: MapSalaryDisplay(existing.SalaryMin, existing.SalaryMax),
             ApplicationCount: 0,

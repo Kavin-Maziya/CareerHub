@@ -24,20 +24,18 @@ public class JobsController(IJobListingService jobListingService) : ControllerBa
         var job = await jobListingService.GetJobListingDetailAsync(id);
         if (job is null) return NotFound();
 
-        string rawEtag = $"{id}_{job.PostedAt.Ticks}_{job.SalaryDisplay}";
-        string eTag = $"\"{rawEtag}\"";
+        string rawEtag = $"{id}_{job.PostedAt.Ticks}";
+        string eTag = $"\"{Convert.ToBase64String(System.Security.Cryptography.MD5.HashData(System.Text.Encoding.UTF8.GetBytes(rawEtag)))}\"";
 
-    if (Request.Headers.IfNoneMatch == eTag)
-    return StatusCode(StatusCodes.Status304NotModified);
+        if (Request.Headers.IfNoneMatch == eTag)
+            return StatusCode(StatusCodes.Status304NotModified);
 
-    Response.Headers.ETag = eTag;
-    return Ok(job);
-
-    
+        Response.Headers.ETag = eTag;
+        return Ok(job);
     }
 
-[AllowAnonymous]
-    [HttpGet("all")] // This places the endpoint at /api/v1/jobs/all
+    [AllowAnonymous]
+    [HttpGet("all")]
     [EndpointSummary("List all job listings including closed ones")]
     [EndpointDescription("Returns a paginated list of all job listings (active and inactive). " +
                          "The response includes the 'X-Total-Count' header for total result count.")]
@@ -63,9 +61,8 @@ public class JobsController(IJobListingService jobListingService) : ControllerBa
             Dir = dir
         };
 
-        // Executes our new database repository method bypass logic paths
         var result = await jobListingService.GetAllListingsPagedAsync(page, pageSize, filter);
-        
+
         Response.Headers["X-Total-Count"] = result.TotalCount.ToString();
         return Ok(result);
     }
@@ -78,15 +75,15 @@ public class JobsController(IJobListingService jobListingService) : ControllerBa
                          "The default page size is 20. " +
                          "Available sort options: salarymin, salarymax, title, and postedAt.")]
     public async Task<ActionResult<PagedResponse<JobListResponse>>> GetJobsAsync(
-    [FromQuery] int page = 1,
-    [FromQuery] int pageSize = 20,
-    [FromQuery] string? location = null,
-    [FromQuery] string? employmentType = null,
-    [FromQuery] decimal? salaryMin = null,
-    [FromQuery] decimal? salaryMax = null,
-    [FromQuery] Guid? companyId = null,
-    [FromQuery] string sort = "postedAt",
-    [FromQuery] string dir = "desc")
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 20,
+        [FromQuery] string? location = null,
+        [FromQuery] string? employmentType = null,
+        [FromQuery] decimal? salaryMin = null,
+        [FromQuery] decimal? salaryMax = null,
+        [FromQuery] Guid? companyId = null,
+        [FromQuery] string sort = "postedAt",
+        [FromQuery] string dir = "desc")
     {
         var filter = new JobListingFilterQuery
         {
@@ -103,12 +100,12 @@ public class JobsController(IJobListingService jobListingService) : ControllerBa
         Response.Headers["X-Total-Count"] = result.TotalCount.ToString();
         return Ok(result);
     }
+
     [Authorize(Roles = "Employer")]
     [HttpPatch("{id:guid}")]
-     public async Task<ActionResult<JobListResponse>> PatchJobAsync(Guid id, [FromBody] UpdateJobListingRequest request)
-         => Ok(await jobListingService.PatchAsync(id, request));
+    public async Task<ActionResult<JobListResponse>> PatchJobAsync(Guid id, [FromBody] UpdateJobListingRequest request)
+        => Ok(await jobListingService.PatchAsync(id, request));
 
-    // Full-text search endpoint
     [AllowAnonymous]
     [HttpGet("search")]
     [EnableRateLimiting("search")]
@@ -119,13 +116,11 @@ public class JobsController(IJobListingService jobListingService) : ControllerBa
     public async Task<ActionResult<IEnumerable<JobListResponse>>> SearchJobsAsync([FromQuery] string q)
         => Ok(await jobListingService.SearchAsync(q));
 
-    // Application statistics endpoint — controller is one line as required
     [Authorize(Roles = "Employer")]
     [HttpGet("stats")]
     public async Task<ActionResult<IEnumerable<JobListingStatsResponse>>> GetStatsAsync([FromQuery] Guid companyId)
         => Ok(await jobListingService.GetApplicationStatsAsync(companyId));
 
-    //[Authorize(Roles = "Employer")]
     [EnableRateLimiting("post-listing")]
     [HttpPost("create")]
     public async Task<ActionResult<JobListResponse>> CreateJobAsync([FromBody] CreateJobRequest request)

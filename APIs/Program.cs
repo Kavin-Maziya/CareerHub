@@ -35,6 +35,10 @@ try
     {
         options.JsonSerializerOptions.Converters
             .Add(new JsonStringEnumConverter());
+            // ✅ FIX 500 ERROR (circular references)
+    options.JsonSerializerOptions.ReferenceHandler =
+        ReferenceHandler.IgnoreCycles;
+
     });
     builder.Services.AddApiVersioning(options =>
 {
