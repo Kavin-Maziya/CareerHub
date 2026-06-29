@@ -11,7 +11,7 @@ public class Applicant
     public string Email { get; set; } = string.Empty;
 
 //currently commented out for simplicity applicants will use their emails instead
-//public string PhoneNumber { get; set; } = string.Empty; // Phone number stored as string
+public string Phone { get; set; } = string.Empty; // Phone number stored as string
 
 // Navigation property to Applications - one applicant can have many applications
     public ICollection<Application> Applications { get; set; } = [];

@@ -4440,24 +4440,32 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\LCBitcube\\.nuget\\packages\\": {}
+    "C:\\Users\\Kavin Ozzie Maziya\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\LCBitcube\\Desktop\\FrontEnd_Assignments\\assignment-2-1\\CareerHub\\API.Tests\\API.Tests.csproj",
+      "projectUniqueName": "C:\\Projects\\CareerHub\\API.Tests\\API.Tests.csproj",
       "projectName": "API.Tests",
-      "projectPath": "C:\\Users\\LCBitcube\\Desktop\\FrontEnd_Assignments\\assignment-2-1\\CareerHub\\API.Tests\\API.Tests.csproj",
-      "packagesPath": "C:\\Users\\LCBitcube\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\LCBitcube\\Desktop\\FrontEnd_Assignments\\assignment-2-1\\CareerHub\\API.Tests\\obj\\",
+      "projectPath": "C:\\Projects\\CareerHub\\API.Tests\\API.Tests.csproj",
+      "packagesPath": "C:\\Users\\Kavin Ozzie Maziya\\.nuget\\packages\\",
+      "outputPath": "C:\\Projects\\CareerHub\\API.Tests\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\LCBitcube\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\Kavin Ozzie Maziya\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net10.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -4465,8 +4473,8 @@
           "framework": "net10.0",
           "targetAlias": "net10.0",
           "projectReferences": {
-            "C:\\Users\\LCBitcube\\Desktop\\FrontEnd_Assignments\\assignment-2-1\\CareerHub\\APIs\\APIs.csproj": {
-              "projectPath": "C:\\Users\\LCBitcube\\Desktop\\FrontEnd_Assignments\\assignment-2-1\\CareerHub\\APIs\\APIs.csproj"
+            "C:\\Projects\\CareerHub\\APIs\\APIs.csproj": {
+              "projectPath": "C:\\Projects\\CareerHub\\APIs\\APIs.csproj"
             }
           }
         }
@@ -4545,7 +4553,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.300/PortableRuntimeIdentifierGraph.json",
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.301/PortableRuntimeIdentifierGraph.json",
         "packagesToPrune": {
           "Microsoft.CSharp": "(,4.7.32767]",
           "Microsoft.VisualBasic": "(,10.4.32767]",
