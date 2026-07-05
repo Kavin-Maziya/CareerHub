@@ -35,6 +35,8 @@ public record JobDetailResponse(
     DateTime PostedAt,
     DateTime ClosingDate,
     bool IsActive,
+    [property: JsonPropertyName("employmentType")]
+    EmploymentType EmploymentType,
     List<ApplicationSummary> Applications
 );
 

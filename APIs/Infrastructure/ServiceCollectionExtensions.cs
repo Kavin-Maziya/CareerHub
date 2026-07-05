@@ -17,7 +17,11 @@ public static class ServiceCollectionExtensions
         services.AddDbContext<CareerHubDbContext>((serviceProvider, options) =>
         {
             options.UseNpgsql(
-                configuration.GetConnectionString("DefaultConnection"));
+                configuration.GetConnectionString("DefaultConnection"),
+                npgsqlOptions => npgsqlOptions.EnableRetryOnFailure(
+                    maxRetryCount: 3,
+                    maxRetryDelay: TimeSpan.FromSeconds(5),
+                    errorCodesToAdd: null));
             options.AddInterceptors(
                 serviceProvider.GetRequiredService<SlowQueryInterceptor>());
         });

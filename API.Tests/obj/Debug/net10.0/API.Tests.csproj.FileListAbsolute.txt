@@ -924,3 +924,15 @@ C:\Users\LCBitcube\Desktop\Career-Hub\assignment-3-2\CareerHub\API.Tests\bin\Deb
 C:\Users\LCBitcube\Desktop\Career-Hub\assignment-3-2\CareerHub\API.Tests\bin\Debug\net10.0\Microsoft.Extensions.Diagnostics.HealthChecks.dll
 C:\Users\LCBitcube\Desktop\Career-Hub\assignment-3-2\CareerHub\API.Tests\bin\Debug\net10.0\Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions.dll
 C:\Users\LCBitcube\Desktop\Career-Hub\assignment-3-2\CareerHub\API.Tests\bin\Debug\net10.0\Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore.dll
+C:\Projects\CareerHub\API.Tests\bin\Debug\net10.0\.msCoverageSourceRootsMapping_API.Tests
+C:\Projects\CareerHub\API.Tests\bin\Debug\net10.0\CoverletSourceRootsMapping_API.Tests
+C:\Projects\CareerHub\API.Tests\obj\Debug\net10.0\API.Tests.csproj.AssemblyReference.cache
+C:\Projects\CareerHub\API.Tests\obj\Debug\net10.0\MvcTestingAppManifest.json
+C:\Projects\CareerHub\API.Tests\obj\Debug\net10.0\API.Tests.GeneratedMSBuildEditorConfig.editorconfig
+C:\Projects\CareerHub\API.Tests\obj\Debug\net10.0\API.Tests.AssemblyInfoInputs.cache
+C:\Projects\CareerHub\API.Tests\obj\Debug\net10.0\API.Tests.AssemblyInfo.cs
+C:\Projects\CareerHub\API.Tests\obj\Debug\net10.0\API.Tests.csproj.CoreCompileInputs.cache
+C:\Projects\CareerHub\API.Tests\obj\Debug\net10.0\API.Tests.sourcelink.json
+C:\Projects\CareerHub\API.Tests\obj\Debug\net10.0\API.Tests.dll
+C:\Projects\CareerHub\API.Tests\obj\Debug\net10.0\refint\API.Tests.dll
+C:\Projects\CareerHub\API.Tests\obj\Debug\net10.0\API.Tests.pdb

@@ -8,25 +8,35 @@ namespace APIs.Repositories;
 
 public class JobListingRepository(CareerHubDbContext db) : IJobListingRepository
 {
+    private record JobListProjection(
+        Guid Id,
+        string Title,
+        string CompanyName,
+        string Location,
+        string Description,
+        DateTime PostedAt,
+        decimal? SalaryMin,
+        decimal? SalaryMax,
+        DateTime ClosingDate,
+        int ApplicationCount,
+        bool IsActive,
+        EmploymentType EmploymentType);
 
-    private static readonly Func<CareerHubDbContext, IAsyncEnumerable<JobListResponse>>
+    private static readonly Func<CareerHubDbContext, IAsyncEnumerable<JobListProjection>>
         _getActiveListingsCompiled = EF.CompileAsyncQuery(
             (CareerHubDbContext ctx) =>
                 ctx.JobListings
                     .AsNoTracking()
                     .Where(j => j.IsActive && j.ClosingDate > DateTime.UtcNow)
-                    .Select(j => new JobListResponse(
+                    .Select(j => new JobListProjection(
                         j.Id,
                         j.Title,
                         j.Company.CompanyName,
                         j.Location,
                         j.Description,
                         j.PostedAt,
-                        j.SalaryMin.HasValue && j.SalaryMax.HasValue
-                            ? $"R{j.SalaryMin:N0} – R{j.SalaryMax:N0}/month"
-                            : j.SalaryMin.HasValue
-                                ? $"From R{j.SalaryMin:N0}/month"
-                                : "Salary not specified",
+                        j.SalaryMin,
+                        j.SalaryMax,
                         j.ClosingDate,
                         j.Applications.Count(),
                         j.IsActive,
@@ -76,27 +86,26 @@ public class JobListingRepository(CareerHubDbContext db) : IJobListingRepository
             _                     => query.OrderByDescending(j => j.PostedAt)
         };
 
-        var data = await query
+        var data = (await query
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
-            .Select(j => new JobListResponse(
+            .Select(j => new JobListProjection(
                 j.Id,
                 j.Title,
                 j.Company.CompanyName,
                 j.Location,
                 j.Description,
                 j.PostedAt,
-                j.SalaryMin.HasValue && j.SalaryMax.HasValue
-                    ? $"R{j.SalaryMin:N0} – R{j.SalaryMax:N0}/month"
-                    : j.SalaryMin.HasValue
-                        ? $"From R{j.SalaryMin:N0}/month"
-                        : "Salary not specified",
+                j.SalaryMin,
+                j.SalaryMax,
                 j.ClosingDate,
                 j.Applications.Count(),
                 j.IsActive,
                 j.EmploymentType 
             ))
-            .ToListAsync();
+            .ToListAsync())
+            .Select(MapJobListResponse)
+            .ToList();
 
         var totalPages = (int)Math.Ceiling((double)totalCount / pageSize);
 
@@ -116,7 +125,7 @@ public class JobListingRepository(CareerHubDbContext db) : IJobListingRepository
     {
         var results = new List<JobListResponse>();
         await foreach (var item in _getActiveListingsCompiled(db))
-            results.Add(item);
+            results.Add(MapJobListResponse(item));
         return results;
     }
 
@@ -148,6 +157,7 @@ public class JobListingRepository(CareerHubDbContext db) : IJobListingRepository
         PostedAt: job.PostedAt,
         ClosingDate: job.ClosingDate,
         IsActive: job.IsActive,
+        EmploymentType: job.EmploymentType,
         Applications: job.Applications?
             .Where(a => a.Applicant != null) // 🔥 CRITICAL FIX
             .Select(a => new ApplicationSummary(
@@ -256,30 +266,29 @@ public class JobListingRepository(CareerHubDbContext db) : IJobListingRepository
 
     public async Task<IEnumerable<JobListResponse>> SearchAsync(string searchTerm)
     {
-        var results = await db.JobListings
+        var results = (await db.JobListings
             .AsNoTracking()
             .Where(j =>
                 j.IsActive &&
                 j.ClosingDate > DateTime.UtcNow &&
                 j.SearchVector!.Matches(EF.Functions.ToTsQuery("english", searchTerm)))
-            .Select(j => new JobListResponse(
+            .Select(j => new JobListProjection(
                 j.Id,
                 j.Title,
                 j.Company.CompanyName,
                 j.Location,
                 j.Description,
                 j.PostedAt,
-                j.SalaryMin.HasValue && j.SalaryMax.HasValue
-                    ? $"R{j.SalaryMin:N0} – R{j.SalaryMax:N0}/month"
-                    : j.SalaryMin.HasValue
-                        ? $"From R{j.SalaryMin:N0}/month"
-                        : "Salary not specified",
+                j.SalaryMin,
+                j.SalaryMax,
                 j.ClosingDate,
                 j.Applications.Count(),
                 j.IsActive,
                 j.EmploymentType  
             ))
-            .ToListAsync();
+            .ToListAsync())
+            .Select(MapJobListResponse)
+            .ToList();
 
         return results;
     }
@@ -347,27 +356,26 @@ public class JobListingRepository(CareerHubDbContext db) : IJobListingRepository
             _                     => query.OrderByDescending(j => j.PostedAt)
         };
 
-        var data = await query
+        var data = (await query
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
-            .Select(j => new JobListResponse(
+            .Select(j => new JobListProjection(
                 j.Id,
                 j.Title,
                 j.Company.CompanyName,
                 j.Location,
                 j.Description,
                 j.PostedAt,
-                j.SalaryMin.HasValue && j.SalaryMax.HasValue
-                    ? $"R{j.SalaryMin:N0} – R{j.SalaryMax:N0}/month"
-                    : j.SalaryMin.HasValue
-                        ? $"From R{j.SalaryMin:N0}/month"
-                        : "Salary not specified",
+                j.SalaryMin,
+                j.SalaryMax,
                 j.ClosingDate,
                 j.Applications.Count(),
                 j.IsActive,
                 j.EmploymentType  
             ))
-            .ToListAsync();
+            .ToListAsync())
+            .Select(MapJobListResponse)
+            .ToList();
 
         var totalPages = (int)Math.Ceiling((double)totalCount / pageSize);
 
@@ -446,5 +454,33 @@ public class JobListingRepository(CareerHubDbContext db) : IJobListingRepository
             IsActive: listing.IsActive,
             EmploymentType: listing.EmploymentType  
         );
+    }
+
+    private static JobListResponse MapJobListResponse(JobListProjection job)
+    {
+        return new JobListResponse(
+            Id: job.Id,
+            Title: job.Title,
+            CompanyName: job.CompanyName,
+            Location: job.Location,
+            Description: job.Description,
+            PostedAt: job.PostedAt,
+            SalaryDisplay: FormatSalaryDisplay(job.SalaryMin, job.SalaryMax),
+            ClosingDate: job.ClosingDate,
+            ApplicationCount: job.ApplicationCount,
+            IsActive: job.IsActive,
+            EmploymentType: job.EmploymentType
+        );
+    }
+
+    private static string FormatSalaryDisplay(decimal? salaryMin, decimal? salaryMax)
+    {
+        if (salaryMin.HasValue && salaryMax.HasValue)
+            return $"R{salaryMin:N0} - R{salaryMax:N0}/month";
+
+        if (salaryMin.HasValue)
+            return $"From R{salaryMin:N0}/month";
+
+        return "Salary not specified";
     }
 }
