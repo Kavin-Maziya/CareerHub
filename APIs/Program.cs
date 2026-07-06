@@ -123,7 +123,7 @@ try
     {
         options.AddPolicy("CareerHubFrontEndPolicy", policy =>
         {
-            policy.WithOrigins("http://localhost:3000", "https://careerhub.production.com")
+            policy.WithOrigins("http://localhost:3000","https://career-hub-front-end-iota.vercel.app")
                 .AllowAnyHeader()
                 .AllowAnyMethod()
                 .AllowCredentials()
