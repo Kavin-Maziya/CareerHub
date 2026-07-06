@@ -13,7 +13,7 @@ using NpgsqlTypes;
 namespace APIs.Migrations
 {
     [DbContext(typeof(CareerHubDbContext))]
-    [Migration("20260706091149_DropLegacyPhoneNumberColumn")]
+    [Migration("20260706092441_DropLegacyPhoneNumberColumn")]
     partial class DropLegacyPhoneNumberColumn
     {
         /// <inheritdoc />
