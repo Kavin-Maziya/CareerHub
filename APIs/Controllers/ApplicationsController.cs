@@ -13,7 +13,7 @@ namespace APIs.Controllers;
 [Route("api/v{version:apiVersion}/applications")]
 public class ApplicationsController(IApplicationService applicationService) : ControllerBase
 {
-[Authorize(Roles = "Employer")]
+//[Authorize(Roles = "Employer")]
 [HttpGet("{id}")] // GET /api/v1/applications/{id}
 public async Task<IActionResult> GetApplicationByIdAsync(string id)
 {
@@ -42,7 +42,7 @@ public async Task<IActionResult> GetApplicationByIdAsync(string id)
 }
 
 
-    [Authorize(Roles = "Employer")]
+    //[Authorize(Roles = "Employer")]
     [HttpGet("listing/{jobListingId:guid}")]
     public async Task<ActionResult<IEnumerable<ApplicationResponse>>> GetApplicationsForListingAsync(Guid jobListingId)
     {
@@ -50,7 +50,7 @@ public async Task<IActionResult> GetApplicationByIdAsync(string id)
         return Ok(applications);
     }
 
-    [Authorize(Roles = "Applicant")]
+    //[Authorize(Roles = "Applicant")]
     [HttpGet("applicant/{applicantId:guid}")]
     public async Task<ActionResult<IEnumerable<ApplicationResponse>>> GetApplicationsByApplicantAsync(Guid applicantId)
     {

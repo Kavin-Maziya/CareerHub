@@ -166,6 +166,8 @@ public class CareerHubDbContext(
 
         SeedCompanies(modelBuilder);
         SeedJobListings(modelBuilder);
+        SeedApplicants(modelBuilder);
+        SeedApplications(modelBuilder);
     }
 
     private void SeedCompanies(ModelBuilder modelBuilder)
@@ -299,6 +301,108 @@ private void SeedJobListings(ModelBuilder modelBuilder)
             ClosingDate = now.AddDays(30)
         }
     );
+}
+
+private void SeedApplicants(ModelBuilder modelBuilder)
+{
+    modelBuilder.Entity<Applicant>().HasData(
+        new Applicant
+        {
+            Id = Guid.Parse("bbbbbbbb-0000-0000-0000-000000000001"),
+            FirstName = "Thabo",
+            LastName = "Nkosi",
+            Email = "thabo.nkosi@example.com",
+            Phone = "0810000001"
+        },
+        new Applicant
+        {
+            Id = Guid.Parse("bbbbbbbb-0000-0000-0000-000000000002"),
+            FirstName = "Amanda",
+            LastName = "van der Merwe",
+            Email = "amanda.vandermerwe@example.com",
+            Phone = "0810000002"
+        },
+        new Applicant
+        {
+            Id = Guid.Parse("bbbbbbbb-0000-0000-0000-000000000003"),
+            FirstName = "Sipho",
+            LastName = "Dlamini",
+            Email = "sipho.dlamini@example.com",
+            Phone = null
+        }
+    );
+}
+
+private void SeedApplications(ModelBuilder modelBuilder)
+{
+    var now = new DateTime(2026, 07, 10, 0, 0, 0, DateTimeKind.Utc);
+
+    var applicantIds = new[]
+    {
+        Guid.Parse("bbbbbbbb-0000-0000-0000-000000000001"),
+        Guid.Parse("bbbbbbbb-0000-0000-0000-000000000002"),
+        Guid.Parse("bbbbbbbb-0000-0000-0000-000000000003")
+    };
+
+    var applicantNames = new[]
+    {
+        ("Thabo", "Nkosi", "thabo.nkosi@example.com"),
+        ("Amanda", "van der Merwe", "amanda.vandermerwe@example.com"),
+        ("Sipho", "Dlamini", "sipho.dlamini@example.com")
+    };
+
+    var jobListingIds = new[]
+    {
+        Guid.Parse("a1b2c3d4-e5f6-7890-abcd-ef1234567890"), // Senior Frontend Software Engineer
+        Guid.Parse("b2c3d4e5-f6a7-8901-bcde-f12345678901"), // Junior Systems Developer
+        Guid.Parse("c3d4e5f6-a7b8-9012-cdef-123456789012"), // UX/Web Designer
+        Guid.Parse("d4e5f6a7-b8c9-0123-defa-234567890123"), // Data Analyst Intern
+        Guid.Parse("e5f6a7b8-c9d0-1234-efab-345678901234"), // Senior DevOps Engineer
+        Guid.Parse("f6a7b8c9-d0e1-2345-fabc-456789012345")  // Part-Time Content Writer/Promoter
+    };
+
+    // Cycles through all five ApplicationStatus values across the 18
+    // seeded applications (3 applicants x 6 listings) so the Applications
+    // tab has realistic variety to filter against.
+    var statuses = new[]
+    {
+        ApplicationStatus.Submitted,
+        ApplicationStatus.UnderReview,
+        ApplicationStatus.Shortlisted,
+        ApplicationStatus.Offered,
+        ApplicationStatus.Rejected
+    };
+
+    var applications = new List<Application>();
+    var statusIndex = 0;
+
+    for (var applicantIndex = 0; applicantIndex < applicantIds.Length; applicantIndex++)
+    {
+        var (firstName, lastName, email) = applicantNames[applicantIndex];
+
+        for (var listingIndex = 0; listingIndex < jobListingIds.Length; listingIndex++)
+        {
+            applications.Add(new Application
+            {
+                JobListingId = jobListingIds[listingIndex],
+                ApplicantId = applicantIds[applicantIndex],
+                FullName = $"{firstName} {lastName}",
+                Email = email,
+                Phone = "0810000000",
+                YearsOfExperience = 2 + applicantIndex * 2,
+                CoverLetter = $"I am excited to apply for this role and believe my experience aligns well with what you're looking for.",
+                LinkedInUrl = null,
+                AvailableImmediately = applicantIndex % 2 == 0,
+                NoticePeriodWeeks = applicantIndex % 2 == 0 ? 0 : 4,
+                SubmittedAt = now.AddDays(-(applicantIndex * 6 + listingIndex)),
+                Status = statuses[statusIndex % statuses.Length]
+            });
+
+            statusIndex++;
+        }
+    }
+
+    modelBuilder.Entity<Application>().HasData(applications);
 }
 
 }
