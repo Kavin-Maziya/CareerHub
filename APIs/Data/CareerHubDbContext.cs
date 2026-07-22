@@ -74,6 +74,31 @@ modelBuilder.Entity<RefreshToken>()
     .HasForeignKey(rt => rt.UserId)
     .OnDelete(DeleteBehavior.Cascade);
 
+modelBuilder.Entity<User>(entity =>
+{
+    entity.ToTable("users");
+
+    entity.HasKey(u => u.Id);
+
+    entity.HasIndex(u => u.Email)
+          .IsUnique();
+
+    entity.Property(u => u.Email)
+          .HasMaxLength(200)
+          .IsRequired();
+
+    entity.Property(u => u.PasswordHash)
+          .IsRequired();
+
+    entity.Property(u => u.Username)
+      .HasMaxLength(100)
+      .IsRequired();
+
+    entity.Property(u => u.Role)
+      .HasMaxLength(30)
+      .IsRequired();
+});
+
         modelBuilder.Entity<Company>(entity =>
         {
             entity.ToTable("companies");
@@ -174,12 +199,49 @@ modelBuilder.Entity<RefreshToken>()
                 .HasForeignKey(a => a.ApplicantId); // Use ApplicantId as the foreign key
         });
 
+SeedUsers(modelBuilder);
         SeedCompanies(modelBuilder);
         SeedJobListings(modelBuilder);
         SeedApplicants(modelBuilder);
         SeedApplications(modelBuilder);
     }
 
+private void SeedUsers(ModelBuilder modelBuilder)
+{
+    modelBuilder.Entity<User>().HasData(
+
+        new User
+        {
+            Id = Guid.Parse("11111111-1111-1111-1111-111111111111"),
+            Username = "admin",
+            Email = "admin@careerhub.co.za",
+            PasswordHash = "Admin123!",
+            Role = "Admin",
+            IsActive = true
+        },
+
+        new User
+        {
+            Id = Guid.Parse("22222222-2222-2222-2222-222222222222"),
+            Username = "employer",
+            Email = "employer@careerhub.co.za",
+            PasswordHash = "Employer123!",
+            Role = "Employer",
+            IsActive = true
+        },
+
+        new User
+        {
+            Id = Guid.Parse("33333333-3333-3333-3333-333333333333"),
+            Username = "applicant",
+            Email = "applicant@careerhub.co.za",
+            PasswordHash = "Applicant123!",
+            Role = "Applicant",
+            IsActive = true
+        }
+
+    );
+}
     private void SeedCompanies(ModelBuilder modelBuilder)
 {
     modelBuilder.Entity<Company>().HasData(
