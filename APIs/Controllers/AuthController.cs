@@ -35,4 +35,15 @@ public class AuthController(IAuthService authService) : ControllerBase
 
         return Ok(new { username, role });
     }
+
+    [HttpPost("refresh")]
+    public IActionResult Refresh([FromBody] RefreshTokenRequest request)
+    {
+        var response = authService.Refresh(request.RefreshToken);
+
+        if (response is null)
+        return Unauthorized();
+
+        return Ok(response);
+    }
 }

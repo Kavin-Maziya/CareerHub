@@ -60,6 +60,50 @@ public class AuthService : IAuthService
             ));
     }
 
+    public LoginResponse? Refresh(string refreshToken)
+    {
+        var storedToken = _db.RefreshTokens
+            .Include(rt => rt.User)
+            .FirstOrDefault(rt =>
+                rt.Token == refreshToken &&
+                rt.ExpiresAt > DateTime.UtcNow);
+
+        if (storedToken is null)
+            return null;
+
+        var user = storedToken.User;
+
+        if (!user.IsActive)
+            return null;
+
+        _db.RefreshTokens.Remove(storedToken);
+
+        var newAccessToken = BuildToken(
+            user.Username,
+            user.Role);
+
+        var newRefreshToken = GenerateRefreshToken();
+
+        _db.RefreshTokens.Add(new RefreshToken
+        {
+            Token = newRefreshToken,
+            UserId = user.Id,
+            ExpiresAt = DateTime.UtcNow.AddDays(30)
+        });
+
+        _db.SaveChanges();
+
+    return new LoginResponse(
+        newAccessToken,
+        newRefreshToken,
+        new UserResponse(
+            user.Id,
+            user.Username,
+            user.Role
+            )
+        );
+    }
+
     // Constructs and signs the JWT
     private string BuildToken(string username, string role)
     {
