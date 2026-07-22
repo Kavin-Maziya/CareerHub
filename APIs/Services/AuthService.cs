@@ -3,40 +3,42 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using APIs.DTOs;
+using APIs.Data;
+using APIs.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace APIs.Services;
 
 public class AuthService : IAuthService
 {
     private readonly IConfiguration _config;
+    private readonly CareerHubDbContext _db;
 
-    // Hardcoded user store — simulates a database Users table.
-    private static readonly (string Username, string Password, string Role)[] _users =
-    [
-        ("Employer",        "password123", "Employer"),
-        ("Applicant", "password123", "Applicant")
-
-    ];
 
     // IConfiguration is injected so the JWT secret is read from appsettings,
-  
-    public AuthService(IConfiguration config)
+    // and reads the seeded users from the database
+    public AuthService(IConfiguration config, CareerHubDbContext db)
     {
-        _config = config;
+    _config = config;
+    _db = db;
     }
 
     public LoginResponse? Login(LoginRequest request)
     {
-        // Find a matching user by username and password.
+        // Find a matching user by username and role.
      
-        var user = _users.FirstOrDefault(u =>
-u.Username == request.Username && u.Password == request.Password);
+       var user = _db.Users.FirstOrDefault(u =>
+         u.Username == request.Username &&
+         u.Role == request.Role &&
+         u.IsActive);
 
-        // Return null so the controller decides the HTTP response.
-        if (user == default)
-            return null;
+       if (user is null)
+         return null;
 
-        var token = BuildToken(user.Username, user.Role);
+       if (user.PasswordHash != request.Password)
+         return null;
+
+      var token = BuildToken(user.Username, user.Role);
         return new LoginResponse(token);
     }
 
