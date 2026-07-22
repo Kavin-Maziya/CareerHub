@@ -13,7 +13,7 @@ using NpgsqlTypes;
 namespace APIs.Migrations
 {
     [DbContext(typeof(CareerHubDbContext))]
-    [Migration("20260722213851_MakeApplicantPhoneNullable")]
+    [Migration("20260722214715_MakeApplicantPhoneNullable")]
     partial class MakeApplicantPhoneNullable
     {
         /// <inheritdoc />
@@ -79,7 +79,8 @@ namespace APIs.Migrations
                             Id = new Guid("bbbbbbbb-0000-0000-0000-000000000003"),
                             Email = "sipho.dlamini@example.com",
                             FirstName = "Sipho",
-                            LastName = "Dlamini"
+                            LastName = "Dlamini",
+                            Phone = "0810000003"
                         });
                 });
 
@@ -661,7 +662,7 @@ namespace APIs.Migrations
                         new
                         {
                             Id = new Guid("11111111-1111-1111-1111-111111111111"),
-                            CreatedAt = new DateTime(2026, 7, 22, 21, 38, 47, 870, DateTimeKind.Utc).AddTicks(4154),
+                            CreatedAt = new DateTime(2026, 7, 22, 21, 47, 11, 223, DateTimeKind.Utc).AddTicks(9492),
                             Email = "admin@careerhub.co.za",
                             IsActive = true,
                             PasswordHash = "Admin123!",
@@ -671,7 +672,7 @@ namespace APIs.Migrations
                         new
                         {
                             Id = new Guid("22222222-2222-2222-2222-222222222222"),
-                            CreatedAt = new DateTime(2026, 7, 22, 21, 38, 47, 871, DateTimeKind.Utc).AddTicks(2346),
+                            CreatedAt = new DateTime(2026, 7, 22, 21, 47, 11, 224, DateTimeKind.Utc).AddTicks(6916),
                             Email = "employer@careerhub.co.za",
                             IsActive = true,
                             PasswordHash = "Employer123!",
@@ -681,7 +682,7 @@ namespace APIs.Migrations
                         new
                         {
                             Id = new Guid("33333333-3333-3333-3333-333333333333"),
-                            CreatedAt = new DateTime(2026, 7, 22, 21, 38, 47, 871, DateTimeKind.Utc).AddTicks(2387),
+                            CreatedAt = new DateTime(2026, 7, 22, 21, 47, 11, 224, DateTimeKind.Utc).AddTicks(6954),
                             Email = "applicant@careerhub.co.za",
                             IsActive = true,
                             PasswordHash = "Applicant123!",

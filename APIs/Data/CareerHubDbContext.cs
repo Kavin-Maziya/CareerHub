@@ -203,7 +203,7 @@ public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
                 .HasForeignKey(a => a.ApplicantId); // Use ApplicantId as the foreign key
         });
 
-SeedUsers(modelBuilder);
+        SeedUsers(modelBuilder);
         SeedCompanies(modelBuilder);
         SeedJobListings(modelBuilder);
         SeedApplicants(modelBuilder);
@@ -404,7 +404,7 @@ private void SeedApplicants(ModelBuilder modelBuilder)
             FirstName = "Sipho",
             LastName = "Dlamini",
             Email = "sipho.dlamini@example.com",
-            Phone = null
+            Phone = "0810000003"
         }
     );
 }
