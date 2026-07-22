@@ -12,12 +12,30 @@ namespace APIs.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.UpdateData(
-                table: "applicants",
+                table: "users",
                 keyColumn: "Id",
-                keyValue: new Guid("bbbbbbbb-0000-0000-0000-000000000003"),
-                column: "Phone",
-                value: "0810000003");
+                keyValue: new Guid("11111111-1111-1111-1111-111111111111"),
+                column: "CreatedAt",
+                value: new DateTime(2026, 7, 22, 22, 6, 42, 352, DateTimeKind.Utc).AddTicks(5203));
 
+            migrationBuilder.UpdateData(
+                table: "users",
+                keyColumn: "Id",
+                keyValue: new Guid("22222222-2222-2222-2222-222222222222"),
+                column: "CreatedAt",
+                value: new DateTime(2026, 7, 22, 22, 6, 42, 353, DateTimeKind.Utc).AddTicks(4395));
+
+            migrationBuilder.UpdateData(
+                table: "users",
+                keyColumn: "Id",
+                keyValue: new Guid("33333333-3333-3333-3333-333333333333"),
+                column: "CreatedAt",
+                value: new DateTime(2026, 7, 22, 22, 6, 42, 353, DateTimeKind.Utc).AddTicks(4455));
+        }
+
+        /// <inheritdoc />
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
             migrationBuilder.UpdateData(
                 table: "users",
                 keyColumn: "Id",
@@ -38,38 +56,6 @@ namespace APIs.Migrations
                 keyValue: new Guid("33333333-3333-3333-3333-333333333333"),
                 column: "CreatedAt",
                 value: new DateTime(2026, 7, 22, 21, 47, 11, 224, DateTimeKind.Utc).AddTicks(6954));
-        }
-
-        /// <inheritdoc />
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.UpdateData(
-                table: "applicants",
-                keyColumn: "Id",
-                keyValue: new Guid("bbbbbbbb-0000-0000-0000-000000000003"),
-                column: "Phone",
-                value: null);
-
-            migrationBuilder.UpdateData(
-                table: "users",
-                keyColumn: "Id",
-                keyValue: new Guid("11111111-1111-1111-1111-111111111111"),
-                column: "CreatedAt",
-                value: new DateTime(2026, 7, 22, 21, 38, 47, 870, DateTimeKind.Utc).AddTicks(4154));
-
-            migrationBuilder.UpdateData(
-                table: "users",
-                keyColumn: "Id",
-                keyValue: new Guid("22222222-2222-2222-2222-222222222222"),
-                column: "CreatedAt",
-                value: new DateTime(2026, 7, 22, 21, 38, 47, 871, DateTimeKind.Utc).AddTicks(2346));
-
-            migrationBuilder.UpdateData(
-                table: "users",
-                keyColumn: "Id",
-                keyValue: new Guid("33333333-3333-3333-3333-333333333333"),
-                column: "CreatedAt",
-                value: new DateTime(2026, 7, 22, 21, 38, 47, 871, DateTimeKind.Utc).AddTicks(2387));
         }
     }
 }

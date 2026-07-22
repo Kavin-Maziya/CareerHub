@@ -13,7 +13,7 @@ using NpgsqlTypes;
 namespace APIs.Migrations
 {
     [DbContext(typeof(CareerHubDbContext))]
-    [Migration("20260722214715_MakeApplicantPhoneNullable")]
+    [Migration("20260722220658_MakeApplicantPhoneNullable")]
     partial class MakeApplicantPhoneNullable
     {
         /// <inheritdoc />
@@ -662,7 +662,7 @@ namespace APIs.Migrations
                         new
                         {
                             Id = new Guid("11111111-1111-1111-1111-111111111111"),
-                            CreatedAt = new DateTime(2026, 7, 22, 21, 47, 11, 223, DateTimeKind.Utc).AddTicks(9492),
+                            CreatedAt = new DateTime(2026, 7, 22, 22, 6, 42, 352, DateTimeKind.Utc).AddTicks(5203),
                             Email = "admin@careerhub.co.za",
                             IsActive = true,
                             PasswordHash = "Admin123!",
@@ -672,7 +672,7 @@ namespace APIs.Migrations
                         new
                         {
                             Id = new Guid("22222222-2222-2222-2222-222222222222"),
-                            CreatedAt = new DateTime(2026, 7, 22, 21, 47, 11, 224, DateTimeKind.Utc).AddTicks(6916),
+                            CreatedAt = new DateTime(2026, 7, 22, 22, 6, 42, 353, DateTimeKind.Utc).AddTicks(4395),
                             Email = "employer@careerhub.co.za",
                             IsActive = true,
                             PasswordHash = "Employer123!",
@@ -682,7 +682,7 @@ namespace APIs.Migrations
                         new
                         {
                             Id = new Guid("33333333-3333-3333-3333-333333333333"),
-                            CreatedAt = new DateTime(2026, 7, 22, 21, 47, 11, 224, DateTimeKind.Utc).AddTicks(6954),
+                            CreatedAt = new DateTime(2026, 7, 22, 22, 6, 42, 353, DateTimeKind.Utc).AddTicks(4455),
                             Email = "applicant@careerhub.co.za",
                             IsActive = true,
                             PasswordHash = "Applicant123!",
