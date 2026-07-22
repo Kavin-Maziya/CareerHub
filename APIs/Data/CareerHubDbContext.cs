@@ -8,6 +8,10 @@ public class CareerHubDbContext(
     DbContextOptions<CareerHubDbContext> options)
     : DbContext(options)
 {
+    public DbSet<User> Users => Set<User>();
+
+public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
+
     public DbSet<JobListing> JobListings => Set<JobListing>();
 
     public DbSet<Company> Companies => Set<Company>();
@@ -63,6 +67,12 @@ public class CareerHubDbContext(
                 .HasForeignKey(j => j.CompanyId) // Use CompanyId as the foreign key
                 .OnDelete(DeleteBehavior.Restrict); // Prevent cascade delete to preserve job listings if a company is deleted
         });
+
+modelBuilder.Entity<RefreshToken>()
+    .HasOne(rt => rt.User)
+    .WithMany(u => u.RefreshTokens)
+    .HasForeignKey(rt => rt.UserId)
+    .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<Company>(entity =>
         {
