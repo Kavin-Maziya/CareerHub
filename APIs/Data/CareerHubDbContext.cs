@@ -68,36 +68,36 @@ public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
                 .OnDelete(DeleteBehavior.Restrict); // Prevent cascade delete to preserve job listings if a company is deleted
         });
 
-modelBuilder.Entity<RefreshToken>()
-    .HasOne(rt => rt.User)
-    .WithMany(u => u.RefreshTokens)
-    .HasForeignKey(rt => rt.UserId)
-    .OnDelete(DeleteBehavior.Cascade);
+    modelBuilder.Entity<RefreshToken>()
+        .HasOne(rt => rt.User)
+        .WithMany(u => u.RefreshTokens)
+        .HasForeignKey(rt => rt.UserId)
+        .OnDelete(DeleteBehavior.Cascade);
 
-modelBuilder.Entity<User>(entity =>
-{
-    entity.ToTable("users");
+    modelBuilder.Entity<User>(entity =>
+    {
+        entity.ToTable("users");
 
-    entity.HasKey(u => u.Id);
+        entity.HasKey(u => u.Id);
 
-    entity.HasIndex(u => u.Email)
-          .IsUnique();
+        entity.HasIndex(u => u.Email)
+            .IsUnique();
 
-    entity.Property(u => u.Email)
-          .HasMaxLength(200)
-          .IsRequired();
+        entity.Property(u => u.Email)
+            .HasMaxLength(200)
+            .IsRequired();
 
-    entity.Property(u => u.PasswordHash)
-          .IsRequired();
+        entity.Property(u => u.PasswordHash)
+            .IsRequired();
 
-    entity.Property(u => u.Username)
-      .HasMaxLength(100)
-      .IsRequired();
+        entity.Property(u => u.Username)
+            .HasMaxLength(100)
+            .IsRequired();
 
-    entity.Property(u => u.Role)
-      .HasMaxLength(30)
-      .IsRequired();
-});
+        entity.Property(u => u.Role)
+            .HasMaxLength(30)
+            .IsRequired();
+        });
 
         modelBuilder.Entity<Company>(entity =>
         {
@@ -139,6 +139,10 @@ modelBuilder.Entity<User>(entity =>
 
             entity.HasIndex(a => a.Email)
                 .IsUnique();
+
+            entity.Property(a => a.Phone)
+                .IsRequired(false)
+                .HasMaxLength(20);
         });
 
         modelBuilder.Entity<Application>(entity =>
