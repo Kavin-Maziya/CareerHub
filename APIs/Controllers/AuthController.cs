@@ -46,4 +46,11 @@ public class AuthController(IAuthService authService) : ControllerBase
 
         return Ok(response);
     }
+    [HttpPost("logout")]
+    public IActionResult Logout([FromBody] LogoutRequest request)
+    {
+        authService.Logout(request.RefreshToken);
+
+        return NoContent();
+    }
 }

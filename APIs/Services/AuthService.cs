@@ -104,6 +104,19 @@ public class AuthService : IAuthService
         );
     }
 
+    public void Logout(string refreshToken)
+    {
+        var storedToken = _db.RefreshTokens
+            .FirstOrDefault(rt => rt.Token == refreshToken);
+
+        if (storedToken is null)
+            return;
+
+        _db.RefreshTokens.Remove(storedToken);
+
+        _db.SaveChanges();
+    }
+
     // Constructs and signs the JWT
     private string BuildToken(string username, string role)
     {

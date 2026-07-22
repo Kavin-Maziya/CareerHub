@@ -11,4 +11,6 @@ public interface IAuthService
     LoginResponse? Login(LoginRequest request);
 
     LoginResponse? Refresh(string refreshToken);
+
+    void Logout(string refreshToken);
 }
