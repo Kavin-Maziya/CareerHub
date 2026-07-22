@@ -51,7 +51,13 @@ public class AuthService : IAuthService
       });
       _db.SaveChanges();
 
-        return new LoginResponse(token, refreshToken);
+        return new LoginResponse(
+            token, refreshToken, 
+            new UserResponse(
+            user.Id,
+            user.Username,
+            user.Role
+            ));
     }
 
     // Constructs and signs the JWT
