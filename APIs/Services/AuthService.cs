@@ -6,6 +6,7 @@ using APIs.DTOs;
 using APIs.Data;
 using APIs.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography;
 
 namespace APIs.Services;
 
@@ -39,7 +40,18 @@ public class AuthService : IAuthService
          return null;
 
       var token = BuildToken(user.Username, user.Role);
-        return new LoginResponse(token);
+      var refreshToken = GenerateRefreshToken();
+        
+    _db.RefreshTokens.Add(new RefreshToken
+      {
+      Token = refreshToken,
+      UserId = user.Id,
+      User = user,
+      ExpiresAt = DateTime.UtcNow.AddDays(30),
+      });
+      _db.SaveChanges();
+
+        return new LoginResponse(token, refreshToken);
     }
 
     // Constructs and signs the JWT
@@ -67,5 +79,12 @@ public class AuthService : IAuthService
         );
 
         return new JwtSecurityTokenHandler().WriteToken(token);
+    }
+    
+    private static string GenerateRefreshToken()
+    {
+    return Convert.ToBase64String(
+        RandomNumberGenerator.GetBytes(64)
+    );
     }
 }
