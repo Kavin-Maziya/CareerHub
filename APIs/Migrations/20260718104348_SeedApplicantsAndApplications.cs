@@ -20,7 +20,7 @@ namespace APIs.Migrations
                 {
                     { new Guid("bbbbbbbb-0000-0000-0000-000000000001"), "thabo.nkosi@example.com", "Thabo", "Nkosi", "0810000001" },
                     { new Guid("bbbbbbbb-0000-0000-0000-000000000002"), "amanda.vandermerwe@example.com", "Amanda", "van der Merwe", "0810000002" },
-                    { new Guid("bbbbbbbb-0000-0000-0000-000000000003"), "sipho.dlamini@example.com", "Sipho", "Dlamini", null }
+                    { new Guid("bbbbbbbb-0000-0000-0000-000000000003"), "sipho.dlamini@example.com", "Sipho", "Dlamini", "0810000003" }
                 });
 
             migrationBuilder.InsertData(
