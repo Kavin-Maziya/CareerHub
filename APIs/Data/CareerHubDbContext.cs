@@ -227,8 +227,8 @@ private void SeedUsers(ModelBuilder modelBuilder)
         new User
         {
             Id = Guid.Parse("22222222-2222-2222-2222-222222222222"),
-            Username = "employer",
-            Email = "employer@careerhub.co.za",
+            Username = "alice",
+            Email = "alice@careerhub.co.za",
             PasswordHash = "Employer123!",
             Role = "Employer",
             IsActive = true
@@ -237,8 +237,8 @@ private void SeedUsers(ModelBuilder modelBuilder)
         new User
         {
             Id = Guid.Parse("33333333-3333-3333-3333-333333333333"),
-            Username = "applicant",
-            Email = "applicant@careerhub.co.za",
+            Username = "bob",
+            Email = "bob@careerhub.co.za",
             PasswordHash = "Applicant123!",
             Role = "Applicant",
             IsActive = true
